@@ -64,5 +64,5 @@
         "editor.defaultFormatter": "ms-dotnettools.csharp",
         "editor.formatOnSave": true
     },
-    "dotnet.defaultSolution": "Pro0.sln"
+    "dotnet.defaultSolution": "SokobanGame.sln"
 }
