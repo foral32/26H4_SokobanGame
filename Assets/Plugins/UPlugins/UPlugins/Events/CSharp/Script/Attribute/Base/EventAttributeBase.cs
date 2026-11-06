@@ -1,0 +1,17 @@
+﻿/////////////////////////////////////////////////////////////////////////////
+//
+//  Script   : EventAttributeBase.cs
+//  Info     : 事件特性基类
+//  Author   : ls9512
+//  E-mail   : ls9512@vip.qq.com
+//
+/////////////////////////////////////////////////////////////////////////////
+using System;
+
+namespace Aya.Events
+{
+    public abstract class EventAttributeBase : Attribute
+    {
+
+    }
+}
