@@ -43,6 +43,7 @@ MonoBehaviour:
     maxDiffWeight: 1.5
     useInternalEdgeDistanceFade: 1
     internalDepthThreshold: 0.01
+    minimumFeatureSize: 0.06
     internalEdgeFadeStart: 15
     internalEdgeFadeEnd: 35
     edgeSoftness: 0.02

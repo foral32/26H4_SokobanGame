@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-07",
+  "scope": "Player-facing HTML interaction mockup only; no Unity implementation or acceptance claim",
+  "method": "Real browser locator clicks, screenshots and DOM inspection",
+  "checks": {
+    "placeUndoRedo": {"cellImages": [0, 1, 0, 1], "pass": true},
+    "selectCoveredWhitePlayer": {"pass": true, "observation": "White player shown below black box; only selected player removed"},
+    "missingPlayerAction": {"pass": true, "observation": "Go place one selects white player brush and returns to placement"},
+    "undoRestoresStack": {"pass": true},
+    "playViewRoundTrip": {"pass": true, "observation": "Editor restored with redo still enabled; no actual gameplay simulated"},
+    "libraryLoadSelectedSample": {"pass": true, "observation": "Selected 第一步 opens its 289-cell layout"},
+    "resizeConfirmationUndo": {"pass": true, "observation": "9x7 -> 7x7, explicit 6-object crop confirmation; undo returns 49 cells to 63"},
+    "game1280x720": {"pass": true, "browserViewport": [1280,758], "horizontalOverflow": false, "brokenImages": 0},
+    "game1920x1080": {"pass": true, "browserViewport": [1920,1118], "horizontalOverflow": false},
+    "browserErrorsOnCheckedPaths": []
+  },
+  "notValidated": ["Actual Unity gameplay", "Persistent multi-level file library", "Selection transformations", "Production import/recovery behavior", "Player usability acceptance", "Owner visual approval"]
+}

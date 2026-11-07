@@ -1,0 +1,12 @@
+{
+  "level": "n_box_7",
+  "step": 17,
+  "visibleBadges": [
+    {
+      "name": "Covered piece 3",
+      "sprite": "UnderIndicator_Player_Black"
+    }
+  ],
+  "correct": true,
+  "capture": "G:\\Unity\\projects\\My\\Pros\\TD\\SokobanGame\\Studies\\BoxOrVoid\\Evidence\\Runtime\\triple_stack_after.png"
+}

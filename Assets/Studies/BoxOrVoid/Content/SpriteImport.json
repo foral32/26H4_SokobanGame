@@ -1,0 +1,1414 @@
+{
+  "sprites": [
+    {
+      "name": "Box_active_white",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Box_inactive_white",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Box_active_black",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Box_inactive_black",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Player_active_white_left",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Player_active_white_right",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Player_active_white_up",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Player_active_white_down",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Player_inactive_white",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Player_active_black_left",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Player_active_black_right",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Player_active_black_up",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Player_active_black_down",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Player_inactive_black",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_inactive_white",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_white_uprightdownleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_white_uprightdown",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_white_uprightleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_white_updownleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_white_rightdownleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_white_upright",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_white_updown",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_white_upleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_white_rightdown",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_white_rightleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_white_downleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_white_up",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_white_right",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_white_down",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_white_left",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_inactive_black",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_black_uprightdownleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_black_uprightdown",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_black_uprightleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_black_updownleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_black_rightdownleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_black_upright",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_black_updown",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_black_upleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_black_rightdown",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_black_rightleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_black_downleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_black_up",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_black_right",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_black_down",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_black_left",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_inactive_gray",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_gray_uprightdownleft_normal",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_gray_uprightdown_normal",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_gray_uprightleft_normal",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_gray_updownleft_normal",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_gray_rightdownleft_normal",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_gray_upright_normal",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_gray_updown_normal",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_gray_upleft_normal",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_gray_rightdown_normal",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_gray_rightleft_normal",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_gray_downleft_normal",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_gray_up_normal",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_gray_right_normal",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_gray_down_normal",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_gray_left_normal",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_active_white_uprightcorner",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_active_white_upleftcorner",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_active_white_downrightcorner",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_active_white_downleftcorner",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_active_black_uprightcorner",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_active_black_upleftcorner",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_active_black_downrightcorner",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_active_black_downleftcorner",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_active_gray_uprightcorner_normal",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_active_gray_upleftcorner_normal",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_active_gray_downrightcorner_normal",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_active_gray_downleftcorner_normal",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "UnderIndicator_Player_White",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "UnderIndicator_Player_Black",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "UnderIndicator_Box_White",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "UnderIndicator_Box_Black",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Goal_player_white",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Goal_player_black",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Goal_box_white",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Goal_box_black",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "UnderIndicator_Goal_Box_White",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "UnderIndicator_Goal_Player_Black",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "UnderIndicator_Goal_Box_Black",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Goal_complete",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Box_active_coloredwhite",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Box_inactive_coloredwhite",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Box_active_coloredblack",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Player_active_coloredwhite_left",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Player_active_coloredwhite_right",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Player_active_coloredwhite_up",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Player_active_coloredwhite_down",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Player_inactive_coloredwhite",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Player_active_coloredblack_left",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Player_active_coloredblack_right",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Player_active_coloredblack_up",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Player_active_coloredblack_down",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredwhite_uprightdownleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_inactive_coloredwhite",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredwhite_uprightdown",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredwhite_uprightleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredwhite_updownleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredwhite_rightdownleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredwhite_upright",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredwhite_updown",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredwhite_upleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredwhite_rightdown",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredwhite_rightleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredwhite_downleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredwhite_up",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredwhite_right",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredwhite_down",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredwhite_left",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredblack_uprightdownleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredblack_uprightdown",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredblack_uprightleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredblack_updownleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredblack_rightdownleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredblack_upright",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredblack_updown",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredblack_upleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredblack_rightdown",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredblack_rightleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredblack_downleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredblack_up",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredblack_right",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredblack_down",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredblack_left",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredgray_uprightdownleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredgray_uprightdown",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredgray_uprightleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredgray_updownleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredgray_rightdownleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredgray_upright",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredgray_updown",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredgray_upleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredgray_rightdown",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredgray_rightleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredgray_downleft",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredgray_up",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredgray_right",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredgray_down",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_coloredgray_left",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_active_coloredwhite_uprightcorner",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_active_coloredwhite_upleftcorner",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_active_coloredwhite_downrightcorner",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_active_coloredwhite_downleftcorner",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_active_coloredblack_uprightcorner",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_active_coloredblack_upleftcorner",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_active_coloredblack_downrightcorner",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_active_coloredblack_downleftcorner",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_active_coloredgray_uprightcorner",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_active_coloredgray_upleftcorner",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_active_coloredgray_downrightcorner",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Wall_active_coloredgray_downleftcorner",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "UnderIndicator_Player_ColoredWhite",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "UnderIndicator_Box_ColoredWhite",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Goal_player_coloredwhite",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Goal_box_coloredwhite",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "UnderIndicator_Goal_Player_ColoredWhite",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "UnderIndicator_Goal_Box_ColoredWhite",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "white_background_0",
+      "pixelsPerUnit": 53.333335876464844,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "black_background_0",
+      "pixelsPerUnit": 53.333335876464844,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Main Menu Background_0",
+      "pixelsPerUnit": 100.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Main Menu Button Panel",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "vignette",
+      "pixelsPerUnit": 53.333335876464844,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Particle_Box_Uncolored",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Play_active",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Settings_active",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Main Menu Pointer",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Return_active",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "keyboard_escape_outline_0",
+      "pixelsPerUnit": 100.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "keyboard_z_outline_0",
+      "pixelsPerUnit": 100.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Dim Overlay_0",
+      "pixelsPerUnit": 94.81481170654297,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Cursor",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Settings Icon",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Return Icon",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Resume Button",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Box World Tile",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Box World Locked",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Home Icon",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "keyboard_space_icon_outline_0",
+      "pixelsPerUnit": 100.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "keyboard_r_outline_0",
+      "pixelsPerUnit": 100.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Tut World Background_0",
+      "pixelsPerUnit": 53.333335876464844,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_tut_08_unlocked",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_tut_07_unlocked",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_tut_07_finished",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_tut_04_finished",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_tut_03_finished",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_locked",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_tut_06_finished",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_tut_01_unlocked",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_tut_02_finished",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_tut_01_finished",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_tut_06_unlocked",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_tut_02_unlocked",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_tut_03_unlocked",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_tut_05_finished",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_tut_05_unlocked",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_tut_04_unlocked",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_tut_08_finished",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_box_04_finished",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_box_06_unlocked",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_box_07_finished",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_box_05_unlocked",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_box_05_finished",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_box_C_unlocked",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_locked_hard",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_box_10_finished",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_box_06_finished",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_box_04_unlocked",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_box_08_unlocked",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_box_07_unlocked",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_box_10_unlocked",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_box_A_finished",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_box_01_finished",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_box_09_unlocked",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_box_02_finished",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_box_B_unlocked",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_box_01_unlocked",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_box_03_finished",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_box_02_unlocked",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_box_03_unlocked",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_box_B_finished",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_box_08_finished",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_box_A_unlocked",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_box_09_finished",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_box_C_finished",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Box World Background",
+      "pixelsPerUnit": 53.333335876464844,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Level_tile_box_locked_veryhard",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Tut World Tile-sc",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "Box World Tile",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "title_upscaled_withChineseName",
+      "pixelsPerUnit": 100.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    },
+    {
+      "name": "HomeWorld",
+      "pixelsPerUnit": 256.0,
+      "pivotX": 0.5,
+      "pivotY": 0.5
+    }
+  ]
+}

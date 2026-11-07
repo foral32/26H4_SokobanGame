@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 48 48">
+  <!-- One-colour mask: Unity supplies the normal / focused ink. -->
+  <g fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M23 6H6v36h35V25"/>
+    <path d="M17 33l2-9L36 7q1.5-1.5 3 0l3 3q1.5 1.5 0 3L25 30z"/>
+    <path d="M32 11l7 7"/>
+  </g>
+  <path fill="#fff" d="M11 11h7v7h-7z"/>
+</svg>

@@ -1,0 +1,27 @@
+{
+    "result": "Succeeded",
+    "output": "G:/Unity/projects/My/Pros/TD/SokobanGame/Studies/BoxOrVoid/Builds/Windows/BoxOrVoidStudy.exe",
+    "platform": "StandaloneWindows64",
+    "unity": "6000.3.6f1",
+    "backend": "Mono2x",
+    "errors": 0,
+    "warnings": 11,
+    "bytes": 289417956,
+    "seconds": 24.4750698,
+    "scenes": [
+        "Assets/Studies/BoxOrVoid/Scenes/BoxOrVoid.unity"
+    ],
+    "messages": [
+        "Assets\\Plugins\\DanielMullinsGameKit\\Addons\\DanielMullinsGames\\Animation\\FrameByFrame\\FrameAnimatingTexture.cs(15,26): warning CS0109: The member 'FrameAnimatingTexture.renderer' does not hide an accessible member. The new keyword is not required.",
+        "Assets\\Plugins\\DanielMullinsGameKit\\Addons\\DanielMullinsGames\\ManagedSingleton.cs(17,32): warning CS0618: 'Object.FindObjectOfType<T>()' is obsolete: 'Object.FindObjectOfType has been deprecated. Use Object.FindFirstObjectByType instead or if finding any instance is acceptable the faster Object.FindAnyObjectByType'",
+        "Assets\\Scripts\\Shader\\PPOutline\\PostProcessOutlineFeature.cs(120,30): warning CS0672: Member 'PostProcessOutlineFeature.SetupRenderPasses(ScriptableRenderer, in RenderingData)' overrides obsolete member 'ScriptableRendererFeature.SetupRenderPasses(ScriptableRenderer, in RenderingData)'. Add the Obsolete attribute to 'PostProcessOutlineFeature.SetupRenderPasses(ScriptableRenderer, in RenderingData)'.",
+        "Assets\\Scripts\\Shader\\PPOutline\\PostProcessOutlineFeature.cs(279,30): warning CS0672: Member 'PostProcessOutlinePass.OnCameraSetup(CommandBuffer, ref RenderingData)' overrides obsolete member 'ScriptableRenderPass.OnCameraSetup(CommandBuffer, ref RenderingData)'. Add the Obsolete attribute to 'PostProcessOutlinePass.OnCameraSetup(CommandBuffer, ref RenderingData)'.",
+        "Assets\\Scripts\\Shader\\PPOutline\\PostProcessOutlineFeature.cs(294,30): warning CS0672: Member 'PostProcessOutlinePass.Execute(ScriptableRenderContext, ref RenderingData)' overrides obsolete member 'ScriptableRenderPass.Execute(ScriptableRenderContext, ref RenderingData)'. Add the Obsolete attribute to 'PostProcessOutlinePass.Execute(ScriptableRenderContext, ref RenderingData)'.",
+        "Assets\\Scripts\\CakePac\\Tools\\Singleton.cs(24,32): warning CS0618: 'Object.FindObjectOfType<T>()' is obsolete: 'Object.FindObjectOfType has been deprecated. Use Object.FindFirstObjectByType instead or if finding any instance is acceptable the faster Object.FindAnyObjectByType'",
+        "Assets\\Scripts\\Shader\\PPOutline\\PostProcessOutlineFeature.cs(123,34): warning CS0618: 'ScriptableRenderer.cameraColorTargetHandle' is obsolete: 'This rendering path is for Compatibility Mode only which has been deprecated and hidden behind URP_COMPATIBILITY_MODE define. This will do nothing.'",
+        "Assets\\Scripts\\Shader\\PPOutline\\PostProcessOutlineFeature.cs(284,13): warning CS0618: 'RenderingUtils.ReAllocateIfNeeded(ref RTHandle, in RenderTextureDescriptor, FilterMode, TextureWrapMode, bool, int, float, string)' is obsolete: 'This method will be removed in a future release. Please use ReAllocateHandleIfNeeded instead. #from(2023.3)'",
+        "Assets\\Scripts\\Shader\\PPOutline\\PostProcessOutlineFeature.cs(287,13): warning CS0618: 'RenderingUtils.ReAllocateIfNeeded(ref RTHandle, in RenderTextureDescriptor, FilterMode, TextureWrapMode, bool, int, float, string)' is obsolete: 'This method will be removed in a future release. Please use ReAllocateHandleIfNeeded instead. #from(2023.3)'",
+        "Assets\\Scripts\\Shader\\PPOutline\\PostProcessOutlineFeature.cs(289,13): warning CS0618: 'RenderingUtils.ReAllocateIfNeeded(ref RTHandle, in RenderTextureDescriptor, FilterMode, TextureWrapMode, bool, int, float, string)' is obsolete: 'This method will be removed in a future release. Please use ReAllocateHandleIfNeeded instead. #from(2023.3)'",
+        "Assets\\Scripts\\Shader\\PPOutline\\PostProcessOutlineFeature.cs(291,13): warning CS0618: 'ScriptableRenderPass.ConfigureTarget(RTHandle)' is obsolete: 'This rendering path is for Compatibility Mode only which has been deprecated and hidden behind URP_COMPATIBILITY_MODE define. This will do nothing.'"
+    ]
+}

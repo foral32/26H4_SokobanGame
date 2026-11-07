@@ -1,0 +1,7 @@
+{
+  "name": "BoxOrVoid.Core",
+  "rootNamespace": "BoxOrVoid.Core",
+  "references": [],
+  "autoReferenced": true,
+  "noEngineReferences": true
+}

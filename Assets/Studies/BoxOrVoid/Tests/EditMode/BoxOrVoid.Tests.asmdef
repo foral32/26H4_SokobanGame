@@ -1,0 +1,7 @@
+{
+  "name": "BoxOrVoid.Tests",
+  "references": ["BoxOrVoid.Core", "BoxOrVoid.Runtime"],
+  "includePlatforms": ["Editor"],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "autoReferenced": false
+}

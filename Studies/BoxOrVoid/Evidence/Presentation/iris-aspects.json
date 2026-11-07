@@ -1,0 +1,31 @@
+[
+  {
+    "run": "WindowsRun04",
+    "frame": "frame_00012.png",
+    "width": 1280,
+    "height": 720,
+    "apertureWidth": 650,
+    "apertureHeight": 650,
+    "circularWithinTwoPixels": true
+  },
+  {
+    "run": "Windows_1024x768",
+    "frame": "iris_closing.png",
+    "width": 1024,
+    "height": 768,
+    "apertureWidth": 16,
+    "apertureHeight": 16,
+    "circularWithinTwoPixels": true,
+    "source": "native-size screenshot; fixed 1280x720 film is not used for aspect validation"
+  },
+  {
+    "run": "Windows_2560x1080",
+    "frame": "iris_closing.png",
+    "width": 2560,
+    "height": 1080,
+    "apertureWidth": 278,
+    "apertureHeight": 278,
+    "circularWithinTwoPixels": true,
+    "source": "native-size screenshot; fixed 1280x720 film is not used for aspect validation"
+  }
+]

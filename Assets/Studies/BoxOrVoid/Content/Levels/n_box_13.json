@@ -1,0 +1,666 @@
+{
+    "width": 7,
+    "height": 9,
+    "grid": [
+        {
+            "Objects": []
+        },
+        {
+            "Objects": []
+        },
+        {
+            "Objects": []
+        },
+        {
+            "Objects": []
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": []
+        },
+        {
+            "Objects": []
+        },
+        {
+            "Objects": []
+        },
+        {
+            "Objects": []
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 1,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                },
+                {
+                    "ObjectType": 5,
+                    "Color": 2,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 1,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 2,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                },
+                {
+                    "ObjectType": 5,
+                    "Color": 1,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 2,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 2,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                },
+                {
+                    "ObjectType": 2,
+                    "Color": 1,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 2,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 2,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                },
+                {
+                    "ObjectType": 3,
+                    "Color": 1,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 2,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 1,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 1,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 1,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 1,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                },
+                {
+                    "ObjectType": 2,
+                    "Color": 2,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 1,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 1,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 2,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 2,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                },
+                {
+                    "ObjectType": 4,
+                    "Color": 1,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": []
+        },
+        {
+            "Objects": []
+        },
+        {
+            "Objects": []
+        },
+        {
+            "Objects": []
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3,
+                    "allowUp": true,
+                    "allowRight": true,
+                    "allowDown": true,
+                    "allowLeft": true
+                }
+            ]
+        },
+        {
+            "Objects": []
+        },
+        {
+            "Objects": []
+        },
+        {
+            "Objects": []
+        },
+        {
+            "Objects": []
+        }
+    ]
+}

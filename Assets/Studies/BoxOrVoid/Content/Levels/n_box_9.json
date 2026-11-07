@@ -1,0 +1,377 @@
+{
+    "width": 7,
+    "height": 7,
+    "grid": [
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3
+                }
+            ]
+        },
+        {
+            "Objects": []
+        },
+        {
+            "Objects": []
+        },
+        {
+            "Objects": []
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 1
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 1
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3
+                }
+            ]
+        },
+        {
+            "Objects": []
+        },
+        {
+            "Objects": []
+        },
+        {
+            "Objects": []
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 2
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 1
+                },
+                {
+                    "ObjectType": 2,
+                    "Color": 2
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 1
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 1
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 1
+                },
+                {
+                    "ObjectType": 5,
+                    "Color": 2
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 2
+                },
+                {
+                    "ObjectType": 2,
+                    "Color": 1
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 2
+                },
+                {
+                    "ObjectType": 3,
+                    "Color": 1
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 2
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 2
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 1
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 2
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 2
+                },
+                {
+                    "ObjectType": 5,
+                    "Color": 1
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 1
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 1
+                },
+                {
+                    "ObjectType": 3,
+                    "Color": 2
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3
+                }
+            ]
+        },
+        {
+            "Objects": [
+                {
+                    "ObjectType": 1,
+                    "Color": 3
+                }
+            ]
+        },
+        {
+            "Objects": []
+        },
+        {
+            "Objects": []
+        },
+        {
+            "Objects": []
+        }
+    ]
+}

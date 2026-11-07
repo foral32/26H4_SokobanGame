@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-06",
+  "scope": "HTML interaction mockup only; not the Unity level editor",
+  "checked": [
+    "Select a covered white player",
+    "Delete the covered layer and show missing-player error",
+    "Undo restores the layer",
+    "Paint an empty cell and undo the whole operation",
+    "Valid structure and covered-player suggestion are distinguished",
+    "Enter playtest view and return to unchanged editor",
+    "Resize 9x7 to 7x5 previews 15 cropped objects and requests confirmation",
+    "One undo restores 9x7",
+    "1280x846 browser holds a 1215x719 editor shell without horizontal body overflow",
+    "No broken image sources or browser errors"
+  ],
+  "unityGameplayImplemented": false,
+  "persistenceImplemented": false
+}

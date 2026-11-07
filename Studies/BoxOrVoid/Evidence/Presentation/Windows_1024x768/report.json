@@ -1,0 +1,20 @@
+{
+    "status": "passed",
+    "error": "",
+    "unity": "6000.3.6f1",
+    "graphics": "Direct3D11",
+    "device": "NVIDIA GeForce RTX 3060 Laptop GPU",
+    "currentLevel": "",
+    "savePath": "C:/Users/19118/AppData/Local/Temp/VoidCake/Box or Void Study\\BoxOrVoidStudyTests\\3a34240373394d339060d8d6392a9b65\\progress-v1.json",
+    "width": 1024,
+    "height": 768,
+    "firstFrame": 1,
+    "lastFrame": 340,
+    "flowPassed": true,
+    "midMoveUndoPassed": true,
+    "transitionPassed": true,
+    "authoredMenuReused": true,
+    "audioRms": 0.12647424638271333,
+    "levels": [],
+    "errors": []
+}

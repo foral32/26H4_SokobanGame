@@ -1,0 +1,15 @@
+{
+    "level": "n_tut_1",
+    "status": "passed",
+    "error": "",
+    "commands": "LLLLDLSRRRRUR",
+    "observed": "LLLLDLSRRRRUR",
+    "initialKey": "1|6,2,0;1,5,0;",
+    "finalKey": "2|1,1,0;6,6,0;",
+    "initialFrame": 346,
+    "finalFrame": 658,
+    "solved": true,
+    "resetUndo": true,
+    "fullUndo": true,
+    "maximumAudioRms": 0.2086971551179886
+}

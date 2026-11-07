@@ -1,0 +1,107 @@
+{
+  "passed": true,
+  "checks": {
+    "21_original_level_files_match": true,
+    "all_extracted_presentation_assets_match": true,
+    "one_shared_scene": true,
+    "no_reference_dll_in_module": true,
+    "21_windows_replays_reset_undo": true,
+    "final_build_flow_passed": true,
+    "final_runtime_matches_full_replay_build": true,
+    "build_success": true,
+    "52_editmode_tests_passed": true,
+    "workbench_single_scene_preview": true,
+    "reference_sequence_passed": true,
+    "actual_gameplay_movie_present": true
+  },
+  "levelCount": 21,
+  "presentationAssetCount": 256,
+  "scene": "Assets\\Studies\\BoxOrVoid\\Scenes\\BoxOrVoid.unity",
+  "levelChecks": [
+    {
+      "id": "n_tut_1",
+      "match": true
+    },
+    {
+      "id": "n_tut_2",
+      "match": true
+    },
+    {
+      "id": "n_tut_3",
+      "match": true
+    },
+    {
+      "id": "n_tut_4",
+      "match": true
+    },
+    {
+      "id": "n_tut_5",
+      "match": true
+    },
+    {
+      "id": "n_tut_6",
+      "match": true
+    },
+    {
+      "id": "n_tut_7",
+      "match": true
+    },
+    {
+      "id": "n_tut_8",
+      "match": true
+    },
+    {
+      "id": "n_box_1",
+      "match": true
+    },
+    {
+      "id": "n_box_2",
+      "match": true
+    },
+    {
+      "id": "n_box_3",
+      "match": true
+    },
+    {
+      "id": "n_box_4",
+      "match": true
+    },
+    {
+      "id": "n_box_5",
+      "match": true
+    },
+    {
+      "id": "n_box_6",
+      "match": true
+    },
+    {
+      "id": "n_box_7",
+      "match": true
+    },
+    {
+      "id": "n_box_8",
+      "match": true
+    },
+    {
+      "id": "n_box_9",
+      "match": true
+    },
+    {
+      "id": "n_box_10",
+      "match": true
+    },
+    {
+      "id": "n_box_11",
+      "match": true
+    },
+    {
+      "id": "n_box_12",
+      "match": true
+    },
+    {
+      "id": "n_box_13",
+      "match": true
+    }
+  ],
+  "resourceFailures": []
+}

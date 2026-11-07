@@ -1,0 +1,22 @@
+{
+  "project": "G:/Unity/projects/My/Pros/TD/SokobanGame/Assets",
+  "playing": false,
+  "compiling": false,
+  "compilationFailed": false,
+  "scene": "Assets/Studies/BoxOrVoid/Scenes/BoxOrVoid.unity",
+  "sceneDirty": false,
+  "testInput": false,
+  "runInBackground": false,
+  "productName": "Pro0",
+  "defaultRenderPipeline": "URP_Pipeline",
+  "qualityRenderPipeline": "none",
+  "gameViewEntry": [
+    "PlayFocused"
+  ],
+  "buildScenes": [
+    {
+      "path": "Assets/Scenes/Gameplay.unity",
+      "enabled": true
+    }
+  ]
+}

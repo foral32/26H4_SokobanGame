@@ -1,0 +1,1652 @@
+{
+  "sourceGame": "Box or Void Demo",
+  "referenceEngine": "6000.0.47f1",
+  "themes": [
+    {
+      "chapter": 0,
+      "sprites": [
+        {
+          "key": "whiteBoxActiveSprite",
+          "sprite": "Box_active_white"
+        },
+        {
+          "key": "whiteBoxInactiveSprite",
+          "sprite": "Box_inactive_white"
+        },
+        {
+          "key": "blackBoxActiveSprite",
+          "sprite": "Box_active_black"
+        },
+        {
+          "key": "blackBoxInactiveSprite",
+          "sprite": "Box_inactive_black"
+        },
+        {
+          "key": "whitePlayerActiveFacingLeftSprite",
+          "sprite": "Player_active_white_left"
+        },
+        {
+          "key": "whitePlayerActiveFacingRightSprite",
+          "sprite": "Player_active_white_right"
+        },
+        {
+          "key": "whitePlayerActiveFacingUpSprite",
+          "sprite": "Player_active_white_up"
+        },
+        {
+          "key": "whitePlayerActiveFacingDownSprite",
+          "sprite": "Player_active_white_down"
+        },
+        {
+          "key": "whitePlayerInactiveSprite",
+          "sprite": "Player_inactive_white"
+        },
+        {
+          "key": "blackPlayerActiveFacingLeftSprite",
+          "sprite": "Player_active_black_left"
+        },
+        {
+          "key": "blackPlayerActiveFacingRightSprite",
+          "sprite": "Player_active_black_right"
+        },
+        {
+          "key": "blackPlayerActiveFacingUpSprite",
+          "sprite": "Player_active_black_up"
+        },
+        {
+          "key": "blackPlayerActiveFacingDownSprite",
+          "sprite": "Player_active_black_down"
+        },
+        {
+          "key": "blackPlayerInactiveSprite",
+          "sprite": "Player_inactive_black"
+        },
+        {
+          "key": "whiteWallActiveSprite",
+          "sprite": "Wall_inactive_white"
+        },
+        {
+          "key": "whiteWallInactiveSprite",
+          "sprite": "Wall_inactive_white"
+        },
+        {
+          "key": "whiteWallActiveVariantSet.Uprightdownleft",
+          "sprite": "Wall_white_uprightdownleft"
+        },
+        {
+          "key": "whiteWallActiveVariantSet.UpRightDown",
+          "sprite": "Wall_white_uprightdown"
+        },
+        {
+          "key": "whiteWallActiveVariantSet.UpRightLeft",
+          "sprite": "Wall_white_uprightleft"
+        },
+        {
+          "key": "whiteWallActiveVariantSet.UpDownLeft",
+          "sprite": "Wall_white_updownleft"
+        },
+        {
+          "key": "whiteWallActiveVariantSet.RightDownLeft",
+          "sprite": "Wall_white_rightdownleft"
+        },
+        {
+          "key": "whiteWallActiveVariantSet.UpRight",
+          "sprite": "Wall_white_upright"
+        },
+        {
+          "key": "whiteWallActiveVariantSet.UpDown",
+          "sprite": "Wall_white_updown"
+        },
+        {
+          "key": "whiteWallActiveVariantSet.UpLeft",
+          "sprite": "Wall_white_upleft"
+        },
+        {
+          "key": "whiteWallActiveVariantSet.RightDown",
+          "sprite": "Wall_white_rightdown"
+        },
+        {
+          "key": "whiteWallActiveVariantSet.RightLeft",
+          "sprite": "Wall_white_rightleft"
+        },
+        {
+          "key": "whiteWallActiveVariantSet.DownLeft",
+          "sprite": "Wall_white_downleft"
+        },
+        {
+          "key": "whiteWallActiveVariantSet.Up",
+          "sprite": "Wall_white_up"
+        },
+        {
+          "key": "whiteWallActiveVariantSet.Right",
+          "sprite": "Wall_white_right"
+        },
+        {
+          "key": "whiteWallActiveVariantSet.Down",
+          "sprite": "Wall_white_down"
+        },
+        {
+          "key": "whiteWallActiveVariantSet.Left",
+          "sprite": "Wall_white_left"
+        },
+        {
+          "key": "whiteWallActiveVariantSet.None",
+          "sprite": "Wall_inactive_white"
+        },
+        {
+          "key": "blackWallActiveSprite",
+          "sprite": "Wall_inactive_black"
+        },
+        {
+          "key": "blackWallInactiveSprite",
+          "sprite": "Wall_inactive_black"
+        },
+        {
+          "key": "blackWallActiveVariantSet.Uprightdownleft",
+          "sprite": "Wall_black_uprightdownleft"
+        },
+        {
+          "key": "blackWallActiveVariantSet.UpRightDown",
+          "sprite": "Wall_black_uprightdown"
+        },
+        {
+          "key": "blackWallActiveVariantSet.UpRightLeft",
+          "sprite": "Wall_black_uprightleft"
+        },
+        {
+          "key": "blackWallActiveVariantSet.UpDownLeft",
+          "sprite": "Wall_black_updownleft"
+        },
+        {
+          "key": "blackWallActiveVariantSet.RightDownLeft",
+          "sprite": "Wall_black_rightdownleft"
+        },
+        {
+          "key": "blackWallActiveVariantSet.UpRight",
+          "sprite": "Wall_black_upright"
+        },
+        {
+          "key": "blackWallActiveVariantSet.UpDown",
+          "sprite": "Wall_black_updown"
+        },
+        {
+          "key": "blackWallActiveVariantSet.UpLeft",
+          "sprite": "Wall_black_upleft"
+        },
+        {
+          "key": "blackWallActiveVariantSet.RightDown",
+          "sprite": "Wall_black_rightdown"
+        },
+        {
+          "key": "blackWallActiveVariantSet.RightLeft",
+          "sprite": "Wall_black_rightleft"
+        },
+        {
+          "key": "blackWallActiveVariantSet.DownLeft",
+          "sprite": "Wall_black_downleft"
+        },
+        {
+          "key": "blackWallActiveVariantSet.Up",
+          "sprite": "Wall_black_up"
+        },
+        {
+          "key": "blackWallActiveVariantSet.Right",
+          "sprite": "Wall_black_right"
+        },
+        {
+          "key": "blackWallActiveVariantSet.Down",
+          "sprite": "Wall_black_down"
+        },
+        {
+          "key": "blackWallActiveVariantSet.Left",
+          "sprite": "Wall_black_left"
+        },
+        {
+          "key": "blackWallActiveVariantSet.None",
+          "sprite": "Wall_inactive_black"
+        },
+        {
+          "key": "grayWallActiveSprite",
+          "sprite": "Wall_inactive_gray"
+        },
+        {
+          "key": "grayWallInactiveSprite",
+          "sprite": "Wall_inactive_gray"
+        },
+        {
+          "key": "grayWallActiveVariantSet.Uprightdownleft",
+          "sprite": "Wall_gray_uprightdownleft_normal"
+        },
+        {
+          "key": "grayWallActiveVariantSet.UpRightDown",
+          "sprite": "Wall_gray_uprightdown_normal"
+        },
+        {
+          "key": "grayWallActiveVariantSet.UpRightLeft",
+          "sprite": "Wall_gray_uprightleft_normal"
+        },
+        {
+          "key": "grayWallActiveVariantSet.UpDownLeft",
+          "sprite": "Wall_gray_updownleft_normal"
+        },
+        {
+          "key": "grayWallActiveVariantSet.RightDownLeft",
+          "sprite": "Wall_gray_rightdownleft_normal"
+        },
+        {
+          "key": "grayWallActiveVariantSet.UpRight",
+          "sprite": "Wall_gray_upright_normal"
+        },
+        {
+          "key": "grayWallActiveVariantSet.UpDown",
+          "sprite": "Wall_gray_updown_normal"
+        },
+        {
+          "key": "grayWallActiveVariantSet.UpLeft",
+          "sprite": "Wall_gray_upleft_normal"
+        },
+        {
+          "key": "grayWallActiveVariantSet.RightDown",
+          "sprite": "Wall_gray_rightdown_normal"
+        },
+        {
+          "key": "grayWallActiveVariantSet.RightLeft",
+          "sprite": "Wall_gray_rightleft_normal"
+        },
+        {
+          "key": "grayWallActiveVariantSet.DownLeft",
+          "sprite": "Wall_gray_downleft_normal"
+        },
+        {
+          "key": "grayWallActiveVariantSet.Up",
+          "sprite": "Wall_gray_up_normal"
+        },
+        {
+          "key": "grayWallActiveVariantSet.Right",
+          "sprite": "Wall_gray_right_normal"
+        },
+        {
+          "key": "grayWallActiveVariantSet.Down",
+          "sprite": "Wall_gray_down_normal"
+        },
+        {
+          "key": "grayWallActiveVariantSet.Left",
+          "sprite": "Wall_gray_left_normal"
+        },
+        {
+          "key": "grayWallActiveVariantSet.None",
+          "sprite": "Wall_inactive_gray"
+        },
+        {
+          "key": "whiteWallCornerOverlays.UpRight",
+          "sprite": "Wall_active_white_uprightcorner"
+        },
+        {
+          "key": "whiteWallCornerOverlays.UpLeft",
+          "sprite": "Wall_active_white_upleftcorner"
+        },
+        {
+          "key": "whiteWallCornerOverlays.DownRight",
+          "sprite": "Wall_active_white_downrightcorner"
+        },
+        {
+          "key": "whiteWallCornerOverlays.DownLeft",
+          "sprite": "Wall_active_white_downleftcorner"
+        },
+        {
+          "key": "blackWallCornerOverlays.UpRight",
+          "sprite": "Wall_active_black_uprightcorner"
+        },
+        {
+          "key": "blackWallCornerOverlays.UpLeft",
+          "sprite": "Wall_active_black_upleftcorner"
+        },
+        {
+          "key": "blackWallCornerOverlays.DownRight",
+          "sprite": "Wall_active_black_downrightcorner"
+        },
+        {
+          "key": "blackWallCornerOverlays.DownLeft",
+          "sprite": "Wall_active_black_downleftcorner"
+        },
+        {
+          "key": "grayWallCornerOverlays.UpRight",
+          "sprite": "Wall_active_gray_uprightcorner_normal"
+        },
+        {
+          "key": "grayWallCornerOverlays.UpLeft",
+          "sprite": "Wall_active_gray_upleftcorner_normal"
+        },
+        {
+          "key": "grayWallCornerOverlays.DownRight",
+          "sprite": "Wall_active_gray_downrightcorner_normal"
+        },
+        {
+          "key": "grayWallCornerOverlays.DownLeft",
+          "sprite": "Wall_active_gray_downleftcorner_normal"
+        },
+        {
+          "key": "whitePlayerUnderSprite",
+          "sprite": "UnderIndicator_Player_White"
+        },
+        {
+          "key": "blackPlayerUnderSprite",
+          "sprite": "UnderIndicator_Player_Black"
+        },
+        {
+          "key": "whiteBoxUnderSprite",
+          "sprite": "UnderIndicator_Box_White"
+        },
+        {
+          "key": "blackBoxUnderSprite",
+          "sprite": "UnderIndicator_Box_Black"
+        },
+        {
+          "key": "whitePlayerGoalSprite",
+          "sprite": "Goal_player_white"
+        },
+        {
+          "key": "blackPlayerGoalSprite",
+          "sprite": "Goal_player_black"
+        },
+        {
+          "key": "whiteBoxGoalSprite",
+          "sprite": "Goal_box_white"
+        },
+        {
+          "key": "blackBoxGoalSprite",
+          "sprite": "Goal_box_black"
+        },
+        {
+          "key": "whitePlayerGoalUnderSprite",
+          "sprite": "UnderIndicator_Goal_Box_White"
+        },
+        {
+          "key": "blackPlayerGoalUnderSprite",
+          "sprite": "UnderIndicator_Goal_Player_Black"
+        },
+        {
+          "key": "whiteBoxGoalUnderSprite",
+          "sprite": "UnderIndicator_Goal_Box_White"
+        },
+        {
+          "key": "blackBoxGoalUnderSprite",
+          "sprite": "UnderIndicator_Goal_Box_Black"
+        },
+        {
+          "key": "goalFulfillmentSprite",
+          "sprite": "Goal_complete"
+        }
+      ],
+      "backgrounds": [
+        {
+          "key": "whiteBackground",
+          "sprite": "white_background_0"
+        },
+        {
+          "key": "blackBackground",
+          "sprite": "black_background_0"
+        }
+      ]
+    },
+    {
+      "chapter": 1,
+      "sprites": [
+        {
+          "key": "whiteBoxActiveSprite",
+          "sprite": "Box_active_coloredwhite"
+        },
+        {
+          "key": "whiteBoxInactiveSprite",
+          "sprite": "Box_inactive_coloredwhite"
+        },
+        {
+          "key": "blackBoxActiveSprite",
+          "sprite": "Box_active_coloredblack"
+        },
+        {
+          "key": "blackBoxInactiveSprite",
+          "sprite": "Box_inactive_black"
+        },
+        {
+          "key": "whitePlayerActiveFacingLeftSprite",
+          "sprite": "Player_active_coloredwhite_left"
+        },
+        {
+          "key": "whitePlayerActiveFacingRightSprite",
+          "sprite": "Player_active_coloredwhite_right"
+        },
+        {
+          "key": "whitePlayerActiveFacingUpSprite",
+          "sprite": "Player_active_coloredwhite_up"
+        },
+        {
+          "key": "whitePlayerActiveFacingDownSprite",
+          "sprite": "Player_active_coloredwhite_down"
+        },
+        {
+          "key": "whitePlayerInactiveSprite",
+          "sprite": "Player_inactive_coloredwhite"
+        },
+        {
+          "key": "blackPlayerActiveFacingLeftSprite",
+          "sprite": "Player_active_coloredblack_left"
+        },
+        {
+          "key": "blackPlayerActiveFacingRightSprite",
+          "sprite": "Player_active_coloredblack_right"
+        },
+        {
+          "key": "blackPlayerActiveFacingUpSprite",
+          "sprite": "Player_active_coloredblack_up"
+        },
+        {
+          "key": "blackPlayerActiveFacingDownSprite",
+          "sprite": "Player_active_coloredblack_down"
+        },
+        {
+          "key": "blackPlayerInactiveSprite",
+          "sprite": "Player_inactive_black"
+        },
+        {
+          "key": "whiteWallActiveSprite",
+          "sprite": "Wall_coloredwhite_uprightdownleft"
+        },
+        {
+          "key": "whiteWallInactiveSprite",
+          "sprite": "Wall_inactive_coloredwhite"
+        },
+        {
+          "key": "whiteWallActiveVariantSet.Uprightdownleft",
+          "sprite": "Wall_coloredwhite_uprightdownleft"
+        },
+        {
+          "key": "whiteWallActiveVariantSet.UpRightDown",
+          "sprite": "Wall_coloredwhite_uprightdown"
+        },
+        {
+          "key": "whiteWallActiveVariantSet.UpRightLeft",
+          "sprite": "Wall_coloredwhite_uprightleft"
+        },
+        {
+          "key": "whiteWallActiveVariantSet.UpDownLeft",
+          "sprite": "Wall_coloredwhite_updownleft"
+        },
+        {
+          "key": "whiteWallActiveVariantSet.RightDownLeft",
+          "sprite": "Wall_coloredwhite_rightdownleft"
+        },
+        {
+          "key": "whiteWallActiveVariantSet.UpRight",
+          "sprite": "Wall_coloredwhite_upright"
+        },
+        {
+          "key": "whiteWallActiveVariantSet.UpDown",
+          "sprite": "Wall_coloredwhite_updown"
+        },
+        {
+          "key": "whiteWallActiveVariantSet.UpLeft",
+          "sprite": "Wall_coloredwhite_upleft"
+        },
+        {
+          "key": "whiteWallActiveVariantSet.RightDown",
+          "sprite": "Wall_coloredwhite_rightdown"
+        },
+        {
+          "key": "whiteWallActiveVariantSet.RightLeft",
+          "sprite": "Wall_coloredwhite_rightleft"
+        },
+        {
+          "key": "whiteWallActiveVariantSet.DownLeft",
+          "sprite": "Wall_coloredwhite_downleft"
+        },
+        {
+          "key": "whiteWallActiveVariantSet.Up",
+          "sprite": "Wall_coloredwhite_up"
+        },
+        {
+          "key": "whiteWallActiveVariantSet.Right",
+          "sprite": "Wall_coloredwhite_right"
+        },
+        {
+          "key": "whiteWallActiveVariantSet.Down",
+          "sprite": "Wall_coloredwhite_down"
+        },
+        {
+          "key": "whiteWallActiveVariantSet.Left",
+          "sprite": "Wall_coloredwhite_left"
+        },
+        {
+          "key": "whiteWallActiveVariantSet.None",
+          "sprite": "Wall_inactive_coloredwhite"
+        },
+        {
+          "key": "blackWallActiveSprite",
+          "sprite": "Wall_coloredblack_uprightdownleft"
+        },
+        {
+          "key": "blackWallInactiveSprite",
+          "sprite": "Wall_inactive_black"
+        },
+        {
+          "key": "blackWallActiveVariantSet.Uprightdownleft",
+          "sprite": "Wall_coloredblack_uprightdownleft"
+        },
+        {
+          "key": "blackWallActiveVariantSet.UpRightDown",
+          "sprite": "Wall_coloredblack_uprightdown"
+        },
+        {
+          "key": "blackWallActiveVariantSet.UpRightLeft",
+          "sprite": "Wall_coloredblack_uprightleft"
+        },
+        {
+          "key": "blackWallActiveVariantSet.UpDownLeft",
+          "sprite": "Wall_coloredblack_updownleft"
+        },
+        {
+          "key": "blackWallActiveVariantSet.RightDownLeft",
+          "sprite": "Wall_coloredblack_rightdownleft"
+        },
+        {
+          "key": "blackWallActiveVariantSet.UpRight",
+          "sprite": "Wall_coloredblack_upright"
+        },
+        {
+          "key": "blackWallActiveVariantSet.UpDown",
+          "sprite": "Wall_coloredblack_updown"
+        },
+        {
+          "key": "blackWallActiveVariantSet.UpLeft",
+          "sprite": "Wall_coloredblack_upleft"
+        },
+        {
+          "key": "blackWallActiveVariantSet.RightDown",
+          "sprite": "Wall_coloredblack_rightdown"
+        },
+        {
+          "key": "blackWallActiveVariantSet.RightLeft",
+          "sprite": "Wall_coloredblack_rightleft"
+        },
+        {
+          "key": "blackWallActiveVariantSet.DownLeft",
+          "sprite": "Wall_coloredblack_downleft"
+        },
+        {
+          "key": "blackWallActiveVariantSet.Up",
+          "sprite": "Wall_coloredblack_up"
+        },
+        {
+          "key": "blackWallActiveVariantSet.Right",
+          "sprite": "Wall_coloredblack_right"
+        },
+        {
+          "key": "blackWallActiveVariantSet.Down",
+          "sprite": "Wall_coloredblack_down"
+        },
+        {
+          "key": "blackWallActiveVariantSet.Left",
+          "sprite": "Wall_coloredblack_left"
+        },
+        {
+          "key": "blackWallActiveVariantSet.None",
+          "sprite": "Wall_inactive_black"
+        },
+        {
+          "key": "grayWallActiveSprite",
+          "sprite": "Wall_coloredgray_uprightdownleft"
+        },
+        {
+          "key": "grayWallInactiveSprite",
+          "sprite": "Wall_inactive_gray"
+        },
+        {
+          "key": "grayWallActiveVariantSet.Uprightdownleft",
+          "sprite": "Wall_coloredgray_uprightdownleft"
+        },
+        {
+          "key": "grayWallActiveVariantSet.UpRightDown",
+          "sprite": "Wall_coloredgray_uprightdown"
+        },
+        {
+          "key": "grayWallActiveVariantSet.UpRightLeft",
+          "sprite": "Wall_coloredgray_uprightleft"
+        },
+        {
+          "key": "grayWallActiveVariantSet.UpDownLeft",
+          "sprite": "Wall_coloredgray_updownleft"
+        },
+        {
+          "key": "grayWallActiveVariantSet.RightDownLeft",
+          "sprite": "Wall_coloredgray_rightdownleft"
+        },
+        {
+          "key": "grayWallActiveVariantSet.UpRight",
+          "sprite": "Wall_coloredgray_upright"
+        },
+        {
+          "key": "grayWallActiveVariantSet.UpDown",
+          "sprite": "Wall_coloredgray_updown"
+        },
+        {
+          "key": "grayWallActiveVariantSet.UpLeft",
+          "sprite": "Wall_coloredgray_upleft"
+        },
+        {
+          "key": "grayWallActiveVariantSet.RightDown",
+          "sprite": "Wall_coloredgray_rightdown"
+        },
+        {
+          "key": "grayWallActiveVariantSet.RightLeft",
+          "sprite": "Wall_coloredgray_rightleft"
+        },
+        {
+          "key": "grayWallActiveVariantSet.DownLeft",
+          "sprite": "Wall_coloredgray_downleft"
+        },
+        {
+          "key": "grayWallActiveVariantSet.Up",
+          "sprite": "Wall_coloredgray_up"
+        },
+        {
+          "key": "grayWallActiveVariantSet.Right",
+          "sprite": "Wall_coloredgray_right"
+        },
+        {
+          "key": "grayWallActiveVariantSet.Down",
+          "sprite": "Wall_coloredgray_down"
+        },
+        {
+          "key": "grayWallActiveVariantSet.Left",
+          "sprite": "Wall_coloredgray_left"
+        },
+        {
+          "key": "grayWallActiveVariantSet.None",
+          "sprite": "Wall_inactive_gray"
+        },
+        {
+          "key": "whiteWallCornerOverlays.UpRight",
+          "sprite": "Wall_active_coloredwhite_uprightcorner"
+        },
+        {
+          "key": "whiteWallCornerOverlays.UpLeft",
+          "sprite": "Wall_active_coloredwhite_upleftcorner"
+        },
+        {
+          "key": "whiteWallCornerOverlays.DownRight",
+          "sprite": "Wall_active_coloredwhite_downrightcorner"
+        },
+        {
+          "key": "whiteWallCornerOverlays.DownLeft",
+          "sprite": "Wall_active_coloredwhite_downleftcorner"
+        },
+        {
+          "key": "blackWallCornerOverlays.UpRight",
+          "sprite": "Wall_active_coloredblack_uprightcorner"
+        },
+        {
+          "key": "blackWallCornerOverlays.UpLeft",
+          "sprite": "Wall_active_coloredblack_upleftcorner"
+        },
+        {
+          "key": "blackWallCornerOverlays.DownRight",
+          "sprite": "Wall_active_coloredblack_downrightcorner"
+        },
+        {
+          "key": "blackWallCornerOverlays.DownLeft",
+          "sprite": "Wall_active_coloredblack_downleftcorner"
+        },
+        {
+          "key": "grayWallCornerOverlays.UpRight",
+          "sprite": "Wall_active_coloredgray_uprightcorner"
+        },
+        {
+          "key": "grayWallCornerOverlays.UpLeft",
+          "sprite": "Wall_active_coloredgray_upleftcorner"
+        },
+        {
+          "key": "grayWallCornerOverlays.DownRight",
+          "sprite": "Wall_active_coloredgray_downrightcorner"
+        },
+        {
+          "key": "grayWallCornerOverlays.DownLeft",
+          "sprite": "Wall_active_coloredgray_downleftcorner"
+        },
+        {
+          "key": "whitePlayerUnderSprite",
+          "sprite": "UnderIndicator_Player_ColoredWhite"
+        },
+        {
+          "key": "blackPlayerUnderSprite",
+          "sprite": "UnderIndicator_Player_Black"
+        },
+        {
+          "key": "whiteBoxUnderSprite",
+          "sprite": "UnderIndicator_Box_ColoredWhite"
+        },
+        {
+          "key": "blackBoxUnderSprite",
+          "sprite": "UnderIndicator_Box_Black"
+        },
+        {
+          "key": "whitePlayerGoalSprite",
+          "sprite": "Goal_player_coloredwhite"
+        },
+        {
+          "key": "blackPlayerGoalSprite",
+          "sprite": "Goal_player_black"
+        },
+        {
+          "key": "whiteBoxGoalSprite",
+          "sprite": "Goal_box_coloredwhite"
+        },
+        {
+          "key": "blackBoxGoalSprite",
+          "sprite": "Goal_box_black"
+        },
+        {
+          "key": "whitePlayerGoalUnderSprite",
+          "sprite": "UnderIndicator_Goal_Player_ColoredWhite"
+        },
+        {
+          "key": "blackPlayerGoalUnderSprite",
+          "sprite": "UnderIndicator_Goal_Player_Black"
+        },
+        {
+          "key": "whiteBoxGoalUnderSprite",
+          "sprite": "UnderIndicator_Goal_Box_ColoredWhite"
+        },
+        {
+          "key": "blackBoxGoalUnderSprite",
+          "sprite": "UnderIndicator_Goal_Box_Black"
+        },
+        {
+          "key": "goalFulfillmentSprite",
+          "sprite": "Goal_complete"
+        }
+      ],
+      "backgrounds": [
+        {
+          "key": "whiteBackground",
+          "sprite": "white_background_0"
+        },
+        {
+          "key": "blackBackground",
+          "sprite": "black_background_0"
+        }
+      ]
+    }
+  ],
+  "audio": [
+    {
+      "key": "playerMove",
+      "clip": "footstep_concrete_003"
+    },
+    {
+      "key": "playerMoveBlocked",
+      "clip": "footstep_grass_004"
+    },
+    {
+      "key": "playerSwitch",
+      "clip": "switch"
+    },
+    {
+      "key": "boxPush",
+      "clip": "impactWood_heavy_001"
+    },
+    {
+      "key": "goalFulfilled",
+      "clip": "goal"
+    },
+    {
+      "key": "undo",
+      "clip": "undo"
+    },
+    {
+      "key": "reset",
+      "clip": "reset"
+    },
+    {
+      "key": "snakeFoodEaten",
+      "clip": "snakefood_bite"
+    },
+    {
+      "key": "stickyFoodEaten",
+      "clip": "snakefood_bite"
+    },
+    {
+      "key": "levelVanishTick",
+      "clip": "levelVanishTick"
+    },
+    {
+      "key": "theme",
+      "clip": "Covert Affair_Loop"
+    },
+    {
+      "key": "boxWorld",
+      "clip": "Firmament_loopable"
+    },
+    {
+      "key": "uiNavigate",
+      "clip": "uiNavigate"
+    },
+    {
+      "key": "uiSubmit",
+      "clip": "uiSubmit"
+    },
+    {
+      "key": "selectionMove",
+      "clip": "click_001"
+    },
+    {
+      "key": "selectionMoveBlocked",
+      "clip": "click_002"
+    },
+    {
+      "key": "selectionSelect",
+      "clip": "levelSelect"
+    },
+    {
+      "key": "selectionSelectBlocked",
+      "clip": "levelSelect"
+    },
+    {
+      "key": "irisClose",
+      "clip": "IrisOpen"
+    },
+    {
+      "key": "irisOpen",
+      "clip": "IrisClose"
+    },
+    {
+      "key": "pauseOpen",
+      "clip": "pauseMenu"
+    },
+    {
+      "key": "pauseClose",
+      "clip": "pauseMenu"
+    },
+    {
+      "key": "worldUnlockReminderShow",
+      "clip": "newworldhint"
+    }
+  ],
+  "levels": [
+    {
+      "id": "n_tut_1",
+      "chapter": 0,
+      "displayId": "01",
+      "defaultUnlocked": true,
+      "hintGroups": [
+        "ui_switch_spaces"
+      ],
+      "width": 8,
+      "height": 8,
+      "source": "D:\\Steam\\steamapps\\common\\Box or Void Demo\\Box or Void_Data\\StreamingAssets\\Levels\\Tut\\n_tut_1.json",
+      "sha256": "1862a70fe97760e98d7e39158e77eb3db35d9161a3852b35d4f42dfccc31a1c6",
+      "x": -2.0,
+      "y": -5.0,
+      "unlocks": [
+        "n_tut_2"
+      ],
+      "lockedSprite": "Level_tile_locked",
+      "unlockedSprite": "Level_tile_tut_01_unlocked",
+      "completedSprite": "Level_tile_tut_01_finished"
+    },
+    {
+      "id": "n_tut_2",
+      "chapter": 0,
+      "displayId": "02",
+      "defaultUnlocked": false,
+      "hintGroups": [],
+      "width": 11,
+      "height": 5,
+      "source": "D:\\Steam\\steamapps\\common\\Box or Void Demo\\Box or Void_Data\\StreamingAssets\\Levels\\Tut\\n_tut_2.json",
+      "sha256": "eb4fd407f413346ba965ac93b03f3678ad0795cf316bf4faa3c3c15850b51744",
+      "x": -1.0,
+      "y": -5.0,
+      "unlocks": [
+        "n_tut_3"
+      ],
+      "lockedSprite": "Level_tile_locked",
+      "unlockedSprite": "Level_tile_tut_02_unlocked",
+      "completedSprite": "Level_tile_tut_02_finished"
+    },
+    {
+      "id": "n_tut_3",
+      "chapter": 0,
+      "displayId": "03",
+      "defaultUnlocked": false,
+      "hintGroups": [],
+      "width": 7,
+      "height": 7,
+      "source": "D:\\Steam\\steamapps\\common\\Box or Void Demo\\Box or Void_Data\\StreamingAssets\\Levels\\Tut\\n_tut_3.json",
+      "sha256": "117cd1904f497810696cb081c9a8bb85e239eb12bff9fdd58f6348d5ced533e7",
+      "x": -1.0,
+      "y": -4.0,
+      "unlocks": [
+        "n_tut_4"
+      ],
+      "lockedSprite": "Level_tile_locked",
+      "unlockedSprite": "Level_tile_tut_03_unlocked",
+      "completedSprite": "Level_tile_tut_03_finished"
+    },
+    {
+      "id": "n_tut_4",
+      "chapter": 0,
+      "displayId": "04",
+      "defaultUnlocked": false,
+      "hintGroups": [],
+      "width": 8,
+      "height": 7,
+      "source": "D:\\Steam\\steamapps\\common\\Box or Void Demo\\Box or Void_Data\\StreamingAssets\\Levels\\Tut\\n_tut_4.json",
+      "sha256": "33bceb77828469caf096688d8621e2654024e9dece09aeea2435d65fce9f09c7",
+      "x": -1.0,
+      "y": -3.0,
+      "unlocks": [
+        "n_tut_5"
+      ],
+      "lockedSprite": "Level_tile_locked",
+      "unlockedSprite": "Level_tile_tut_04_unlocked",
+      "completedSprite": "Level_tile_tut_04_finished"
+    },
+    {
+      "id": "n_tut_5",
+      "chapter": 0,
+      "displayId": "05",
+      "defaultUnlocked": false,
+      "hintGroups": [],
+      "width": 14,
+      "height": 7,
+      "source": "D:\\Steam\\steamapps\\common\\Box or Void Demo\\Box or Void_Data\\StreamingAssets\\Levels\\Tut\\n_tut_5.json",
+      "sha256": "c1c4e5707c4d1a75a6390f70586d7ba59044f0e1cf2d25d47592241156cd079d",
+      "x": -2.0,
+      "y": -3.0,
+      "unlocks": [
+        "n_tut_6"
+      ],
+      "lockedSprite": "Level_tile_locked",
+      "unlockedSprite": "Level_tile_tut_05_unlocked",
+      "completedSprite": "Level_tile_tut_05_finished"
+    },
+    {
+      "id": "n_tut_6",
+      "chapter": 0,
+      "displayId": "06",
+      "defaultUnlocked": false,
+      "hintGroups": [],
+      "width": 7,
+      "height": 8,
+      "source": "D:\\Steam\\steamapps\\common\\Box or Void Demo\\Box or Void_Data\\StreamingAssets\\Levels\\Tut\\n_tut_6.json",
+      "sha256": "fb18d442b9a7da9f33c86b47cad0081ac3c9c9bb717dde454a685cb6a3c98e97",
+      "x": -3.0,
+      "y": -3.0,
+      "unlocks": [
+        "n_tut_7"
+      ],
+      "lockedSprite": "Level_tile_locked",
+      "unlockedSprite": "Level_tile_tut_06_unlocked",
+      "completedSprite": "Level_tile_tut_06_finished"
+    },
+    {
+      "id": "n_tut_7",
+      "chapter": 0,
+      "displayId": "07",
+      "defaultUnlocked": false,
+      "hintGroups": [],
+      "width": 10,
+      "height": 7,
+      "source": "D:\\Steam\\steamapps\\common\\Box or Void Demo\\Box or Void_Data\\StreamingAssets\\Levels\\Tut\\n_tut_7.json",
+      "sha256": "7a9a5118c336de32d3d8fbcc6de8890a9938bfd6f05d3302c507bc07e82b5eea",
+      "x": -3.0,
+      "y": -4.0,
+      "unlocks": [
+        "n_tut_8"
+      ],
+      "lockedSprite": "Level_tile_locked",
+      "unlockedSprite": "Level_tile_tut_07_unlocked",
+      "completedSprite": "Level_tile_tut_07_finished"
+    },
+    {
+      "id": "n_tut_8",
+      "chapter": 0,
+      "displayId": "08",
+      "defaultUnlocked": false,
+      "hintGroups": [],
+      "width": 17,
+      "height": 17,
+      "source": "D:\\Steam\\steamapps\\common\\Box or Void Demo\\Box or Void_Data\\StreamingAssets\\Levels\\Tut\\n_tut_8.json",
+      "sha256": "51d75ab8bd2abc3bb26aa35e529bc2d822e2f4fbd8edc53c0fe41f637b28c20e",
+      "x": -3.0,
+      "y": -5.0,
+      "unlocks": [],
+      "lockedSprite": "Level_tile_locked",
+      "unlockedSprite": "Level_tile_tut_08_unlocked",
+      "completedSprite": "Level_tile_tut_08_finished"
+    },
+    {
+      "id": "n_box_1",
+      "chapter": 1,
+      "displayId": "01",
+      "defaultUnlocked": true,
+      "hintGroups": [],
+      "width": 11,
+      "height": 5,
+      "source": "D:\\Steam\\steamapps\\common\\Box or Void Demo\\Box or Void_Data\\StreamingAssets\\Levels\\Box\\n_box_1.json",
+      "sha256": "a7cc7da4424b683d5449373e3d942aca81b7a20d31cec6740a126a0dd68d64e8",
+      "x": -9.0,
+      "y": -4.0,
+      "unlocks": [
+        "n_box_2"
+      ],
+      "lockedSprite": "Level_tile_locked",
+      "unlockedSprite": "Level_tile_box_01_unlocked",
+      "completedSprite": "Level_tile_box_01_finished"
+    },
+    {
+      "id": "n_box_2",
+      "chapter": 1,
+      "displayId": "02",
+      "defaultUnlocked": false,
+      "hintGroups": [
+        "ui_undo_reset"
+      ],
+      "width": 9,
+      "height": 6,
+      "source": "D:\\Steam\\steamapps\\common\\Box or Void Demo\\Box or Void_Data\\StreamingAssets\\Levels\\Box\\n_box_2.json",
+      "sha256": "73b3090b89a1a4ab2b2506e999ed6c3e210a0d00106078bf97ec132f50c2f696",
+      "x": -8.0,
+      "y": -4.0,
+      "unlocks": [
+        "n_box_13"
+      ],
+      "lockedSprite": "Level_tile_locked",
+      "unlockedSprite": "Level_tile_box_02_unlocked",
+      "completedSprite": "Level_tile_box_02_finished"
+    },
+    {
+      "id": "n_box_3",
+      "chapter": 1,
+      "displayId": "07",
+      "defaultUnlocked": false,
+      "hintGroups": [
+        "ui_undo_reset"
+      ],
+      "width": 9,
+      "height": 7,
+      "source": "D:\\Steam\\steamapps\\common\\Box or Void Demo\\Box or Void_Data\\StreamingAssets\\Levels\\Box\\n_box_3.json",
+      "sha256": "45643957c448a6a93361fd76c7e5ec0e5eca72b9396ae74c972a42062895b762",
+      "x": -4.0,
+      "y": -5.0,
+      "unlocks": [
+        "n_box_7"
+      ],
+      "lockedSprite": "Level_tile_locked",
+      "unlockedSprite": "Level_tile_box_07_unlocked",
+      "completedSprite": "Level_tile_box_07_finished"
+    },
+    {
+      "id": "n_box_4",
+      "chapter": 1,
+      "displayId": "05",
+      "defaultUnlocked": false,
+      "hintGroups": [
+        "ui_undo_reset"
+      ],
+      "width": 7,
+      "height": 9,
+      "source": "D:\\Steam\\steamapps\\common\\Box or Void Demo\\Box or Void_Data\\StreamingAssets\\Levels\\Box\\n_box_4.json",
+      "sha256": "691604c6276092108fd590410bc521f2f70bf9f7ac0051f229e028378d4eda31",
+      "x": -5.0,
+      "y": -4.0,
+      "unlocks": [
+        "n_box_6"
+      ],
+      "lockedSprite": "Level_tile_locked",
+      "unlockedSprite": "Level_tile_box_05_unlocked",
+      "completedSprite": "Level_tile_box_05_finished"
+    },
+    {
+      "id": "n_box_5",
+      "chapter": 1,
+      "displayId": "04",
+      "defaultUnlocked": false,
+      "hintGroups": [
+        "ui_undo_reset"
+      ],
+      "width": 9,
+      "height": 7,
+      "source": "D:\\Steam\\steamapps\\common\\Box or Void Demo\\Box or Void_Data\\StreamingAssets\\Levels\\Box\\n_box_5.json",
+      "sha256": "4fb5c4a140a775854735a04a6263b01c75c390c0000cd8490a1725a06302c88f",
+      "x": -6.0,
+      "y": -4.0,
+      "unlocks": [
+        "n_box_4"
+      ],
+      "lockedSprite": "Level_tile_locked",
+      "unlockedSprite": "Level_tile_box_04_unlocked",
+      "completedSprite": "Level_tile_box_04_finished"
+    },
+    {
+      "id": "n_box_6",
+      "chapter": 1,
+      "displayId": "06",
+      "defaultUnlocked": false,
+      "hintGroups": [
+        "ui_undo_reset"
+      ],
+      "width": 9,
+      "height": 7,
+      "source": "D:\\Steam\\steamapps\\common\\Box or Void Demo\\Box or Void_Data\\StreamingAssets\\Levels\\Box\\n_box_6.json",
+      "sha256": "fd18949de7bb7f14704d74688bc493a51dfaee49a7a9e3aa29b07216f62238d9",
+      "x": -4.0,
+      "y": -4.0,
+      "unlocks": [
+        "n_box_3"
+      ],
+      "lockedSprite": "Level_tile_locked",
+      "unlockedSprite": "Level_tile_box_06_unlocked",
+      "completedSprite": "Level_tile_box_06_finished"
+    },
+    {
+      "id": "n_box_7",
+      "chapter": 1,
+      "displayId": "08",
+      "defaultUnlocked": false,
+      "hintGroups": [
+        "ui_undo_reset"
+      ],
+      "width": 8,
+      "height": 9,
+      "source": "D:\\Steam\\steamapps\\common\\Box or Void Demo\\Box or Void_Data\\StreamingAssets\\Levels\\Box\\n_box_7.json",
+      "sha256": "1f7a2a3fc6dd2ff3211768931022aed0c64936009c064c4d03e29ef11f6c5197",
+      "x": -4.0,
+      "y": -6.0,
+      "unlocks": [
+        "n_box_8",
+        "n_box_9",
+        "n_box_10"
+      ],
+      "lockedSprite": "Level_tile_locked",
+      "unlockedSprite": "Level_tile_box_08_unlocked",
+      "completedSprite": "Level_tile_box_08_finished"
+    },
+    {
+      "id": "n_box_8",
+      "chapter": 1,
+      "displayId": "A",
+      "defaultUnlocked": false,
+      "hintGroups": [
+        "ui_undo_reset"
+      ],
+      "width": 9,
+      "height": 9,
+      "source": "D:\\Steam\\steamapps\\common\\Box or Void Demo\\Box or Void_Data\\StreamingAssets\\Levels\\Box\\n_box_8.json",
+      "sha256": "529d054f256932e82495d2d4b48c4a374d0c06041a4607d5a9b5f0b5e4274d96",
+      "x": -2.0,
+      "y": -6.0,
+      "unlocks": [],
+      "lockedSprite": "Level_tile_locked_hard",
+      "unlockedSprite": "Level_tile_box_A_unlocked",
+      "completedSprite": "Level_tile_box_A_finished"
+    },
+    {
+      "id": "n_box_9",
+      "chapter": 1,
+      "displayId": "09",
+      "defaultUnlocked": false,
+      "hintGroups": [
+        "ui_undo_reset"
+      ],
+      "width": 7,
+      "height": 7,
+      "source": "D:\\Steam\\steamapps\\common\\Box or Void Demo\\Box or Void_Data\\StreamingAssets\\Levels\\Box\\n_box_9.json",
+      "sha256": "a69c77d3d7a1a70ca3c53ff7f2a654950d09c637dab2b6d279afa313711d7dbb",
+      "x": -4.0,
+      "y": -7.0,
+      "unlocks": [],
+      "lockedSprite": "Level_tile_locked",
+      "unlockedSprite": "Level_tile_box_09_unlocked",
+      "completedSprite": "Level_tile_box_09_finished"
+    },
+    {
+      "id": "n_box_10",
+      "chapter": 1,
+      "displayId": "10",
+      "defaultUnlocked": false,
+      "hintGroups": [
+        "ui_undo_reset"
+      ],
+      "width": 9,
+      "height": 9,
+      "source": "D:\\Steam\\steamapps\\common\\Box or Void Demo\\Box or Void_Data\\StreamingAssets\\Levels\\Box\\n_box_10.json",
+      "sha256": "d96e87719b59ea3061494923190a10fbc46e2623eb14f8a7d2746092de76aa06",
+      "x": -5.0,
+      "y": -7.0,
+      "unlocks": [
+        "n_box_11",
+        "n_box_12"
+      ],
+      "lockedSprite": "Level_tile_locked",
+      "unlockedSprite": "Level_tile_box_10_unlocked",
+      "completedSprite": "Level_tile_box_10_finished"
+    },
+    {
+      "id": "n_box_11",
+      "chapter": 1,
+      "displayId": "B",
+      "defaultUnlocked": false,
+      "hintGroups": [],
+      "width": 9,
+      "height": 8,
+      "source": "D:\\Steam\\steamapps\\common\\Box or Void Demo\\Box or Void_Data\\StreamingAssets\\Levels\\Box\\n_box_11.json",
+      "sha256": "af36bdb2f467d8f824aa2a7398c9bff0f5a3e5692e3ca701096f90585b9e1ae3",
+      "x": -5.0,
+      "y": -9.0,
+      "unlocks": [],
+      "lockedSprite": "Level_tile_locked_hard",
+      "unlockedSprite": "Level_tile_box_B_unlocked",
+      "completedSprite": "Level_tile_box_B_finished"
+    },
+    {
+      "id": "n_box_12",
+      "chapter": 1,
+      "displayId": "C",
+      "defaultUnlocked": false,
+      "hintGroups": [],
+      "width": 10,
+      "height": 8,
+      "source": "D:\\Steam\\steamapps\\common\\Box or Void Demo\\Box or Void_Data\\StreamingAssets\\Levels\\Box\\n_box_12.json",
+      "sha256": "f338b316b36b2cf3d2ac37d97866d0819c326654b0c30bb0d25b1695abe9ce18",
+      "x": -5.0,
+      "y": -10.0,
+      "unlocks": [],
+      "lockedSprite": "Level_tile_locked_hard",
+      "unlockedSprite": "Level_tile_box_C_unlocked",
+      "completedSprite": "Level_tile_box_C_finished"
+    },
+    {
+      "id": "n_box_13",
+      "chapter": 1,
+      "displayId": "03",
+      "defaultUnlocked": false,
+      "hintGroups": [
+        "ui_undo_reset"
+      ],
+      "width": 7,
+      "height": 9,
+      "source": "D:\\Steam\\steamapps\\common\\Box or Void Demo\\Box or Void_Data\\StreamingAssets\\Levels\\Box\\n_box_13.json",
+      "sha256": "ac556a6417b30ea99787716388da2169c0b811e9cdd4ff28980049bb174ee79b",
+      "x": -7.0,
+      "y": -4.0,
+      "unlocks": [
+        "n_box_5"
+      ],
+      "lockedSprite": "Level_tile_locked",
+      "unlockedSprite": "Level_tile_box_03_unlocked",
+      "completedSprite": "Level_tile_box_03_finished"
+    }
+  ],
+  "navigation": [
+    {
+      "id": "node_0_305",
+      "chapter": 0,
+      "x": -1.0,
+      "y": -3.0,
+      "level": "n_tut_4",
+      "isReturn": false,
+      "sprite": "Level_tile_tut_04_unlocked",
+      "neighbors": [
+        "",
+        "",
+        "node_0_323",
+        "node_0_313"
+      ]
+    },
+    {
+      "id": "node_0_308",
+      "chapter": 0,
+      "x": -2.0,
+      "y": -4.0,
+      "level": "",
+      "isReturn": true,
+      "sprite": "HomeWorld",
+      "neighbors": [
+        "node_0_313",
+        "node_0_323",
+        "node_0_329",
+        "node_0_317"
+      ]
+    },
+    {
+      "id": "node_0_313",
+      "chapter": 0,
+      "x": -2.0,
+      "y": -3.0,
+      "level": "n_tut_5",
+      "isReturn": false,
+      "sprite": "Level_tile_tut_05_unlocked",
+      "neighbors": [
+        "",
+        "node_0_305",
+        "node_0_308",
+        "node_0_332"
+      ]
+    },
+    {
+      "id": "node_0_317",
+      "chapter": 0,
+      "x": -3.0,
+      "y": -4.0,
+      "level": "n_tut_7",
+      "isReturn": false,
+      "sprite": "Level_tile_tut_07_unlocked",
+      "neighbors": [
+        "node_0_332",
+        "node_0_308",
+        "node_0_320",
+        ""
+      ]
+    },
+    {
+      "id": "node_0_320",
+      "chapter": 0,
+      "x": -3.0,
+      "y": -5.0,
+      "level": "n_tut_8",
+      "isReturn": false,
+      "sprite": "Level_tile_tut_08_unlocked",
+      "neighbors": [
+        "node_0_317",
+        "node_0_329",
+        "",
+        ""
+      ]
+    },
+    {
+      "id": "node_0_323",
+      "chapter": 0,
+      "x": -1.0,
+      "y": -4.0,
+      "level": "n_tut_3",
+      "isReturn": false,
+      "sprite": "Level_tile_tut_03_unlocked",
+      "neighbors": [
+        "node_0_305",
+        "",
+        "node_0_335",
+        "node_0_308"
+      ]
+    },
+    {
+      "id": "node_0_329",
+      "chapter": 0,
+      "x": -2.0,
+      "y": -5.0,
+      "level": "n_tut_1",
+      "isReturn": false,
+      "sprite": "Level_tile_tut_01_unlocked",
+      "neighbors": [
+        "node_0_308",
+        "node_0_335",
+        "",
+        "node_0_320"
+      ]
+    },
+    {
+      "id": "node_0_332",
+      "chapter": 0,
+      "x": -3.0,
+      "y": -3.0,
+      "level": "n_tut_6",
+      "isReturn": false,
+      "sprite": "Level_tile_tut_06_unlocked",
+      "neighbors": [
+        "",
+        "node_0_313",
+        "node_0_317",
+        ""
+      ]
+    },
+    {
+      "id": "node_0_335",
+      "chapter": 0,
+      "x": -1.0,
+      "y": -5.0,
+      "level": "n_tut_2",
+      "isReturn": false,
+      "sprite": "Level_tile_tut_02_unlocked",
+      "neighbors": [
+        "node_0_323",
+        "",
+        "",
+        "node_0_329"
+      ]
+    },
+    {
+      "id": "node_1_362",
+      "chapter": 1,
+      "x": -4.0,
+      "y": -5.0,
+      "level": "n_box_3",
+      "isReturn": false,
+      "sprite": "Level_tile_box_07_unlocked",
+      "neighbors": [
+        "node_1_411",
+        "",
+        "node_1_405",
+        ""
+      ]
+    },
+    {
+      "id": "node_1_367",
+      "chapter": 1,
+      "x": -9.0,
+      "y": -3.0,
+      "level": "",
+      "isReturn": true,
+      "sprite": "HomeWorld",
+      "neighbors": [
+        "",
+        "",
+        "node_1_408",
+        ""
+      ]
+    },
+    {
+      "id": "node_1_371",
+      "chapter": 1,
+      "x": -8.0,
+      "y": -4.0,
+      "level": "n_box_2",
+      "isReturn": false,
+      "sprite": "Level_tile_box_02_unlocked",
+      "neighbors": [
+        "",
+        "node_1_397",
+        "",
+        "node_1_408"
+      ]
+    },
+    {
+      "id": "node_1_374",
+      "chapter": 1,
+      "x": -5.0,
+      "y": -9.0,
+      "level": "n_box_11",
+      "isReturn": false,
+      "sprite": "Level_tile_box_B_unlocked",
+      "neighbors": [
+        "node_1_396",
+        "",
+        "node_1_387",
+        ""
+      ]
+    },
+    {
+      "id": "node_1_378",
+      "chapter": 1,
+      "x": -4.0,
+      "y": -7.0,
+      "level": "n_box_9",
+      "isReturn": false,
+      "sprite": "Level_tile_box_09_unlocked",
+      "neighbors": [
+        "node_1_405",
+        "",
+        "",
+        "node_1_396"
+      ]
+    },
+    {
+      "id": "node_1_381",
+      "chapter": 1,
+      "x": -6.0,
+      "y": -4.0,
+      "level": "n_box_5",
+      "isReturn": false,
+      "sprite": "Level_tile_box_04_unlocked",
+      "neighbors": [
+        "",
+        "node_1_393",
+        "",
+        "node_1_397"
+      ]
+    },
+    {
+      "id": "node_1_382",
+      "chapter": 1,
+      "x": -6.0,
+      "y": -7.0,
+      "level": "",
+      "isReturn": false,
+      "sprite": "",
+      "neighbors": [
+        "",
+        "node_1_396",
+        "",
+        ""
+      ]
+    },
+    {
+      "id": "node_1_387",
+      "chapter": 1,
+      "x": -5.0,
+      "y": -10.0,
+      "level": "n_box_12",
+      "isReturn": false,
+      "sprite": "Level_tile_box_C_unlocked",
+      "neighbors": [
+        "node_1_374",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "id": "node_1_390",
+      "chapter": 1,
+      "x": -2.0,
+      "y": -6.0,
+      "level": "n_box_8",
+      "isReturn": false,
+      "sprite": "Level_tile_box_A_unlocked",
+      "neighbors": [
+        "",
+        "",
+        "",
+        "node_1_405"
+      ]
+    },
+    {
+      "id": "node_1_393",
+      "chapter": 1,
+      "x": -5.0,
+      "y": -4.0,
+      "level": "n_box_4",
+      "isReturn": false,
+      "sprite": "Level_tile_box_05_unlocked",
+      "neighbors": [
+        "",
+        "node_1_411",
+        "",
+        "node_1_381"
+      ]
+    },
+    {
+      "id": "node_1_396",
+      "chapter": 1,
+      "x": -5.0,
+      "y": -7.0,
+      "level": "n_box_10",
+      "isReturn": false,
+      "sprite": "Level_tile_box_10_unlocked",
+      "neighbors": [
+        "",
+        "node_1_378",
+        "node_1_374",
+        "node_1_382"
+      ]
+    },
+    {
+      "id": "node_1_397",
+      "chapter": 1,
+      "x": -7.0,
+      "y": -4.0,
+      "level": "n_box_13",
+      "isReturn": false,
+      "sprite": "Level_tile_box_03_unlocked",
+      "neighbors": [
+        "",
+        "node_1_381",
+        "",
+        "node_1_371"
+      ]
+    },
+    {
+      "id": "node_1_405",
+      "chapter": 1,
+      "x": -4.0,
+      "y": -6.0,
+      "level": "n_box_7",
+      "isReturn": false,
+      "sprite": "Level_tile_box_08_unlocked",
+      "neighbors": [
+        "node_1_362",
+        "node_1_390",
+        "node_1_378",
+        ""
+      ]
+    },
+    {
+      "id": "node_1_408",
+      "chapter": 1,
+      "x": -9.0,
+      "y": -4.0,
+      "level": "n_box_1",
+      "isReturn": false,
+      "sprite": "Level_tile_box_01_unlocked",
+      "neighbors": [
+        "node_1_367",
+        "node_1_371",
+        "",
+        ""
+      ]
+    },
+    {
+      "id": "node_1_411",
+      "chapter": 1,
+      "x": -4.0,
+      "y": -4.0,
+      "level": "n_box_6",
+      "isReturn": false,
+      "sprite": "Level_tile_box_06_unlocked",
+      "neighbors": [
+        "",
+        "",
+        "node_1_362",
+        "node_1_393"
+      ]
+    }
+  ]
+}

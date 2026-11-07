@@ -1,0 +1,13 @@
+{
+  "runtimeAssembliesUnchanged": true,
+  "assemblies": [
+    {
+      "file": "BoxOrVoid.Core.dll",
+      "Hash": "EA0E93E745CADD30192426C99F78FE66D0998BBA34D49DF594251ECA19E0DE11"
+    },
+    {
+      "file": "BoxOrVoid.Runtime.dll",
+      "Hash": "A8C4CEBD16719497ABACE38A0FD2220C707E63533CFA74B596943B22A2C5BA71"
+    }
+  ]
+}

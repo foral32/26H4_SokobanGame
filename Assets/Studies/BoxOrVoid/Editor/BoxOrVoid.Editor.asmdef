@@ -1,0 +1,7 @@
+{
+  "name": "BoxOrVoid.Editor",
+  "rootNamespace": "BoxOrVoid.Study.Editor",
+  "references": ["BoxOrVoid.Core", "BoxOrVoid.Runtime", "Unity.TextMeshPro", "Unity.ugui", "Unity.RenderPipelines.Universal.Runtime", "Unity.RenderPipelines.Universal.2D.Runtime", "Unity.RenderPipelines.Core.Runtime"],
+  "includePlatforms": ["Editor"],
+  "autoReferenced": true
+}

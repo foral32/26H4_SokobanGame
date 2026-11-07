@@ -1,0 +1,3371 @@
+{
+  "id": "n_tut_8",
+  "commands": "RRRRRRRRRRSRDDRDDDDDRRRRDDSLLDDLDDSDDLLDLLSLLSLLULLSUULLLLDSLLUSULLSLLSULSUUSUUSUUSUURRRSRRRURSRRRRSDRRRURSRRSRRSRU",
+  "solved": true,
+  "steps": [
+    {
+      "step": 0,
+      "command": "-",
+      "result": "Initial",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 4,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 8,
+          "y": 15,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 1,
+      "command": "R",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 5,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 8,
+          "y": 15,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 2,
+      "command": "R",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 6,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 8,
+          "y": 15,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 3,
+      "command": "R",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 7,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 8,
+          "y": 15,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 4,
+      "command": "R",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 8,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 8,
+          "y": 15,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 5,
+      "command": "R",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 9,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 8,
+          "y": 15,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 6,
+      "command": "R",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 10,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 8,
+          "y": 15,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 7,
+      "command": "R",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 11,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 8,
+          "y": 15,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 8,
+      "command": "R",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 12,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 8,
+          "y": 15,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 9,
+      "command": "R",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 13,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 8,
+          "y": 15,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 10,
+      "command": "R",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 14,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 8,
+          "y": 15,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 11,
+      "command": "S",
+      "result": "Switched",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 14,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 8,
+          "y": 15,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 12,
+      "command": "R",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 14,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 9,
+          "y": 15,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 13,
+      "command": "D",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 14,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 9,
+          "y": 14,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 14,
+      "command": "D",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 14,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 9,
+          "y": 13,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 15,
+      "command": "R",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 14,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 10,
+          "y": 13,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 16,
+      "command": "D",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 14,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 10,
+          "y": 12,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 17,
+      "command": "D",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 14,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 10,
+          "y": 11,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 18,
+      "command": "D",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 14,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 10,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 19,
+      "command": "D",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 14,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 10,
+          "y": 9,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 20,
+      "command": "D",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 14,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 10,
+          "y": 8,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 21,
+      "command": "R",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 14,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 11,
+          "y": 8,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 22,
+      "command": "R",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 14,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 12,
+          "y": 8,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 23,
+      "command": "R",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 14,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 13,
+          "y": 8,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 24,
+      "command": "R",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 14,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 14,
+          "y": 8,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 25,
+      "command": "D",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 14,
+          "y": 7,
+          "depth": 1,
+          "top": false
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 14,
+          "y": 7,
+          "depth": 2,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 26,
+      "command": "D",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 14,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 14,
+          "y": 6,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 27,
+      "command": "S",
+      "result": "Switched",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 14,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 14,
+          "y": 6,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 28,
+      "command": "L",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 13,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 14,
+          "y": 6,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 29,
+      "command": "L",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 12,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 14,
+          "y": 6,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 30,
+      "command": "D",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 12,
+          "y": 6,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 14,
+          "y": 6,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 31,
+      "command": "D",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 12,
+          "y": 5,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 14,
+          "y": 6,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 32,
+      "command": "L",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 11,
+          "y": 5,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 14,
+          "y": 6,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 33,
+      "command": "D",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 11,
+          "y": 4,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 14,
+          "y": 6,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 34,
+      "command": "D",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 11,
+          "y": 3,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 14,
+          "y": 6,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 35,
+      "command": "S",
+      "result": "Switched",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 11,
+          "y": 3,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 14,
+          "y": 6,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 36,
+      "command": "D",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 11,
+          "y": 3,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 14,
+          "y": 5,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 37,
+      "command": "D",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 11,
+          "y": 3,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 14,
+          "y": 4,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 38,
+      "command": "L",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 11,
+          "y": 3,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 13,
+          "y": 4,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 39,
+      "command": "L",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 11,
+          "y": 3,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 12,
+          "y": 4,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 40,
+      "command": "D",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 11,
+          "y": 3,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 12,
+          "y": 3,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 41,
+      "command": "L",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 11,
+          "y": 3,
+          "depth": 1,
+          "top": false
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 11,
+          "y": 3,
+          "depth": 2,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 42,
+      "command": "L",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 11,
+          "y": 3,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 10,
+          "y": 3,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 43,
+      "command": "S",
+      "result": "Switched",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 11,
+          "y": 3,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 10,
+          "y": 3,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 44,
+      "command": "L",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 10,
+          "y": 3,
+          "depth": 2,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 10,
+          "y": 3,
+          "depth": 1,
+          "top": false
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 45,
+      "command": "L",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 9,
+          "y": 3,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 10,
+          "y": 3,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 46,
+      "command": "S",
+      "result": "Switched",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 9,
+          "y": 3,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 10,
+          "y": 3,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 47,
+      "command": "L",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 9,
+          "y": 3,
+          "depth": 1,
+          "top": false
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 9,
+          "y": 3,
+          "depth": 2,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 48,
+      "command": "L",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 9,
+          "y": 3,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 8,
+          "y": 3,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 49,
+      "command": "U",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 9,
+          "y": 3,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 8,
+          "y": 4,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 50,
+      "command": "L",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 9,
+          "y": 3,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 7,
+          "y": 4,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 51,
+      "command": "L",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 9,
+          "y": 3,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 6,
+          "y": 4,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 52,
+      "command": "S",
+      "result": "Switched",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 9,
+          "y": 3,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 6,
+          "y": 4,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 53,
+      "command": "U",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 9,
+          "y": 4,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 6,
+          "y": 4,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 54,
+      "command": "U",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 9,
+          "y": 5,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 6,
+          "y": 4,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 55,
+      "command": "L",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 8,
+          "y": 5,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 6,
+          "y": 4,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 56,
+      "command": "L",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 7,
+          "y": 5,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 6,
+          "y": 4,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 57,
+      "command": "L",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 6,
+          "y": 5,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 6,
+          "y": 4,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 58,
+      "command": "L",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 5,
+          "y": 5,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 6,
+          "y": 4,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 59,
+      "command": "D",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 5,
+          "y": 4,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 6,
+          "y": 4,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 60,
+      "command": "S",
+      "result": "Switched",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 5,
+          "y": 4,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 6,
+          "y": 4,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 61,
+      "command": "L",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 5,
+          "y": 4,
+          "depth": 1,
+          "top": false
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 5,
+          "y": 4,
+          "depth": 2,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 62,
+      "command": "L",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 5,
+          "y": 4,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 4,
+          "y": 4,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 63,
+      "command": "U",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 5,
+          "y": 4,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 4,
+          "y": 5,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 64,
+      "command": "S",
+      "result": "Switched",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 5,
+          "y": 4,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 4,
+          "y": 5,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 65,
+      "command": "U",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 5,
+          "y": 5,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 4,
+          "y": 5,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 66,
+      "command": "L",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 4,
+          "y": 5,
+          "depth": 2,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 4,
+          "y": 5,
+          "depth": 1,
+          "top": false
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 67,
+      "command": "L",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 3,
+          "y": 5,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 4,
+          "y": 5,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 68,
+      "command": "S",
+      "result": "Switched",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 3,
+          "y": 5,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 4,
+          "y": 5,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 69,
+      "command": "L",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 3,
+          "y": 5,
+          "depth": 1,
+          "top": false
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 3,
+          "y": 5,
+          "depth": 2,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 70,
+      "command": "L",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 3,
+          "y": 5,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 2,
+          "y": 5,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 71,
+      "command": "S",
+      "result": "Switched",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 3,
+          "y": 5,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 2,
+          "y": 5,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 72,
+      "command": "U",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 3,
+          "y": 6,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 2,
+          "y": 5,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 73,
+      "command": "L",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 2,
+          "y": 6,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 2,
+          "y": 5,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 74,
+      "command": "S",
+      "result": "Switched",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 2,
+          "y": 6,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 2,
+          "y": 5,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 75,
+      "command": "U",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 2,
+          "y": 6,
+          "depth": 1,
+          "top": false
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 2,
+          "y": 6,
+          "depth": 2,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 76,
+      "command": "U",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 2,
+          "y": 6,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 2,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 77,
+      "command": "S",
+      "result": "Switched",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 2,
+          "y": 6,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 2,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 78,
+      "command": "U",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 2,
+          "y": 7,
+          "depth": 2,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 2,
+          "y": 7,
+          "depth": 1,
+          "top": false
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 79,
+      "command": "U",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 2,
+          "y": 8,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 2,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 80,
+      "command": "S",
+      "result": "Switched",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 2,
+          "y": 8,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 2,
+          "y": 7,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 81,
+      "command": "U",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 2,
+          "y": 8,
+          "depth": 1,
+          "top": false
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 2,
+          "y": 8,
+          "depth": 2,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 82,
+      "command": "U",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 2,
+          "y": 8,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 2,
+          "y": 9,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 83,
+      "command": "S",
+      "result": "Switched",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 2,
+          "y": 8,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 2,
+          "y": 9,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 84,
+      "command": "U",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 2,
+          "y": 9,
+          "depth": 2,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 2,
+          "y": 9,
+          "depth": 1,
+          "top": false
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 85,
+      "command": "U",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 2,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 2,
+          "y": 9,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 86,
+      "command": "R",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 3,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 2,
+          "y": 9,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 87,
+      "command": "R",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 4,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 2,
+          "y": 9,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 88,
+      "command": "R",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 5,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 2,
+          "y": 9,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 89,
+      "command": "S",
+      "result": "Switched",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 5,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 2,
+          "y": 9,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 90,
+      "command": "R",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 5,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 3,
+          "y": 9,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 91,
+      "command": "R",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 5,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 4,
+          "y": 9,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 92,
+      "command": "R",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 5,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 5,
+          "y": 9,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 93,
+      "command": "U",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 5,
+          "y": 10,
+          "depth": 1,
+          "top": false
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 5,
+          "y": 10,
+          "depth": 2,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 94,
+      "command": "R",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 5,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 6,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 95,
+      "command": "S",
+      "result": "Switched",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 5,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 6,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 96,
+      "command": "R",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 6,
+          "y": 10,
+          "depth": 2,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 6,
+          "y": 10,
+          "depth": 1,
+          "top": false
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 97,
+      "command": "R",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 7,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 6,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 98,
+      "command": "R",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 8,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 6,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 99,
+      "command": "R",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 9,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 6,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 100,
+      "command": "S",
+      "result": "Switched",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 9,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 6,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 101,
+      "command": "D",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 9,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 6,
+          "y": 9,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 102,
+      "command": "R",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 9,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 7,
+          "y": 9,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 103,
+      "command": "R",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 9,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 8,
+          "y": 9,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 104,
+      "command": "R",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 9,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 9,
+          "y": 9,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 105,
+      "command": "U",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 9,
+          "y": 10,
+          "depth": 1,
+          "top": false
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 9,
+          "y": 10,
+          "depth": 2,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 106,
+      "command": "R",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 9,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 10,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 107,
+      "command": "S",
+      "result": "Switched",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 9,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 10,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 108,
+      "command": "R",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 10,
+          "y": 10,
+          "depth": 2,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 10,
+          "y": 10,
+          "depth": 1,
+          "top": false
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 109,
+      "command": "R",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 11,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 10,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 110,
+      "command": "S",
+      "result": "Switched",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 11,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 10,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 111,
+      "command": "R",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 11,
+          "y": 10,
+          "depth": 1,
+          "top": false
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 11,
+          "y": 10,
+          "depth": 2,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 112,
+      "command": "R",
+      "result": "Moved",
+      "active": "Black",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 11,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 12,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 113,
+      "command": "S",
+      "result": "Switched",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 11,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 12,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 114,
+      "command": "R",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 12,
+          "y": 10,
+          "depth": 2,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 12,
+          "y": 10,
+          "depth": 1,
+          "top": false
+        }
+      ],
+      "goals": [
+        false
+      ]
+    },
+    {
+      "step": 115,
+      "command": "U",
+      "result": "Moved",
+      "active": "White",
+      "pieces": [
+        {
+          "i": 0,
+          "kind": "Player",
+          "tone": "White",
+          "x": 12,
+          "y": 11,
+          "depth": 1,
+          "top": true
+        },
+        {
+          "i": 1,
+          "kind": "Player",
+          "tone": "Black",
+          "x": 12,
+          "y": 10,
+          "depth": 1,
+          "top": true
+        }
+      ],
+      "goals": [
+        true
+      ]
+    }
+  ]
+}
