@@ -1,9 +1,0 @@
-{
-  "id": "n_box_5",
-  "commands": "RRRRSDDSRRSRDDSLLLL",
-  "steps": 19,
-  "visited": 1816,
-  "seconds": 0.0134645,
-  "solved": true,
-  "undoRoundTrip": true
-}

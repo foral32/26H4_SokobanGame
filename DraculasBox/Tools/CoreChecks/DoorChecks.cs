@@ -1,0 +1,30 @@
+using DraculasBox.Core;
+
+internal static class DoorChecks
+{
+    public static int Run()
+    {
+        int count=0;void Check(bool value,string text){count++;if(!value)throw new Exception(text);}
+        var data=new LevelData{id="door-check",title="Door",rows=new[]{"#########","#.......#","#.......#","#.......#","#########"},player=new Cell(1,2),coffin=new Cell(7,2),pieces=new[]{new EntityData{id="B",cell=new Cell(3,2)}},plates=new[]{new DeviceData{cell=new Cell(2,2),channel=0}},doors=new[]{new DeviceData{cell=new Cell(5,2),channel=0}}};
+        var session=new Session(new Definition(data));Check(!session.State.DoorOpen(0),"unweighted door starts closed");
+        session.Apply(Command.Right);Check(session.State.PlatePressed(0)&&session.State.DoorOpen(0),"player opens matching door");session.Apply(Command.Left);Check(!session.State.DoorOpen(0),"leaving plate closes door");session.Apply(Command.Undo);Check(session.State.DoorOpen(0),"undo restores pressure and door");
+        var blocked=data.Copy();blocked.player=new Cell(4,2);var collision=Rules.Move(new Definition(blocked).Initial(),Command.Right);Check(collision.Kind==ActionKind.Blocked&&collision.Reason==BlockReason.Door,"closed gate blocks movement");
+        var box=data.Copy();box.pieces[0].cell=new Cell(2,2);Check(new Definition(box).Initial().DoorOpen(0),"box holds plate");box.pieces[0].kind=PieceKind.Lamp;box.player=new Cell(1,1);Check(new Definition(box).Initial().DoorOpen(0),"lamp holds plate");
+        var passage=data.Copy();passage.pieces=Array.Empty<EntityData>();passage.plates[0].cell=new Cell(4,2);passage.player=new Cell(4,2);var crossing=new Session(new Definition(passage));crossing.Apply(Command.Right);Check(crossing.State.DoorOpen(0)&&!crossing.State.PlatePressed(0),"door waits for occupant after plate releases");crossing.Apply(Command.Right);Check(!crossing.State.DoorOpen(0),"door closes after occupant leaves");crossing.Apply(Command.Undo);Check(crossing.State.DoorOpen(0),"undo restores occupied doorway");
+        var light=data.Copy();light.player=new Cell(3,3);light.pieces=new[]{new EntityData{id="L",kind=PieceKind.Lamp,cell=new Cell(1,2)}};var field=LightField.Compute(new Definition(light).Initial());Check(field.Lit(new Cell(4,2))&&!field.Lit(new Cell(6,2)),"closed gate stops point-light ray");
+        light.pieces=light.pieces.Concat(new[]{new EntityData{id="B",cell=new Cell(2,2)}}).ToArray();light.plates[0].cell=new Cell(2,2);light.doors[0].cell=new Cell(3,1);light.pieces[0].cell=new Cell(3,3);light.player=new Cell(6,2);field=LightField.Compute(new Definition(light).Initial());Check(field.Lit(new Cell(3,1)),"open gate transmits light");
+        var death=data.Copy();death.rows=new[]{"#########","#.......#","#.......#","#.......#","#.......#","#########"};death.player=new Cell(2,3);death.coffin=new Cell(7,4);death.plates[0].cell=new Cell(3,3);death.doors[0].cell=new Cell(3,2);death.pieces=new[]{new EntityData{id="L",kind=PieceKind.Lamp,cell=new Cell(3,1)}};
+        var exposed=new Session(new Definition(death));string initial=exposed.State.Key();var fatal=exposed.Apply(Command.Right);Check(fatal.Kind==ActionKind.Died&&exposed.State.DoorOpen(0),"stepping on plate opens gate and commits lethal exposure");exposed.Apply(Command.Undo);Check(exposed.State.Key()==initial&&!exposed.State.DoorOpen(0)&&!exposed.State.Dead,"undo restores gate and illumination with player");
+        var old=data.Copy();old.plates=null;old.doors=null;Check(new Definition(old).DoorCount==0&&old.Copy().ContentEquals(old),"old files without devices remain valid");
+        var invalid=data.Copy();invalid.doors[0].channel=4;Check(Definition.DraftError(invalid)!=null,"invalid channel is rejected");invalid=data.Copy();invalid.doors[0].cell=invalid.plates[0].cell;Check(Definition.DraftError(invalid)!=null,"gate and plate cannot overlap");invalid=data.Copy();invalid.doors[0].channel=1;Check(Definition.StructuralError(invalid)!=null&&Definition.DraftError(invalid)==null,"unpaired circuit is editable but cannot be played");
+        var multiple=data.Copy();multiple.plates=new[]{new DeviceData{cell=new Cell(1,2),channel=0},new DeviceData{cell=new Cell(3,2),channel=0},new DeviceData{cell=new Cell(1,1),channel=1}};multiple.doors=multiple.doors.Concat(new[]{new DeviceData{cell=new Cell(6,2),channel=1}}).ToArray();var weights=new Session(new Definition(multiple));weights.Apply(Command.Down);Check(weights.State.DoorOpen(0)&&!weights.State.DoorOpen(1),"parallel plates use OR and separate channels stay independent");
+        foreach(SunSide side in Enum.GetValues<SunSide>())
+        {
+            var solar=new LevelData{id="solar gate",title="solar",rows=Enumerable.Repeat(".........",9).ToArray(),coffin=new Cell(8,8),pieces=Array.Empty<EntityData>(),plates=new[]{new DeviceData{cell=new Cell(0,0)}},doors=new[]{new DeviceData{cell=new Cell(4,4)}},sunEnabled=true,sunFrom=side};var travel=LightField.SunTravel[(int)side];solar.player=new Cell(4,4)+travel;
+            var closed=LightField.Compute(new Definition(solar).Initial());Check(!closed.Lit(solar.player)&&!closed.Lit(solar.player+travel)&&closed.Lit(solar.player+travel+travel),"closed door casts exactly two solar shadow cells "+side);
+            solar.pieces=new[]{new EntityData{id="weight",cell=new Cell(0,0)}};Check(LightField.Compute(new Definition(solar,false).Initial()).Lit(solar.player),"opening door removes its solar shadow "+side);
+        }
+        var edit=new EditDocument(data);edit.Begin();Check(edit.Paint(new Cell(1,1),Brush.Plate,2)&&edit.Paint(new Cell(2,1),Brush.Door,2),"device brushes add a matching pair");edit.End();Check(edit.Dirty&&edit.Data.plates.Last().channel==2,"device metadata marks dirty");edit.Undo();Check(!edit.Dirty&&edit.Data.ContentEquals(data),"device undo restores saved baseline");edit.Redo();Check(edit.Data.doors.Length==2,"device redo restores pair");Check(!edit.Paint(new Cell(2,1),Brush.Wall),"terrain paint cannot silently erase a door");Check(edit.ResizeError(3,3)!=null,"cropping preserves devices outside target");
+        return count;
+    }
+}

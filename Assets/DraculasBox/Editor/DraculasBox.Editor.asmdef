@@ -1,0 +1,17 @@
+{
+  "name": "DraculasBox.Editor",
+  "rootNamespace": "DraculasBox",
+  "references": [
+    "DraculasBox.Core",
+    "DraculasBox.Runtime",
+    "Unity.TextMeshPro",
+    "Unity.ugui",
+    "Unity.RenderPipelines.Universal.Runtime",
+    "Unity.RenderPipelines.Universal.2D.Runtime",
+    "Unity.RenderPipelines.Core.Runtime"
+  ],
+  "autoReferenced": true,
+  "includePlatforms": [
+    "Editor"
+  ]
+}

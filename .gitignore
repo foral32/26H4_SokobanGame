@@ -6,6 +6,12 @@
 [Ll]ogs/
 [Uu]ser[Ss]ettings/
 
+# Local research, review, and evidence directories
+/Investigate/
+/DraculasBox/Evidence/
+/DraculasBox/Reviews/
+/Studies/
+
 # Uncomment this line if you wish to ignore the asset store tools plugin
 # [Aa]ssets/AssetStoreTools*
 

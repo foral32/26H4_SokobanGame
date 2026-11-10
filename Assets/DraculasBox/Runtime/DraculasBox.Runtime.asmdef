@@ -1,0 +1,10 @@
+{
+  "name": "DraculasBox.Runtime",
+  "rootNamespace": "DraculasBox",
+  "references": [
+    "DraculasBox.Core",
+    "Unity.TextMeshPro",
+    "Unity.ugui"
+  ],
+  "autoReferenced": true
+}

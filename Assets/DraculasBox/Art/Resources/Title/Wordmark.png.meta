@@ -1,0 +1,897 @@
+fileFormatVersion: 2
+guid: 9a31eef0f381247409259a23adcb53b1
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 6473076263778138528
+    second: Wordmark_0
+  - first:
+      213: 1213021391959199270
+    second: Wordmark_1
+  - first:
+      213: -5805477464057400552
+    second: Wordmark_2
+  - first:
+      213: 4115269020316807287
+    second: Wordmark_3
+  - first:
+      213: 4763850739495783912
+    second: Wordmark_4
+  - first:
+      213: 6924929634174816935
+    second: Wordmark_5
+  - first:
+      213: 730563409720703737
+    second: Wordmark_6
+  - first:
+      213: 841112269310512632
+    second: Wordmark_7
+  - first:
+      213: 2137050685682521304
+    second: Wordmark_8
+  - first:
+      213: 3272834297083956546
+    second: Wordmark_9
+  - first:
+      213: -4866184139805883691
+    second: Wordmark_10
+  - first:
+      213: -3235041892087787105
+    second: Wordmark_11
+  - first:
+      213: -8811852620407123079
+    second: Wordmark_12
+  - first:
+      213: 8296070565385005286
+    second: Wordmark_13
+  - first:
+      213: -6013564391526009786
+    second: Wordmark_14
+  - first:
+      213: -8160348947375330290
+    second: Wordmark_15
+  - first:
+      213: -7845957751637491281
+    second: Wordmark_16
+  - first:
+      213: 4857163032407298535
+    second: Wordmark_17
+  - first:
+      213: 7438446418677512286
+    second: Wordmark_18
+  - first:
+      213: 2449793396453146046
+    second: Wordmark_19
+  - first:
+      213: -2014108637147148136
+    second: Wordmark_20
+  - first:
+      213: 7088704892617868528
+    second: Wordmark_21
+  - first:
+      213: -2129252942659966956
+    second: Wordmark_22
+  - first:
+      213: -1745451978935195241
+    second: Wordmark_23
+  - first:
+      213: 284128221307399294
+    second: Wordmark_24
+  - first:
+      213: 1006416769475058691
+    second: Wordmark_25
+  - first:
+      213: 3439397903110510092
+    second: Wordmark_26
+  - first:
+      213: -5543079731325677461
+    second: Wordmark_27
+  - first:
+      213: 8780217326330946548
+    second: Wordmark_28
+  - first:
+      213: 1222865386546573920
+    second: Wordmark_29
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 1
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Wordmark_0
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 422
+        width: 371
+        height: 458
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a9328ae09cf4d950800000000000000
+      internalID: 6473076263778138528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wordmark_1
+      rect:
+        serializedVersion: 2
+        x: 161
+        y: 50
+        width: 467
+        height: 449
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62e8da4778485d010800000000000000
+      internalID: 1213021391959199270
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wordmark_2
+      rect:
+        serializedVersion: 2
+        x: 295
+        y: 512
+        width: 18
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 813b253510dce6fa0800000000000000
+      internalID: -5805477464057400552
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wordmark_3
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 478
+        width: 351
+        height: 294
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 770372fce5f5c1930800000000000000
+      internalID: 4115269020316807287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wordmark_4
+      rect:
+        serializedVersion: 2
+        x: 601
+        y: 469
+        width: 29
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8edc0a2f1099c1240800000000000000
+      internalID: 4763850739495783912
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wordmark_5
+      rect:
+        serializedVersion: 2
+        x: 635
+        y: 61
+        width: 432
+        height: 410
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a2d09bffca4a1060800000000000000
+      internalID: 6924929634174816935
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wordmark_6
+      rect:
+        serializedVersion: 2
+        x: 683
+        y: 502
+        width: 175
+        height: 253
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9fafc4aec8b732a00800000000000000
+      internalID: 730563409720703737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wordmark_7
+      rect:
+        serializedVersion: 2
+        x: 732
+        y: 472
+        width: 21
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8fdc97c072b3cab00800000000000000
+      internalID: 841112269310512632
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wordmark_8
+      rect:
+        serializedVersion: 2
+        x: 818
+        y: 480
+        width: 36
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d49c1ba64458ad10800000000000000
+      internalID: 2137050685682521304
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wordmark_9
+      rect:
+        serializedVersion: 2
+        x: 850
+        y: 486
+        width: 10
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 24d8766f3717b6d20800000000000000
+      internalID: 3272834297083956546
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wordmark_10
+      rect:
+        serializedVersion: 2
+        x: 852
+        y: 462
+        width: 410
+        height: 436
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d20b379e47d77cb0800000000000000
+      internalID: -4866184139805883691
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wordmark_11
+      rect:
+        serializedVersion: 2
+        x: 1029
+        y: 464
+        width: 44
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f9199940a82da13d0800000000000000
+      internalID: -3235041892087787105
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wordmark_12
+      rect:
+        serializedVersion: 2
+        x: 1068
+        y: 480
+        width: 17
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 973d98b9ab206b580800000000000000
+      internalID: -8811852620407123079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wordmark_13
+      rect:
+        serializedVersion: 2
+        x: 1084
+        y: 482
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6e8e8598930912370800000000000000
+      internalID: 8296070565385005286
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wordmark_14
+      rect:
+        serializedVersion: 2
+        x: 1086
+        y: 59
+        width: 427
+        height: 423
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64477211c078b8ca0800000000000000
+      internalID: -6013564391526009786
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wordmark_15
+      rect:
+        serializedVersion: 2
+        x: 1092
+        y: 488
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0ce5742edd90ce80800000000000000
+      internalID: -8160348947375330290
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wordmark_16
+      rect:
+        serializedVersion: 2
+        x: 1094
+        y: 481
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa1ccea9efe8d1390800000000000000
+      internalID: -7845957751637491281
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wordmark_17
+      rect:
+        serializedVersion: 2
+        x: 1166
+        y: 536
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e1dbca2b0c186340800000000000000
+      internalID: 4857163032407298535
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wordmark_18
+      rect:
+        serializedVersion: 2
+        x: 1168
+        y: 544
+        width: 200
+        height: 212
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e58bc027b9baa3760800000000000000
+      internalID: 7438446418677512286
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wordmark_19
+      rect:
+        serializedVersion: 2
+        x: 1192
+        y: 480
+        width: 54
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ebdffa05d1a6ff120800000000000000
+      internalID: 2449793396453146046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wordmark_20
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 475
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8905ccf9dd27c04e0800000000000000
+      internalID: -2014108637147148136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wordmark_21
+      rect:
+        serializedVersion: 2
+        x: 1243
+        y: 500
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f4cf02da83206260800000000000000
+      internalID: 7088704892617868528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wordmark_22
+      rect:
+        serializedVersion: 2
+        x: 1279
+        y: 496
+        width: 23
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4182ccbdabf5372e0800000000000000
+      internalID: -2129252942659966956
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wordmark_23
+      rect:
+        serializedVersion: 2
+        x: 1311
+        y: 512
+        width: 37
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 799a0174ca8e6c7e0800000000000000
+      internalID: -1745451978935195241
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wordmark_24
+      rect:
+        serializedVersion: 2
+        x: 1363
+        y: 422
+        width: 311
+        height: 436
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7ce0b5ac1d61f300800000000000000
+      internalID: 284128221307399294
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wordmark_25
+      rect:
+        serializedVersion: 2
+        x: 1373
+        y: 496
+        width: 9
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 30c9e8838b287fd00800000000000000
+      internalID: 1006416769475058691
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wordmark_26
+      rect:
+        serializedVersion: 2
+        x: 1480
+        y: 388
+        width: 35
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c0610209b223bbf20800000000000000
+      internalID: 3439397903110510092
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wordmark_27
+      rect:
+        serializedVersion: 2
+        x: 1608
+        y: 515
+        width: 18
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b605aa45a560313b0800000000000000
+      internalID: -5543079731325677461
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wordmark_28
+      rect:
+        serializedVersion: 2
+        x: 1053
+        y: 373
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f3afa2832999d970800000000000000
+      internalID: 8780217326330946548
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wordmark_29
+      rect:
+        serializedVersion: 2
+        x: 1063
+        y: 378
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 062ba3d079d78f010800000000000000
+      internalID: 1222865386546573920
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Wordmark_0: 6473076263778138528
+      Wordmark_1: 1213021391959199270
+      Wordmark_10: -4866184139805883691
+      Wordmark_11: -3235041892087787105
+      Wordmark_12: -8811852620407123079
+      Wordmark_13: 8296070565385005286
+      Wordmark_14: -6013564391526009786
+      Wordmark_15: -8160348947375330290
+      Wordmark_16: -7845957751637491281
+      Wordmark_17: 4857163032407298535
+      Wordmark_18: 7438446418677512286
+      Wordmark_19: 2449793396453146046
+      Wordmark_2: -5805477464057400552
+      Wordmark_20: -2014108637147148136
+      Wordmark_21: 7088704892617868528
+      Wordmark_22: -2129252942659966956
+      Wordmark_23: -1745451978935195241
+      Wordmark_24: 284128221307399294
+      Wordmark_25: 1006416769475058691
+      Wordmark_26: 3439397903110510092
+      Wordmark_27: -5543079731325677461
+      Wordmark_28: 8780217326330946548
+      Wordmark_29: 1222865386546573920
+      Wordmark_3: 4115269020316807287
+      Wordmark_4: 4763850739495783912
+      Wordmark_5: 6924929634174816935
+      Wordmark_6: 730563409720703737
+      Wordmark_7: 841112269310512632
+      Wordmark_8: 2137050685682521304
+      Wordmark_9: 3272834297083956546
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

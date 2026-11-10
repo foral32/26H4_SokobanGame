@@ -1,0 +1,165 @@
+using System;
+using System.Linq;
+using DraculasBox.Runtime;
+using TMPro;
+using UnityEngine;
+
+namespace DraculasBox.Editor
+{
+    internal sealed partial class CampaignWorkbench
+    {
+        private GameUI.ChapterMapView mapView;
+        private ChapterMapLayout baseLayout;
+        private string dragId;
+        private float mapOffset;
+        private Vector2 grab;
+        private MapInsertion? aimed;
+        private bool validDrop,painted,canBranch;
+        private TMP_Text mapStatus;
+
+        public bool HandleKeys(IStudyKeyboard keys)
+        {
+            if(panel!=Panel.Outline)return false;
+            if(dragId!=null){if(keys.Pressed(KeyCode.Escape))CancelDrag();return true;}
+            bool command=keys.Held(KeyCode.LeftControl)||keys.Held(KeyCode.RightControl)||keys.Held(KeyCode.LeftCommand)||keys.Held(KeyCode.RightCommand);
+            if(!command)return false;
+            bool z=keys.Pressed(KeyCode.Z),redo=keys.Pressed(KeyCode.Y)||z&&(keys.Held(KeyCode.LeftShift)||keys.Held(KeyCode.RightShift));
+            if(!z&&!redo)return false;
+            if(redo?doc.CanRedo:doc.CanUndo)History(!redo);
+            return true;
+        }
+
+        private void DrawChapters()
+        {
+            UI.MapPage("编辑正式关卡");
+            UI.MapAction("campaign-back","主菜单",new Vector2(-517,290),170,Back,GameIcon.Back);
+            UI.MapAction("campaign-new-chapter","新章节",new Vector2(515,290),170,()=>Edit(()=>
+            {chapterId=doc.AddChapter();selectedId=Current.levels[0].id;mapOffset=0;}),GameIcon.Create);
+            var chapters=Data.catalog.chapters;int first=chapterPage*4,count=Math.Min(4,chapters.Length-first);
+            for(int i=0;i<count;i++)
+            {
+                var c=chapters[first+i];int main=c.levels.Count(l=>l.main),extra=c.levels.Length-main;
+                UI.ChapterCard("select-chapter-"+c.id,new Vector2((i-(count-1)*.5f)*294,26),c,
+                    main+" 主线"+(extra>0?" · "+extra+" 支线":""),()=>SelectChapter(c));
+            }
+            int pages=(chapters.Length+3)/4;
+            if(pages>1)
+            {
+                UI.MapAction("chapters-prev","上一页",new Vector2(-167,-287),158,()=>{chapterPage--;Draw();},GameIcon.Back);
+                UI.MapAction("chapters-next","下一页",new Vector2(167,-287),158,()=>{chapterPage++;Draw();});
+                UI.SetEnabled("chapters-prev",chapterPage>0);UI.SetEnabled("chapters-next",chapterPage+1<pages);
+                UI.Text("Chapter page",(chapterPage+1)+" / "+pages,new Vector2(0,-287),new Vector2(98,38),20,GameUI.Quiet);
+            }
+            UI.FocusButton("select-chapter-"+(chapters.Skip(first).Take(count).Any(c=>c.id==chapterId)?chapterId:chapters[first].id));
+            if(!string.IsNullOrEmpty(notice))UI.Text("Campaign status",notice,new Vector2(0,-238),new Vector2(1080,35),18,GameUI.Quiet);
+        }
+        private void DrawOutline()
+        {
+            UI.MapPage(Current.title);
+            UI.MapAction("campaign-back","返回章节",new Vector2(-506,292),198,Back,GameIcon.Back);
+            UI.MapAction("campaign-new","新关卡",new Vector2(517,292),164,NewBoard,GameIcon.Create);
+            mapView=new GameUI.ChapterMapView(UI,Current,true,id=>Data.Board(id).title,SelectLevel,id=>{if(dragId==null)selectedId=id;});
+            baseLayout=mapView.Layout;
+            foreach(var node in Current.levels)
+            {
+                string id=node.id;var handle=mapView.Button(id).gameObject.AddComponent<CampaignRowDrag>();
+                handle.Begin=p=>BeginDrag(id,p);handle.Move=MoveDrag;handle.End=EndDrag;handle.EdgePan=EdgePan;handle.Cancel=CancelDrag;
+                handle.Context=()=>{selectedId=id;Switch(Panel.Actions);};
+            }
+            void Tool(string id,string text,float x,float width,Action click,bool on=true)
+            {UI.Button(id,text,new Vector2(x,-301),new Vector2(width,42),click,on);UI.SetEnabled(id,on);}
+            Tool("campaign-undo","撤销",-533,89,()=>History(true),doc.CanUndo);
+            Tool("campaign-redo","重做",-432,89,()=>History(false),doc.CanRedo);
+            Tool("campaign-chapter-settings","章节设置",130,116,()=>Switch(Panel.Chapter));
+            Tool("campaign-actions","关卡操作",270,116,()=>Switch(Panel.Actions));
+            UI.EditorButton("campaign-review","写回工程",new Vector2(497,-301),new Vector2(154,42),()=>Switch(Panel.Review),Dirty,null,true);
+            UI.SetEnabled("campaign-review",Dirty);
+            mapStatus=UI.Text("Campaign status",notice??"",new Vector2(0,-257),new Vector2(1120,32),17,GameUI.Quiet);
+            mapView.SetOffset(mapOffset);UI.FocusButton("select-level-"+selectedId);mapView.Show(Current,baseLayout,selectedId);
+        }
+        private void NewBoard()
+        {
+            string added=null;Edit(()=>{added=doc.AddLevel(Current,Selected,false);selectedId=added;});
+            if(added!=null&&string.IsNullOrEmpty(notice))OpenBoard();
+        }
+        private void BeginDrag(string id,Vector2 screen)
+        {
+            if(dragId!=null)return;
+            dragId=id;aimed=null;painted=false;validDrop=false;
+            var node=Current.levels.First(l=>l.id==id);
+            canBranch=!node.main||baseLayout.centers.Length>1&&!Current.levels.Any(l=>!l.main&&l.requires[0]==id);
+            mapView.Pointer(screen,app.viewCamera,out var press,out _);
+            grab=Vector2.ClampMagnitude(press-baseLayout.positions[id],44);
+        }
+        private void MoveDrag(Vector2 screen)
+        {
+            if(dragId==null)return;
+            bool inside=mapView.Pointer(screen,app.viewCamera,out var point,out _);
+            var target=inside?baseLayout.Target(point):null;
+            if(!painted||!Nullable.Equals(aimed,target))
+            {
+                aimed=target;painted=true;validDrop=false;mapStatus.text="";
+                if(target.HasValue)
+                {
+                    var next=JsonUtility.FromJson<Chapter>(JsonUtility.ToJson(Current));
+                    var source=next.levels.First(l=>l.id==dragId);
+                    try
+                    {
+                        bool heldMain=source.main;
+                        if(CampaignDocument.Place(next,source,target.Value))
+                        {
+                            string anchor=target.Value.anchor;
+                            var columns=anchor!=null&&heldMain?CampaignDocument.Main(Current).Select(l=>l.id==dragId?null:l.id).ToArray():null;
+                            var preview=new ChapterMapLayout(next,columns,anchor,anchor==null?0:baseLayout.positions[anchor].x);
+                            mapView.Show(next,preview,pending:dragId,dragging:true,minimumWidth:baseLayout.width);
+                            validDrop=true;
+                        }
+                    }
+                    catch(InvalidOperationException e){mapStatus.text=e.Message;}
+                }
+                if(!validDrop)mapView.Show(Current,baseLayout,moving:dragId,dragging:true);
+            }
+            if(!validDrop)
+            {
+                mapView.Lift(dragId,point-grab);
+                Vector2? socket=null;
+                if(inside&&canBranch&&Mathf.Abs(point.y)>15&&Mathf.Abs(point.y)<72)
+                {
+                    var nearby=baseLayout.Target(new Vector2(point.x,Mathf.Sign(point.y)*ChapterMapLayout.BranchY));
+                    if(nearby.HasValue&&nearby.Value.anchor!=dragId)
+                    {
+                        float x=baseLayout.positions[nearby.Value.anchor].x;
+                        if(Mathf.Abs(x-point.x)<43)socket=new Vector2(x,point.y>0?60:-91);
+                    }
+                }
+                mapView.HintBranchSocket(socket);
+            }
+        }
+        private void EdgePan(Vector2 screen,float dt)
+        {
+            if(dragId==null||!mapView.Pointer(screen,app.viewCamera,out _,out float x))return;
+            float edge=ChapterMapLayout.ViewWidth*.5f-44;
+            if(Mathf.Abs(x)<=edge)return;
+            float before=mapView.Offset;mapView.Pan(Mathf.Sign(x)*430*dt);
+            if(Mathf.Abs(before-mapView.Offset)>.01f)MoveDrag(screen);
+        }
+        private void EndDrag(Vector2 screen)
+        {
+            if(dragId==null)return;MoveDrag(screen);
+            if(!validDrop){CancelDrag();return;}
+            string id=dragId;var target=aimed.Value;var previous=mapView.Layout;dragId=null;
+            Edit(()=>{CampaignDocument.Place(Current,Current.levels.First(l=>l.id==id),target);selectedId=id;});
+            mapView?.SettleFrom(previous);
+        }
+        private void CancelDrag()
+        {
+            if(dragId==null)return;dragId=null;aimed=null;validDrop=false;
+            if(mapView?.Alive==true)
+            {
+                mapView.Show(Current,baseLayout,selectedId);
+                UI.FocusButton("select-level-"+selectedId);
+                mapStatus.text="";
+            }
+        }
+    }
+}

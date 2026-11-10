@@ -1,0 +1,7 @@
+{
+  "name": "DraculasBox.Core",
+  "rootNamespace": "DraculasBox",
+  "references": [],
+  "autoReferenced": true,
+  "noEngineReferences": true
+}

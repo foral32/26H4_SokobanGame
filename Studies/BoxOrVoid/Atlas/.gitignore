@@ -1,6 +1,0 @@
-node_modules/
-dist/
-public/media/
-src/atlas-data.json
-src/atlas-code.json
-*.log

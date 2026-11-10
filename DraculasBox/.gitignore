@@ -1,0 +1,6 @@
+Tools/CoreChecks/bin/
+Tools/CoreChecks/obj/
+!Tools/CoreChecks/CoreChecks.csproj
+Tools/__pycache__/
+Evidence/Build/Backups/
+Evidence/Build/recovery-before-fix/
