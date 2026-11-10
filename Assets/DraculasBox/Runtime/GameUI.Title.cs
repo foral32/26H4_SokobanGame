@@ -15,11 +15,11 @@ namespace DraculasBox.Runtime
             var artwork=Rect("Logo artwork",Vector2.zero,logo.sizeDelta,logo).gameObject.AddComponent<TitleArtworkGraphic>();
             artwork.Source=Resources.Load<Texture2D>("Title/Wordmark");artwork.raycastTarget=false;
         }
-        private void TitleAction(string id,string label,int index,Action action)
+        private void TitleAction(string id,string label,Action action)
         {
             var rect=Rect(id,Vector2.zero,new Vector2(320,54));var button=ClickTarget(rect);
             var cursor=Icon("Focus",GameIcon.Arrow,new Vector2(-120,0),22,new Color(Gold.r,Gold.g,Gold.b,0),rect);
-            var text=Label(Rect("Label",Vector2.zero,new Vector2(270,54),rect),label,index==0?36:30,Quiet);
+            var text=Label(Rect("Label",Vector2.zero,new Vector2(270,54),rect),label,30,Quiet);
             Register(id,button,action,cursor,text);
         }
         private void LayoutTitleButtons(Button[] buttons)
@@ -32,7 +32,7 @@ namespace DraculasBox.Runtime
                 var cursor=(RectTransform)rect.Find("Focus");cursor.anchoredPosition=new Vector2(-120,0);cursor.sizeDelta=Vector2.one*22;
                 var label=rect.Find("Label").GetComponent<TMP_Text>();
                 label.rectTransform.anchoredPosition=Vector2.zero;label.rectTransform.sizeDelta=new Vector2(270,54);
-                label.fontSize=i==0?36:30;label.font=assets.bodyFont;label.alignment=TextAlignmentOptions.Midline;
+                label.fontSize=30;label.font=assets.bodyFont;label.alignment=TextAlignmentOptions.Midline;
             }
         }
         private void RetireTitleObject(Transform child)

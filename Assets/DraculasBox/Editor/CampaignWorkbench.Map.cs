@@ -19,7 +19,8 @@ namespace DraculasBox.Editor
 
         public bool HandleKeys(IStudyKeyboard keys)
         {
-            if(panel!=Panel.Outline)return false;
+            if(overlay!=Overlay.None)return false;
+            if(panel!=Panel.Outline&&panel!=Panel.Chapters)return false;
             if(dragId!=null){if(keys.Pressed(KeyCode.Escape))CancelDrag();return true;}
             bool command=keys.Held(KeyCode.LeftControl)||keys.Held(KeyCode.RightControl)||keys.Held(KeyCode.LeftCommand)||keys.Held(KeyCode.RightCommand);
             if(!command)return false;
@@ -33,25 +34,28 @@ namespace DraculasBox.Editor
         {
             UI.MapPage("编辑正式关卡");
             UI.MapAction("campaign-back","主菜单",new Vector2(-517,290),170,Back,GameIcon.Back);
-            UI.MapAction("campaign-new-chapter","新章节",new Vector2(515,290),170,()=>Edit(()=>
-            {chapterId=doc.AddChapter();selectedId=Current.levels[0].id;mapOffset=0;}),GameIcon.Create);
+            UI.MapAction("campaign-new-chapter","新章节",new Vector2(515,290),170,NewChapter,GameIcon.Create);
             var chapters=Data.catalog.chapters;int first=chapterPage*4,count=Math.Min(4,chapters.Length-first);
             for(int i=0;i<count;i++)
             {
                 var c=chapters[first+i];int main=c.levels.Count(l=>l.main),extra=c.levels.Length-main;
-                UI.ChapterCard("select-chapter-"+c.id,new Vector2((i-(count-1)*.5f)*294,26),c,
+                var pos=new Vector2((i-(count-1)*.5f)*294,26);
+                UI.ChapterCard("select-chapter-"+c.id,pos,c,
                     main+" 主线"+(extra>0?" · "+extra+" 支线":""),()=>SelectChapter(c));
+                UI.EditorButton("chapter-menu-"+c.id,"…",pos+new Vector2(116,77),new Vector2(44,36),()=>ShowChapterTools(c.id),false,null,true);
             }
             int pages=(chapters.Length+3)/4;
             if(pages>1)
             {
-                UI.MapAction("chapters-prev","上一页",new Vector2(-167,-287),158,()=>{chapterPage--;Draw();},GameIcon.Back);
-                UI.MapAction("chapters-next","下一页",new Vector2(167,-287),158,()=>{chapterPage++;Draw();});
+                UI.MapAction("chapters-prev","上一页",new Vector2(-167,-227),158,()=>{chapterPage--;Draw();},GameIcon.Back);
+                UI.MapAction("chapters-next","下一页",new Vector2(167,-227),158,()=>{chapterPage++;Draw();});
                 UI.SetEnabled("chapters-prev",chapterPage>0);UI.SetEnabled("chapters-next",chapterPage+1<pages);
-                UI.Text("Chapter page",(chapterPage+1)+" / "+pages,new Vector2(0,-287),new Vector2(98,38),20,GameUI.Quiet);
+                UI.Text("Chapter page",(chapterPage+1)+" / "+pages,new Vector2(0,-227),new Vector2(98,38),20,GameUI.Quiet);
             }
+            HistoryTools();
+            ReviewAction();
             UI.FocusButton("select-chapter-"+(chapters.Skip(first).Take(count).Any(c=>c.id==chapterId)?chapterId:chapters[first].id));
-            if(!string.IsNullOrEmpty(notice))UI.Text("Campaign status",notice,new Vector2(0,-238),new Vector2(1080,35),18,GameUI.Quiet);
+            if(!string.IsNullOrEmpty(notice))UI.Text("Campaign status",notice,new Vector2(0,-267),new Vector2(1080,30),18,GameUI.Quiet);
         }
         private void DrawOutline()
         {
@@ -67,15 +71,25 @@ namespace DraculasBox.Editor
                 handle.Context=()=>{selectedId=id;Switch(Panel.Actions);};
             }
             void Tool(string id,string text,float x,float width,Action click,bool on=true)
-            {UI.Button(id,text,new Vector2(x,-301),new Vector2(width,42),click,on);UI.SetEnabled(id,on);}
-            Tool("campaign-undo","撤销",-533,89,()=>History(true),doc.CanUndo);
-            Tool("campaign-redo","重做",-432,89,()=>History(false),doc.CanRedo);
-            Tool("campaign-chapter-settings","章节设置",130,116,()=>Switch(Panel.Chapter));
+            {UI.Button(id,text,new Vector2(x,-313),new Vector2(width,42),click,on);UI.SetEnabled(id,on);}
+            HistoryTools();
+            Tool("campaign-chapter-settings","章节…",130,116,()=>ShowChapterTools(chapterId));
             Tool("campaign-actions","关卡操作",270,116,()=>Switch(Panel.Actions));
-            UI.EditorButton("campaign-review","写回工程",new Vector2(497,-301),new Vector2(154,42),()=>Switch(Panel.Review),Dirty,null,true);
-            UI.SetEnabled("campaign-review",Dirty);
+            ReviewAction();
             mapStatus=UI.Text("Campaign status",notice??"",new Vector2(0,-257),new Vector2(1120,32),17,GameUI.Quiet);
             mapView.SetOffset(mapOffset);UI.FocusButton("select-level-"+selectedId);mapView.Show(Current,baseLayout,selectedId);
+        }
+        private void HistoryTools()
+        {
+            UI.Button("campaign-undo","撤销",new Vector2(-533,-313),new Vector2(89,42),()=>History(true));
+            UI.Button("campaign-redo","重做",new Vector2(-432,-313),new Vector2(89,42),()=>History(false));
+            UI.SetEnabled("campaign-undo",doc.CanUndo);UI.SetEnabled("campaign-redo",doc.CanRedo);
+        }
+        private void ReviewAction()
+        {
+            UI.EditorButton("campaign-review","写回工程",new Vector2(497,-313),new Vector2(154,42),()=>
+            {overlay=Overlay.Review;notice="";publicationError=null;Draw();},Dirty,null,true);
+            UI.SetEnabled("campaign-review",Dirty);
         }
         private void NewBoard()
         {

@@ -22,24 +22,26 @@ namespace DraculasBox.Editor
         {
             if(mapView?.Alive==true)mapOffset=mapView.Offset;
             mapView=null;
-            if(panel==Panel.Chapters){DrawChapters();return;}
-            if(panel==Panel.Outline){DrawOutline();return;}
-            UI.RefreshWorkshop();
-            UI.WorkshopIcon("campaign-back",GameIcon.Back,new Vector2(-584,311),new Vector2(44,40),Back,null,true);
-            Label("Campaign heading",PanelTitle(),-300,311,480,30);
-            Rule("Header rule",0,278,1220);
-            if(panel==Panel.Actions) DrawInspector();
-            else if(panel==Panel.Review) DrawReview();
-            else if(panel==Panel.Chapter) DrawChapter();
-            else if(panel==Panel.Anchor||panel==Panel.Transfer) DrawChoices();
-            else DrawConfirmation();
-            if(!string.IsNullOrEmpty(notice))
-                UI.Text("Campaign status",notice,new Vector2(0,-321),new Vector2(1190,53),18,GameThemes.IsClassic?GameUI.Plum:GameUI.WorkshopInk,TextAlignmentOptions.MidlineLeft);
+            if(panel==Panel.Chapters)DrawChapters();
+            else if(panel==Panel.Outline)DrawOutline();
+            else
+            {
+                UI.RefreshWorkshop();
+                UI.WorkshopIcon("campaign-back",GameIcon.Back,new Vector2(-584,311),new Vector2(44,40),Back,null,true);
+                Label("Campaign heading",PanelTitle(),-300,311,480,30);
+                Rule("Header rule",0,278,1220);
+                if(panel==Panel.Actions)DrawInspector();
+                else if(panel==Panel.Anchor||panel==Panel.Transfer)DrawChoices();
+                else DrawConfirmation();
+                if(!string.IsNullOrEmpty(notice))
+                    UI.Text("Campaign status",notice,new Vector2(0,-321),new Vector2(1190,53),18,GameThemes.IsClassic?GameUI.Plum:GameUI.WorkshopInk,TextAlignmentOptions.MidlineLeft);
+            }
+            DrawOverlay();
         }
         private string PanelTitle()=>panel switch
         {
-            Panel.Actions=>"关卡操作",Panel.Chapter=>"章节设置", Panel.Anchor=>"选择解锁关", Panel.Transfer=>"移至章节",
-            Panel.Review=>"写回工程", Panel.Remove=>"移出正式目录", _=>"从工程重载"
+            Panel.Actions=>"关卡操作",Panel.Anchor=>"选择解锁关",Panel.Transfer=>"移至章节",
+            Panel.Remove=>"移出正式目录",_=>"从工程重载"
         };
         private void DrawInspector()
         {
@@ -82,26 +84,6 @@ namespace DraculasBox.Editor
             Button(id+"-next","›",x+63,y,42,()=>{set(page+1);Draw();});
             UI.SetEnabled(id+"-prev",page>0);UI.SetEnabled(id+"-next",page+1<pages);
         }
-        private void DrawChapter()
-        {
-            Label("Chapter title label","章节名称",-210,156,372);
-            var field=UI.Input("Campaign chapter title",Current.title,new Vector2(10,103),new Vector2(810,46),_=>{});
-            Label("Chapter order label","章节顺序",-210,25,372);
-            int index=Array.IndexOf(Data.catalog.chapters,Current);
-            Label("Chapter position","第 "+(index+1)+" 章",-319,-27,152,23);
-            // Apply the field and the move together, so a focused rename survives a reorder.
-            void Apply(int shift)
-            {
-                string title=field.text.Trim();if(title.Length==0){notice="请输入章节名称。";Draw();return;}
-                Edit(()=>{Current.title=title;if(shift!=0)doc.MoveChapter(chapterId,shift);});
-            }
-            Button("chapter-earlier","提前一章",-42,-27,155,()=>Apply(-1));
-            Button("chapter-later","延后一章",130,-27,155,()=>Apply(1));
-            UI.SetEnabled("chapter-earlier",index>0);UI.SetEnabled("chapter-later",index+1<Data.catalog.chapters.Length);
-            Button("chapter-apply","完成",323,-147,185,()=>Apply(0),true);
-            Button("campaign-reload","从工程重载",-294,-250,200,()=>Switch(Panel.Discard));
-            UI.FocusButton("chapter-apply");
-        }
         private void DrawChoices()
         {
             bool anchor=panel==Panel.Anchor;
@@ -119,39 +101,12 @@ namespace DraculasBox.Editor
                         else doc.Transfer(Current,Selected,Data.Chapter(option.id));
                     }));
             }
-            if(!anchor)Label("Transfer rule",Selected.main?"关联支线随主线一起移动。":"移入后由目标章末关解锁，可重新指定。",0,-254,900,17,true);
             Pager("targets",0,-299,choicePage,options.Count,p=>choicePage=p);
-        }
-        private void DrawReview()
-        {
-            var changes=Changes();
-            Label("Review heading",changes.Count+" 项修改",-124,228,940,25);
-            for(int i=reviewPage*Rows;i<Math.Min(changes.Count,(reviewPage+1)*Rows);i++)
-            {
-                float y=169-(i%Rows)*44;
-                Label("Change "+i,changes[i],0,y,1176,20);
-                Rule("Review separator "+i,0,y-23,1176);
-            }
-            Pager("changes",0,-207,reviewPage,changes.Count,p=>reviewPage=p);
-            string problem=CampaignProject.PublicationError(Data);
-            if(problem!=null)Label("Issue",problem,-101,-255,970,18,true);
-            Button("campaign-publish","确认写回",505,-254,191,Publish,true);
-            UI.SetEnabled("campaign-publish",problem==null&&changes.Count>0);
-            if(problem!=null)
-            {
-                Button("campaign-fix","打开待处理关卡",-494,-207,212,()=>
-                {
-                    var b=Data.boards.First(level=>new EditDocument(level).Validation()!=null||!CampaignDocument.Proves(level,Data.Plan(level.id)?.route,out int count)||count!=Data.Plan(level.id).pushes);
-                    selectedId=b.id;NormalizeSelection();panel=Panel.Outline;OpenBoard();
-                });
-            }
-            UI.FocusButton(problem==null?"campaign-publish":"campaign-fix");
         }
         private void DrawConfirmation()
         {
             bool remove=panel==Panel.Remove;
             Label("Confirm subject",remove?Data.Board(selectedId).title:"放弃当前工作草稿？",0,107,790,29);
-            Label("Confirm detail",remove?"从章节编排中移出。已写回的棋盘文件会保留。":"重新读取当前工程中的章节、棋盘和路线。",0,46,790,21,true);
             Button("campaign-cancel","取消",-102,-75,178,()=>Switch(Panel.Outline));
             Button("campaign-confirm",remove?"移出目录":"放弃并重载",108,-75,200,()=>
             {if(remove)Edit(()=>doc.Remove(Current,Selected));else Reload();});

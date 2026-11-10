@@ -105,6 +105,7 @@ namespace DraculasBox.Editor
             if(s.result!=BuildResult.Succeeded)throw new InvalidOperationException("Build failed; see DraculasBox/Evidence/Build/windows-build.json.");
             if(restoreErrors.Count>0)throw new InvalidOperationException("Build succeeded but restoring working files failed; preserved snapshots are in "+backupRoot);
             File.WriteAllText(Path.Combine(output,"开始游戏.cmd"),"@echo off\r\nstart \"\" \"%~dp0DraculasBox.exe\" -screen-fullscreen 0 -screen-width 1280 -screen-height 720\r\n");
+            File.Copy(GameBuilder.Root+"/Art/Audio/Music/CREDITS.txt",Path.Combine(output,"MUSIC-CREDITS.txt"),true);
             var chapters=assets.Catalog.chapters;
             int mainCount=chapters.Sum(c=>c.levels.Count(l=>l.main)),branchCount=chapters.Sum(c=>c.levels.Count(l=>!l.main));
             File.WriteAllText(Path.Combine(output,"README.txt"),"Dracula's Box\r\n\r\n双击 开始游戏.cmd，或运行 DraculasBox.exe。请保留整个目录。\r\n共 "+chapters.Length+" 章、"+mainCount+" 个主线关卡与 "+branchCount+" 个可选支线。支线显示红框，不影响主线推进；旧进度继续有效。\r\n方向键 / WASD：走动、推动、菜单选择；Enter / 空格：菜单确认。\r\nZ：撤销（可长按）；R：重置（可撤销）；Esc：暂停 / 返回。\r\n踏入光会死亡，可撤销恢复；入棺后自动转场到下一关。\r\n\r\n主菜单 → 关卡创作，可新建、复制、导入或导出关卡。\r\n1–8：基础画笔；9 / 0：压力板、自动门；Q / E：两种斜镜；编号选择机关连接组。\r\n左键拖动：绘制；右键：擦除；Alt+左键：取色。\r\n滚轮：缩放；中键拖动：平移；Z / Y：编辑撤销、重做。\r\nCtrl+S：保存；F5：试玩 / 返回原稿；界面可配置阳光与尺寸。\r\n自制关卡、恢复草稿与主线进度分别保存于本游戏数据目录；移除关卡可恢复。\r\n\r\n这是可玩开发构建，手感与关卡仍待体验反馈。\r\n");

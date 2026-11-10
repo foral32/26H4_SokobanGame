@@ -86,8 +86,6 @@ MonoBehaviour:
   audio:
   - {fileID: 8300000, guid: aae118c3e72e55b43a1dfe27d55556f7, type: 3}
   - {fileID: 8300000, guid: 6802147da5183f141ba2d71b1bd96e06, type: 3}
-  - {fileID: 8300000, guid: 2986357bb327c1e488d876d005e060a5, type: 3}
-  - {fileID: 8300000, guid: c7a5c236d181a354db478aa48bb5eeaa, type: 3}
   - {fileID: 8300000, guid: 1cb7922d1099ae24aae0b159c5cb1470, type: 3}
   - {fileID: 8300000, guid: 33b313751e1efbb4e82e74f9a5b2da02, type: 3}
   - {fileID: 8300000, guid: 3086205f0fc45504a85922ba940a8203, type: 3}
@@ -107,6 +105,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: b27fe9194e92fb04087a73f7f5ef0dbc, type: 3}
   - {fileID: 8300000, guid: 726872d7279313647ad41366a7bc0a6c, type: 3}
   - {fileID: 8300000, guid: 375f8ecb4b85f2a41a62372c518edf56, type: 3}
+  mainMusic: {fileID: 8300000, guid: 241c5d998d2c890459bb6e317b456474, type: 3}
+  editorMusic: {fileID: 8300000, guid: 58c1298c145d7fa4991275c7642f01fa, type: 3}
   font: {fileID: 11400000, guid: f4d752e8d39ad3044a572317e4520bed, type: 2}
   bodyFont: {fileID: 11400000, guid: 7beea02d72ea093498e827d330607296, type: 2}
   material: {fileID: 2100000, guid: c4998d6c5a068c743a8fc2a758f14a3a, type: 2}

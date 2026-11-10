@@ -16,6 +16,7 @@ namespace DraculasBox.Runtime
     public sealed partial class GameAssets:ScriptableObject
     {
         public TextAsset catalog,replays; public TextAsset[] levels;public Sprite[] sprites;public AudioClip[] audio;
+        public AudioClip mainMusic,editorMusic;
         public TMP_FontAsset font,bodyFont;public Material material;public UnityEngine.Rendering.RenderPipelineAsset pipeline;
         private Dictionary<string,Sprite> spriteMap;
         private readonly Dictionary<string,Sprite> themedSprites=new Dictionary<string,Sprite>();
@@ -69,13 +70,5 @@ namespace DraculasBox.Runtime
             try{File.WriteAllText(temp,text);if(File.Exists(path))File.Replace(temp,path,path+".bak");else File.Move(temp,path);}
             finally{if(File.Exists(temp))File.Delete(temp);}
         }
-    }
-    public sealed class GameAudio:MonoBehaviour
-    {
-        private GameAssets assets;private AudioSource music,effects;private float targetMusic;
-        public void Initialize(GameAssets a){assets=a;music=gameObject.AddComponent<AudioSource>();effects=gameObject.AddComponent<AudioSource>();music.playOnAwake=effects.playOnAwake=false;music.volume=0;music.loop=true;music.spatialBlend=effects.spatialBlend=0;music.clip=a.Clip("Firmament_loopable");if(music.clip!=null)music.Play();}
-        public void Volume(float m,float e){targetMusic=m;effects.volume=e;}
-        private void Update(){if(music!=null)music.volume=Mathf.MoveTowards(music.volume,targetMusic,Time.unscaledDeltaTime*.7f);}
-        public void Cue(string key){var clip=assets.Clip(key);if(clip!=null){effects.pitch=1;effects.PlayOneShot(clip);}}
     }
 }

@@ -1,0 +1,27 @@
+Dracula's Box — Music
+
+MAIN MUSIC
+"Hypnotic Jewels" by Eric Matyas
+soundimage.org — https://soundimage.org/
+Source: https://opengameart.org/content/hypnotic-jewels-looping
+License: Creative Commons Attribution 3.0
+https://creativecommons.org/licenses/by/3.0/
+
+EDITOR MUSIC
+"Puzzle Tune 1 — B" by rezoner (Przemysław Sikorski)
+Source: https://opengameart.org/content/puzzle-tune-1
+License: Creative Commons Attribution 3.0
+https://creativecommons.org/licenses/by/3.0/
+
+Active music has been adjusted by a constant gain for matching loudness and
+converted to 44.1 kHz stereo Ogg Vorbis for gapless looping. A 4 ms edge fade
+prevents clicks, and MP3 encoder padding was removed from Puzzle Tune 1 — B.
+Tempo and arrangement are unchanged. Playback uses equal-power crossfades.
+
+RESERVE ONLY — NOT USED BY THE GAME
+Music: Eric Skiff — Underclocked (underunderclocked mix) — Resistor Anthems
+Available at https://ericskiff.com/music/
+License: Creative Commons Attribution 4.0
+https://creativecommons.org/licenses/by/4.0/
+Reserve/Underclocked.mp3 is an unchanged copy of the author's original download.
+It is not referenced by GameAssets and is excluded from the player build.

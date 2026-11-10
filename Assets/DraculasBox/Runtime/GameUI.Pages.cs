@@ -28,10 +28,10 @@ namespace DraculasBox.Runtime
             Backdrop();
             content.GetComponentInChildren<MenuAtmosphere>().titleLayout=true;
             BuildTitleLogo(content);
-            TitleAction("play","开始游戏",0,app.ShowChapters);
-            TitleAction("creator","关卡创作",1,app.OpenLibrary);
-            TitleAction("settings","设置",2,app.Settings);
-            TitleAction("exit","退出",3,app.Exit);
+            TitleAction("play","开始游戏",app.ShowChapters);
+            TitleAction("creator","关卡创作",app.OpenLibrary);
+            TitleAction("settings","设置",app.Settings);
+            TitleAction("exit","退出",app.Exit);
             LayoutTitleButtons(rows.Select(r=>r.button).ToArray());
             CampaignTitleEntry(content);
             Focus(0);
@@ -109,6 +109,7 @@ namespace DraculasBox.Runtime
             MenuAction("settings","设置",new Vector2(0,-13),240,app.Settings,GameIcon.Settings);
             MenuAction("levels","返回选关",new Vector2(0,-75),240,()=>app.ShowLevels(app.ChapterId),GameIcon.Back);
             MenuAction("home","主菜单",new Vector2(0,-137),240,app.ShowTitle,GameIcon.Exit);
+            ThemeChoices(-199,true);
             Focus(0);
         }
         public void Settings()
@@ -120,6 +121,7 @@ namespace DraculasBox.Runtime
             for(int channel=0;channel<2;channel++){volumeMarks[channel]=new Image[10];for(int i=0;i<10;i++)volumeMarks[channel][i]=Image("Volume "+channel+" "+i,null,new Vector2(-120+i*29,89-channel*95),new Vector2(23,4),Quiet);}
             ThemeChoices();
             MenuAction("back","返回",new Vector2(0,-204),220,app.CloseSettings,GameIcon.Back);
+            MenuAction("music-credits","音乐署名",new Vector2(0,-279),220,app.ShowMusicCredits);
             RefreshSettings();Focus(0);
         }
         public void RefreshSettings()

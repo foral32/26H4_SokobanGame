@@ -19,7 +19,20 @@ namespace DraculasBox.Runtime
         private string ArchiveCandidate()=>!string.IsNullOrEmpty(lastArchive)&&File.Exists(lastArchive)?lastArchive:Library?.LatestArchive();
         public bool CanRestoreArchive=>ArchiveCandidate()!=null;
         public bool Automated {get;private set;}
-        public GamePage Page {get;private set;}
+        private GamePage page;
+        public GamePage Page
+        {
+            get=>page;
+            private set
+            {
+                page=value;if(audioPlayer==null)return;
+                if(value==GamePage.Title||value==GamePage.Chapters||value==GamePage.Levels||value==GamePage.Playing&&!creatorPlay)
+                    audioPlayer.Music(MusicContext.Main);
+                else if(value==GamePage.Library||value==GamePage.Editing||value==GamePage.Importing||value==GamePage.Campaign)
+                    audioPlayer.Music(MusicContext.Editor);
+                // Pause, settings, confirmations and editor trials keep their context.
+            }
+        }
         public string ChapterId {get;private set;}="chapter_1";
         public GameUI UI=>ui;public BoardView Board {get;private set;}public Session Session {get;private set;}public LevelEditor Creator=>creator;
         public ProgressStore Progress {get;private set;}public LevelLibrary Library {get;private set;}
@@ -112,7 +125,7 @@ namespace DraculasBox.Runtime
         {int count=GameThemes.All.Count;SelectTheme(GameThemes.All[(GameThemes.Current.Index+Math.Sign(direction)+count)%count].Id);}
         public void SelectTheme(string id)
         {
-            if(Page!=GamePage.Settings)return;
+            if(Page!=GamePage.Settings&&Page!=GamePage.Paused)return;
             var theme=GameThemes.Resolve(id);Progress.Data.theme=theme.Id;Progress.Save();
             bool changed=GameThemes.Apply(theme.Id);if(changed)Board.RefreshTheme();
             ui.RefreshThemeSettings("theme");input.Clear();

@@ -14,12 +14,12 @@ namespace DraculasBox.Runtime
         {
             get {var color=GameThemes.IsClassic?new Color(.07f,.09f,.14f,.88f):GameThemes.Current.Background;color.a=GameThemes.IsClassic?.88f:.94f;return color;}
         }
-        private void ThemeChoices()
+        private void ThemeChoices(float y=-70,bool compact=false)
         {
-            var row=MenuAction("theme","主题",new Vector2(0,-70),350,()=>app.CycleTheme(1));
-            themeName=Label(Rect("Theme name",new Vector2(90,0),new Vector2(110,48),row.button.transform),GameThemes.Current.Name,25,Quiet);
-            themePreviousIcon=ThemeArrow("theme-prev",new Vector2(29,0),-1,row.button.transform);
-            themeNextIcon=ThemeArrow("theme-next",new Vector2(151,0),1,row.button.transform);
+            var row=MenuAction("theme","主题",new Vector2(compact?30:0,y),compact?300:350,()=>app.CycleTheme(1));
+            themeName=Label(Rect("Theme name",new Vector2(compact?35:90,0),new Vector2(compact?80:110,48),row.button.transform),GameThemes.Current.Name,25,Quiet);
+            themePreviousIcon=ThemeArrow("theme-prev",new Vector2(compact?-23:29,0),-1,row.button.transform);
+            themeNextIcon=ThemeArrow("theme-next",new Vector2(compact?93:151,0),1,row.button.transform);
         }
         private GameIconGraphic ThemeArrow(string id,Vector2 position,int direction,Transform parent)
         {

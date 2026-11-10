@@ -35,7 +35,7 @@ namespace DraculasBox.Editor
             a.levels=CampaignProject.LevelReferences(a.Catalog,Root+"/Content");
             a.sprites=Directory.GetFiles(Root+"/Art/Sprites","*.png").Select(p=>AssetDatabase.LoadAssetAtPath<Sprite>(p.Replace('\\','/'))).ToArray();
             a.ResetSpriteCache();
-            a.audio=AssetDatabase.FindAssets("t:AudioClip",new[]{"Assets/Studies/BoxOrVoid/Audio",Root+"/Art/Audio"}).Select(g=>AssetDatabase.LoadAssetAtPath<AudioClip>(AssetDatabase.GUIDToAssetPath(g))).ToArray();
+            ConfigureAudio(a);
             a.font=Font("TitleFont","Assets/Studies/BoxOrVoid/Art/Fonts/NotoSansSC-Black.ttf");
             a.bodyFont=Font("BodyFont","Assets/Art/Fonts/Cn/思源黑体SourceHanSansCN-Medium.ttf");
             a.material=AssetDatabase.LoadAssetAtPath<Material>(Root+"/Settings/Sprite.mat");if(a.material==null){a.material=new Material(Shader.Find("Universal Render Pipeline/2D/Sprite-Unlit-Default"));AssetDatabase.CreateAsset(a.material,Root+"/Settings/Sprite.mat");}
@@ -67,9 +67,18 @@ namespace DraculasBox.Editor
             a.catalog=AssetDatabase.LoadAssetAtPath<TextAsset>(Root+"/Content/Chapters.json");
             a.replays=AssetDatabase.LoadAssetAtPath<TextAsset>(Root+"/Content/Replays.json");
             a.levels=CampaignProject.LevelReferences(a.Catalog,Root+"/Content");
-            a.audio=AssetDatabase.FindAssets("t:AudioClip",new[]{"Assets/Studies/BoxOrVoid/Audio",Root+"/Art/Audio"}).Select(g=>AssetDatabase.LoadAssetAtPath<AudioClip>(AssetDatabase.GUIDToAssetPath(g))).ToArray();
+            ConfigureAudio(a);
             a.font=Font("TitleFont","Assets/Studies/BoxOrVoid/Art/Fonts/NotoSansSC-Black.ttf");a.bodyFont=Font("BodyFont","Assets/Art/Fonts/Cn/思源黑体SourceHanSansCN-Medium.ttf");
             EditorUtility.SetDirty(a);AssetDatabase.SaveAssetIfDirty(a);
+        }
+        public static void ConfigureAudio(GameAssets a)
+        {
+            const string music=Root+"/Art/Audio/Music/";
+            a.mainMusic=AssetDatabase.LoadAssetAtPath<AudioClip>(music+"HypnoticJewels.ogg");
+            a.editorMusic=AssetDatabase.LoadAssetAtPath<AudioClip>(music+"PuzzleTune1B.ogg");
+            a.audio=AssetDatabase.FindAssets("t:AudioClip",new[]{"Assets/Studies/BoxOrVoid/Audio",Root+"/Art/Audio"})
+                .Select(AssetDatabase.GUIDToAssetPath).Where(p=>!p.StartsWith(music,StringComparison.Ordinal))
+                .Select(AssetDatabase.LoadAssetAtPath<AudioClip>).Where(c=>c!=null&&c.name!="Firmament_loopable"&&c.name!="Covert Affair_Loop").ToArray();
         }
         private static TMP_FontAsset Font(string name,string source)
         {

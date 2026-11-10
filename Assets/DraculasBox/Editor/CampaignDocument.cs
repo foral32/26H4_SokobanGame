@@ -89,6 +89,16 @@ namespace DraculasBox.Editor
             (chapters[i], chapters[to]) = (chapters[to], chapters[i]);
             LinkChapters();
         }
+        public void RemoveChapter(string id)
+        {
+            if(Data.catalog.chapters.Length==1)throw new InvalidOperationException("至少保留一个章节。");
+            var chapter=Data.Chapter(id);
+            var removed=new HashSet<string>(chapter.levels.Select(l=>l.id));
+            Data.catalog.chapters=Data.catalog.chapters.Where(c=>c.id!=id).ToArray();
+            Data.boards=Data.boards.Where(b=>!removed.Contains(b.id)).ToArray();
+            Data.replays.levels=Data.replays.levels.Where(p=>!removed.Contains(p.id)).ToArray();
+            LinkChapters();
+        }
         public string AddLevel(Chapter c, ChapterLink after, bool duplicate)
         {
             var board = duplicate ? Data.Board(after.id).Copy() : LevelData.Blank();

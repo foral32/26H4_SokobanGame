@@ -149,7 +149,7 @@ namespace DraculasBox.Runtime
             if(action==StudyAction.Confirm){if(rows[selected].button.interactable&&rows[selected].enabled&&rows[selected].submit!=null)rows[selected].submit();else rows[selected].button.onClick.Invoke();return;}
             if((int)action>3)return;
             if(app.Page==GamePage.Settings&&selected<2&&(action==StudyAction.Left||action==StudyAction.Right)){app.AdjustVolume(selected,action==StudyAction.Left?-.1f:.1f);return;}
-            if(app.Page==GamePage.Settings&&SelectedId=="theme"&&(action==StudyAction.Left||action==StudyAction.Right)){app.CycleTheme(action==StudyAction.Left?-1:1);return;}
+            if((app.Page==GamePage.Settings||app.Page==GamePage.Paused)&&SelectedId=="theme"&&(action==StudyAction.Left||action==StudyAction.Right)){app.CycleTheme(action==StudyAction.Left?-1:1);return;}
             if(app.Page==GamePage.Title&&(action==StudyAction.Up||action==StudyAction.Down))
             {
                 int next=Mathf.Clamp(selected+(action==StudyAction.Down?1:-1),0,rows.Count-1);

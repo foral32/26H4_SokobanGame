@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -50,5 +51,30 @@ namespace DraculasBox.Runtime
         {var b=EditorButton(id,"",position,size,action,false,parent,navigable);Icon("Icon",icon,Vector2.zero,22,WorkshopInk,b.transform);return b;}
         public void WorkshopPopup(GameObject popup){workshopPopup=popup;}
         public bool CloseWorkshopPopup(){if(workshopPopup==null||!workshopPopup.activeSelf)return false;workshopPopup.SetActive(false);int more=rows.FindIndex(r=>r.id=="more-custom");if(more>=0)Focus(more);return true;}
+        public RectTransform WorkshopOverlay(string name,Vector2 center,Vector2 size,Action close)
+        {
+            CommitText();
+            foreach(var row in rows){row.button.interactable=false;row.motion.Selected=false;}
+            rows.Clear();selected=0;light=true;
+            var shade=Rect("Overlay backdrop",Vector2.zero,Vector2.zero);
+            shade.anchorMin=Vector2.zero;shade.anchorMax=Vector2.one;shade.offsetMin=shade.offsetMax=Vector2.zero;
+            var dismiss=ClickTarget(shade);dismiss.GetComponent<Image>().color=new Color(0,0,0,.32f);
+            Register("campaign-overlay-outside",dismiss,close,null,navigable:false);
+            var root=Rect(name,center,size);
+            WorkshopPanel("Overlay shadow",new Vector2(3,-5),size+Vector2.one*4,root).color=new Color(0,0,0,.20f);
+            WorkshopPanel("Overlay surface",Vector2.zero,size,root);
+            WorkshopPanel("Overlay border",Vector2.zero,size,root,true);
+            root.gameObject.AddComponent<WorkshopPopover>();
+            return root;
+        }
+        public void OnFocus(string id,Action focused)
+        {var row=rows.First(r=>r.id==id);row.focus=focused;}
+        public Button WorkshopTextAction(string id,string value,Vector2 position,Vector2 size,Action action,Transform parent=null)
+        {
+            var rect=Rect(id,position,size,parent);var button=ClickTarget(rect);
+            Label(Rect("Label",Vector2.zero,size,rect),value,18,Muted,TextAlignmentOptions.MidlineLeft);
+            var line=Image("Focus",null,new Vector2(0,-size.y*.5f+3),new Vector2(size.x,1),new Color(WorkshopAccent.r,WorkshopAccent.g,WorkshopAccent.b,0),rect);
+            Register(id,button,action,line);return button;
+        }
     }
 }

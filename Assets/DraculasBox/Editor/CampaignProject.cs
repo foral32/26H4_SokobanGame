@@ -137,19 +137,32 @@ namespace DraculasBox.Editor
         }
         public void Reload() { using (Lock()) ReadSource(); }
 
-        public static string PublicationError(CampaignContent data)
+        internal readonly struct PublicationIssue
+        {
+            public readonly string id,title,message;
+            public readonly bool trial;
+            public PublicationIssue(LevelData board,string message,bool trial)
+            {id=board.id;title=board.title;this.message=message;this.trial=trial;}
+        }
+        public static List<PublicationIssue> PublicationIssues(CampaignContent data)
         {
             CampaignDocument.ValidateGraph(data);
+            var issues=new List<PublicationIssue>();
             foreach (var link in data.catalog.chapters.SelectMany(c => c.levels))
             {
                 var b = data.Board(link.id);
                 string error = new EditDocument(b).Validation();
-                if (error != null) return b.title + " · " + error;
+                if(error!=null){issues.Add(new PublicationIssue(b,error,false));continue;}
                 var plan = data.Plan(b.id);
                 if (!CampaignDocument.Proves(b, plan?.route, out int pushes) || pushes != plan.pushes)
-                    return "请先在「" + b.title + "」中按 F5 通关一次，记录可用路线。";
+                    issues.Add(new PublicationIssue(b,"待试玩通关，记录有效路线",true));
             }
-            return null;
+            return issues;
+        }
+        public static string PublicationError(CampaignContent data)
+        {
+            var issues=PublicationIssues(data);
+            return issues.Count==0?null:issues[0].title+" · "+issues[0].message;
         }
         // The callback is also used by the regression to interrupt a real multi-file import.
         public void Publish(CampaignContent working, string expectedRevision, Action afterImport = null)

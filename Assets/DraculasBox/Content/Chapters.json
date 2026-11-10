@@ -1,245 +1,276 @@
 {
-  "chapters": [
-    {
-      "id": "chapter_1",
-      "title": "\u7B2C\u4E00\u7AE0 \u00B7 \u501F\u5F71\u5F52\u9014",
-      "description": "",
-      "requiresChapter": "",
-      "levels": [
+    "chapters": [
         {
-          "id": "c1_01",
-          "main": true,
-          "requires": []
+            "id": "chapter_1",
+            "title": "第一章 · 光与影",
+            "description": "",
+            "requiresChapter": "",
+            "levels": [
+                {
+                    "id": "c1_01",
+                    "main": true,
+                    "requires": [],
+                    "branchAbove": false
+                },
+                {
+                    "id": "c1_02",
+                    "main": true,
+                    "requires": [
+                        "c1_01"
+                    ],
+                    "branchAbove": false
+                },
+                {
+                    "id": "c1_03",
+                    "main": true,
+                    "requires": [
+                        "c1_02"
+                    ],
+                    "branchAbove": false
+                },
+                {
+                    "id": "c1_04",
+                    "main": true,
+                    "requires": [
+                        "c1_03"
+                    ],
+                    "branchAbove": false
+                },
+                {
+                    "id": "c1_05",
+                    "main": true,
+                    "requires": [
+                        "c1_04"
+                    ],
+                    "branchAbove": false
+                },
+                {
+                    "id": "c1_06",
+                    "main": true,
+                    "requires": [
+                        "c1_05"
+                    ],
+                    "branchAbove": false
+                },
+                {
+                    "id": "c1_07",
+                    "main": true,
+                    "requires": [
+                        "c1_06"
+                    ],
+                    "branchAbove": false
+                }
+            ]
         },
         {
-          "id": "c1_02",
-          "main": true,
-          "requires": [
-            "c1_01"
-          ]
+            "id": "chapter_2",
+            "title": "第二章 · 灯下黑",
+            "description": "",
+            "requiresChapter": "chapter_1",
+            "levels": [
+                {
+                    "id": "c2_01",
+                    "main": true,
+                    "requires": [],
+                    "branchAbove": false
+                },
+                {
+                    "id": "c2_04",
+                    "main": true,
+                    "requires": [
+                        "c2_01"
+                    ],
+                    "branchAbove": false
+                },
+                {
+                    "id": "c2_08",
+                    "main": true,
+                    "requires": [
+                        "c2_04"
+                    ],
+                    "branchAbove": false
+                },
+                {
+                    "id": "c2_02",
+                    "main": true,
+                    "requires": [
+                        "c2_08"
+                    ],
+                    "branchAbove": false
+                },
+                {
+                    "id": "c2_09",
+                    "main": true,
+                    "requires": [
+                        "c2_02"
+                    ],
+                    "branchAbove": false
+                },
+                {
+                    "id": "c2_07",
+                    "main": true,
+                    "requires": [
+                        "c2_09"
+                    ],
+                    "branchAbove": false
+                },
+                {
+                    "id": "c2_b01",
+                    "main": false,
+                    "requires": [
+                        "c2_02"
+                    ],
+                    "branchAbove": false
+                },
+                {
+                    "id": "c2_b02",
+                    "main": false,
+                    "requires": [
+                        "c2_07"
+                    ],
+                    "branchAbove": false
+                }
+            ]
         },
         {
-          "id": "c1_03",
-          "main": true,
-          "requires": [
-            "c1_02"
-          ]
+            "id": "chapter_3",
+            "title": "第三章 · 自由门",
+            "description": "",
+            "requiresChapter": "chapter_2",
+            "levels": [
+                {
+                    "id": "c3_01",
+                    "main": true,
+                    "requires": [],
+                    "branchAbove": false
+                },
+                {
+                    "id": "c3_05",
+                    "main": true,
+                    "requires": [
+                        "c3_01"
+                    ],
+                    "branchAbove": false
+                },
+                {
+                    "id": "c3_02",
+                    "main": true,
+                    "requires": [
+                        "c3_05"
+                    ],
+                    "branchAbove": false
+                },
+                {
+                    "id": "c3_03",
+                    "main": true,
+                    "requires": [
+                        "c3_02"
+                    ],
+                    "branchAbove": false
+                },
+                {
+                    "id": "c3_04",
+                    "main": true,
+                    "requires": [
+                        "c3_03"
+                    ],
+                    "branchAbove": false
+                },
+                {
+                    "id": "c3_06",
+                    "main": true,
+                    "requires": [
+                        "c3_04"
+                    ],
+                    "branchAbove": false
+                },
+                {
+                    "id": "c3_b01",
+                    "main": false,
+                    "requires": [
+                        "c3_05"
+                    ],
+                    "branchAbove": false
+                },
+                {
+                    "id": "c3_b02",
+                    "main": false,
+                    "requires": [
+                        "c3_06"
+                    ],
+                    "branchAbove": false
+                }
+            ]
         },
         {
-          "id": "c1_04",
-          "main": true,
-          "requires": [
-            "c1_03"
-          ]
-        },
-        {
-          "id": "c1_05",
-          "main": true,
-          "requires": [
-            "c1_04"
-          ]
-        },
-        {
-          "id": "c1_06",
-          "main": true,
-          "requires": [
-            "c1_05"
-          ]
-        },
-        {
-          "id": "c1_07",
-          "main": true,
-          "requires": [
-            "c1_06"
-          ]
+            "id": "chapter_4",
+            "title": "第四章 · 镜面之间",
+            "description": "",
+            "requiresChapter": "chapter_3",
+            "levels": [
+                {
+                    "id": "c4_01",
+                    "main": true,
+                    "requires": [],
+                    "branchAbove": false
+                },
+                {
+                    "id": "c4_02",
+                    "main": true,
+                    "requires": [
+                        "c4_01"
+                    ],
+                    "branchAbove": false
+                },
+                {
+                    "id": "c4_03",
+                    "main": true,
+                    "requires": [
+                        "c4_02"
+                    ],
+                    "branchAbove": false
+                },
+                {
+                    "id": "c4_04",
+                    "main": true,
+                    "requires": [
+                        "c4_03"
+                    ],
+                    "branchAbove": false
+                },
+                {
+                    "id": "c4_05",
+                    "main": true,
+                    "requires": [
+                        "c4_04"
+                    ],
+                    "branchAbove": false
+                },
+                {
+                    "id": "c4_06",
+                    "main": true,
+                    "requires": [
+                        "c4_05"
+                    ],
+                    "branchAbove": false
+                },
+                {
+                    "id": "c4_b01",
+                    "main": false,
+                    "requires": [
+                        "c4_03"
+                    ],
+                    "branchAbove": false
+                },
+                {
+                    "id": "c4_b02",
+                    "main": false,
+                    "requires": [
+                        "c4_06"
+                    ],
+                    "branchAbove": false
+                }
+            ]
         }
-      ]
-    },
-    {
-      "id": "chapter_2",
-      "title": "\u7B2C\u4E8C\u7AE0 \u00B7 \u706F\u4E0B\u56DE\u5ECA",
-      "description": "",
-      "requiresChapter": "chapter_1",
-      "levels": [
-        {
-          "id": "c2_01",
-          "main": true,
-          "requires": []
-        },
-        {
-          "id": "c2_04",
-          "main": true,
-          "requires": [
-            "c2_01"
-          ]
-        },
-        {
-          "id": "c2_08",
-          "main": true,
-          "requires": [
-            "c2_04"
-          ]
-        },
-        {
-          "id": "c2_02",
-          "main": true,
-          "requires": [
-            "c2_08"
-          ]
-        },
-        {
-          "id": "c2_09",
-          "main": true,
-          "requires": [
-            "c2_02"
-          ]
-        },
-        {
-          "id": "c2_07",
-          "main": true,
-          "requires": [
-            "c2_09"
-          ]
-        },
-        {
-          "id": "c2_b01",
-          "main": false,
-          "requires": [
-            "c2_02"
-          ]
-        },
-        {
-          "id": "c2_b02",
-          "main": false,
-          "requires": [
-            "c2_07"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "chapter_3",
-      "title": "\u7B2C\u4E09\u7AE0 \u00B7 \u95E8\u91CC\u95E8\u5916",
-      "description": "",
-      "requiresChapter": "chapter_2",
-      "levels": [
-        {
-          "id": "c3_01",
-          "main": true,
-          "requires": []
-        },
-        {
-          "id": "c3_05",
-          "main": true,
-          "requires": [
-            "c3_01"
-          ]
-        },
-        {
-          "id": "c3_02",
-          "main": true,
-          "requires": [
-            "c3_05"
-          ]
-        },
-        {
-          "id": "c3_03",
-          "main": true,
-          "requires": [
-            "c3_02"
-          ]
-        },
-        {
-          "id": "c3_04",
-          "main": true,
-          "requires": [
-            "c3_03"
-          ]
-        },
-        {
-          "id": "c3_06",
-          "main": true,
-          "requires": [
-            "c3_04"
-          ]
-        },
-        {
-          "id": "c3_b01",
-          "main": false,
-          "requires": [
-            "c3_05"
-          ]
-        },
-        {
-          "id": "c3_b02",
-          "main": false,
-          "requires": [
-            "c3_06"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "chapter_4",
-      "title": "\u7B2C\u56DB\u7AE0 \u00B7 \u955C\u9762\u4E4B\u95F4",
-      "description": "",
-      "requiresChapter": "chapter_3",
-      "levels": [
-        {
-          "id": "c4_01",
-          "main": true,
-          "requires": []
-        },
-        {
-          "id": "c4_02",
-          "main": true,
-          "requires": [
-            "c4_01"
-          ]
-        },
-        {
-          "id": "c4_03",
-          "main": true,
-          "requires": [
-            "c4_02"
-          ]
-        },
-        {
-          "id": "c4_04",
-          "main": true,
-          "requires": [
-            "c4_03"
-          ]
-        },
-        {
-          "id": "c4_05",
-          "main": true,
-          "requires": [
-            "c4_04"
-          ]
-        },
-        {
-          "id": "c4_06",
-          "main": true,
-          "requires": [
-            "c4_05"
-          ]
-        },
-        {
-          "id": "c4_b01",
-          "main": false,
-          "requires": [
-            "c4_03"
-          ]
-        },
-        {
-          "id": "c4_b02",
-          "main": false,
-          "requires": [
-            "c4_06"
-          ]
-        }
-      ]
-    }
-  ]
+    ]
 }

@@ -31,12 +31,12 @@ namespace DraculasBox.Editor
         private readonly CampaignProject project;
         private CampaignDocument doc;
         private CampaignDraftFile draft;
-        private string chapterId, selectedId, notice, trialRoute;
+        private string chapterId, selectedId, notice, trialRoute, publicationError;
         private LevelData recovery, trialBoard;
-        private bool rescan;
-        private enum Panel { Chapters, Outline, Actions, Chapter, Anchor, Transfer, Review, Discard, Remove }
+        private bool rescan,reviewOnReturn;
+        private enum Panel { Chapters, Outline, Actions, Anchor, Transfer, Discard, Remove }
         private Panel panel;
-        private int chapterPage, choicePage, reviewPage;
+        private int chapterPage, choicePage;
         private const int Rows = 8;
         public bool EditingBoard { get; private set; }
         private CampaignContent Data => doc.Data;
@@ -93,10 +93,13 @@ namespace DraculasBox.Editor
             panel = returnToMap ? Panel.Outline : Panel.Chapters;
             NormalizeSelection();
             if(!returnToMap)chapterPage=0;
+            overlay=returnToMap&&reviewOnReturn?Overlay.Review:Overlay.None;
+            reviewOnReturn=false;
             Draw();
         }
         public void Back()
         {
+            if(overlay!=Overlay.None){CloseOverlay();return;}
             if(dragId!=null){CancelDrag();return;}
             if(panel==Panel.Chapters){rescan=true;app.ShowTitle();return;}
             if(panel==Panel.Outline){chapterPage=Array.IndexOf(Data.catalog.chapters,Current)/4;Switch(Panel.Chapters);return;}
@@ -104,19 +107,44 @@ namespace DraculasBox.Editor
         }
         private void Switch(Panel next)
         {
-            panel = next; notice = ""; choicePage = reviewPage = 0; Draw();
+            panel = next; overlay=Overlay.None;notice = ""; choicePage = 0; Draw();
+        }
+        private bool Change(Action change)
+        {
+            var chapter=chapterId;var selected=selectedId;var brush=recovery;var route=trialRoute;var trial=trialBoard;
+            try
+            {
+                // Include persistence in the document transaction. A failed draft
+                // write must not leave a deleted chapter selected by its popup.
+                doc.Change(()=>{change();NormalizeSelection();Persist();});
+                notice="";return true;
+            }
+            catch(Exception e)
+            {
+                chapterId=chapter;selectedId=selected;recovery=brush;trialRoute=route;trialBoard=trial;
+                NormalizeSelection();draft.working=Data;draft.chapter=chapterId;draft.selection=selectedId;
+                draft.brushRecovery=recovery;draft.trial=trialRoute;notice=e.Message;return false;
+            }
         }
         private void Edit(Action change)
         {
-            try { doc.Change(change); NormalizeSelection(); Persist(); notice = ""; panel = Panel.Outline; }
-            catch (Exception e) { notice = e.Message; NormalizeSelection(); }
+            if(Change(change)){panel=Panel.Outline;overlay=Overlay.None;}
             Draw();
         }
         private void History(bool undo)
         {
             try
             {
+                int previousIndex=Array.FindIndex(Data.catalog.chapters,c=>c.id==chapterId);
+                var before=new HashSet<string>(Data.catalog.chapters.Select(c=>c.id));
                 if (undo) doc.Undo(); else doc.Redo();
+                var restored=Data.catalog.chapters.FirstOrDefault(c=>!before.Contains(c.id));
+                if(restored!=null){chapterId=restored.id;selectedId=restored.levels.First(l=>l.main).id;}
+                else if(!Data.catalog.chapters.Any(c=>c.id==chapterId))
+                {
+                    var neighbor=Data.catalog.chapters[Mathf.Clamp(previousIndex,0,Data.catalog.chapters.Length-1)];
+                    chapterId=neighbor.id;selectedId=neighbor.levels.First(l=>l.main).id;
+                }
                 NormalizeSelection(); Persist(); notice = "";
             }
             catch (Exception e) { notice = e.Message; }
@@ -131,8 +159,9 @@ namespace DraculasBox.Editor
         {
             selectedId=id;OpenBoard();
         }
-        private void OpenBoard(bool play=false)
+        private void OpenBoard(bool play=false,bool fromReview=false)
         {
+            reviewOnReturn=fromReview;overlay=Overlay.None;
             if(mapView?.Alive==true)mapOffset=mapView.Offset;
             var baseline = Data.Board(selectedId);
             EditingBoard = true;
@@ -194,9 +223,9 @@ namespace DraculasBox.Editor
                 project.ForgetDraft();
                 var chapter = chapterId; var level = selectedId;
                 Load(); chapterId = chapter; selectedId = level; NormalizeSelection();
-                notice = "已写回工程"; panel = Panel.Outline;
+                notice = "已写回工程";publicationError=null;overlay=Overlay.None;
             }
-            catch (Exception e) { notice = e.Message; }
+            catch (Exception e) { notice = publicationError = e.Message; }
             Draw();
         }
         private void Reload()
@@ -205,43 +234,57 @@ namespace DraculasBox.Editor
             {
                 project.Reload();
                 string archive=draft.revision!=project.Revision?project.ArchiveDraft():null;
-                project.ForgetDraft(); Load(); panel = Panel.Outline;
+                project.ForgetDraft(); Load();if(panel!=Panel.Chapters)panel=Panel.Outline;
+                overlay=Overlay.None;
                 notice = archive==null?"已从工程重新读取":"已从工程重新读取，冲突草稿保存在 "+archive;
             }
             catch (Exception e) { notice = e.Message; }
             Draw();
         }
-        private List<string> Changes()
+        private readonly struct ChangeSummary
         {
-            var changes = new List<string>();
+            public readonly string subject,detail;public readonly bool removed;
+            public ChangeSummary(string subject,string detail,bool removed=false)
+            {this.subject=subject;this.detail=detail;this.removed=removed;}
+        }
+        private static string ChapterName(string title)=>System.Text.RegularExpressions.Regex.Replace(title,@"^第[一二三四五六七八九十百零〇\d]+章\s*[·・.、:：/\-—]?\s*","");
+        private List<ChangeSummary> Changes()
+        {
+            var changes = new List<ChangeSummary>();
             var old = draft.baseline;
-            string Describe(CampaignContent src, Chapter chapter, ChapterLink link)
-            {
-                if (link.main) return "主线 " + (CampaignDocument.Main(chapter).FindIndex(m => m.id == link.id) + 1);
-                var siblings = CampaignDocument.Branches(chapter, link.requires[0]);
-                string at = siblings.Count > 1 ? " #" + (siblings.IndexOf(link) + 1) : "";
-                return (link.branchAbove?"上方支线":"下方支线") + at + " · " + src.Board(link.requires[0]).title + " 后解锁";
-            }
+            var before=old.catalog.chapters.ToDictionary(c=>c.id,c=>new ChapterMapLayout(c));
+            var after=Data.catalog.chapters.ToDictionary(c=>c.id,c=>new ChapterMapLayout(c));
+            string Describe(Dictionary<string,ChapterMapLayout> layouts,Chapter c,ChapterLink l)
+                =>layouts[c.id].numbers[l.id]+(l.main?"":l.branchAbove?" ↑":" ↓");
             foreach (var c in Data.catalog.chapters)
             {
                 var was = old.catalog.chapters.FirstOrDefault(o => o.id == c.id);
-                if (was == null) changes.Add("新增章节　" + c.title);
-                else if (was.title != c.title || was.requiresChapter != c.requiresChapter)
-                    changes.Add("章节　" + c.title + "　·　第 " + (Array.IndexOf(Data.catalog.chapters,c)+1) + " 章");
+                if (was == null) changes.Add(new ChangeSummary(ChapterName(c.title),"新增章节"));
+                else
+                {
+                    if(was.title!=c.title)changes.Add(new ChangeSummary(ChapterName(was.title)+" → "+ChapterName(c.title),"改名"));
+                    int prior=Array.IndexOf(old.catalog.chapters,was)+1,next=Array.IndexOf(Data.catalog.chapters,c)+1;
+                    if(prior!=next)changes.Add(new ChangeSummary(ChapterName(c.title),prior+" → "+next));
+                }
                 foreach (var l in CampaignDocument.Outline(c))
                 {
                     var b = Data.Board(l.id);
                     var prevChapter = old.catalog.chapters.FirstOrDefault(o => o.levels.Any(n => n.id == l.id));
-                    if (prevChapter == null) { changes.Add("新增　" + b.title + "　·　" + c.title + " / " + Describe(Data,c,l)); continue; }
+                    if (prevChapter == null) { changes.Add(new ChangeSummary(ChapterName(c.title)+" / "+b.title,l.main?"新增主线":"新增支线")); continue; }
                     var prev = prevChapter.levels.First(n => n.id == l.id);
-                    string prior = Describe(old,prevChapter,prev), next = Describe(Data,c,l);
+                    string prior = Describe(before,prevChapter,prev), next = Describe(after,c,l);
                     if (prior != next || prevChapter.id != c.id || !l.main&&!prev.main&&l.requires[0]!=prev.requires[0])
-                        changes.Add(b.title + "　·　" + (prevChapter.id!=c.id?prevChapter.title+" / ":"") + prior + " → " + (prevChapter.id!=c.id?c.title+" / ":"") + next);
-                    if (!b.ContentEquals(old.Board(b.id))) changes.Add("修改关卡　" + b.title);
-                    else if (Data.Plan(b.id)?.route != old.Plan(b.id)?.route) changes.Add("通关路线　" + b.title);
+                        changes.Add(new ChangeSummary(b.title,prevChapter.id!=c.id?ChapterName(prevChapter.title)+" → "+ChapterName(c.title):prior+" → "+next));
+                    var prevBoard=old.Board(b.id).Copy();
+                    if(b.title!=prevBoard.title){changes.Add(new ChangeSummary(prevBoard.title+" → "+b.title,"改名"));prevBoard.title=b.title;}
+                    if (!b.ContentEquals(prevBoard)) changes.Add(new ChangeSummary(b.title,"棋盘"));
+                    else if (Data.Plan(b.id)?.route != old.Plan(b.id)?.route) changes.Add(new ChangeSummary(b.title,"通关路线"));
                 }
             }
-            foreach (var b in old.boards.Where(b => !Data.boards.Any(n => n.id == b.id))) changes.Add("移出正式目录　" + b.title);
+            var deleted=old.catalog.chapters.Where(c=>!Data.catalog.chapters.Any(n=>n.id==c.id)).ToArray();
+            foreach(var c in deleted)changes.Add(new ChangeSummary(ChapterName(c.title),"删除章节",true));
+            var deletedBoards=new HashSet<string>(deleted.SelectMany(c=>c.levels).Select(l=>l.id));
+            foreach (var b in old.boards.Where(b => !Data.boards.Any(n => n.id == b.id)&&!deletedBoards.Contains(b.id))) changes.Add(new ChangeSummary(b.title,"移出",true));
             return changes;
         }
     }

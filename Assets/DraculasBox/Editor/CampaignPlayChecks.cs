@@ -13,7 +13,7 @@ using UnityEngine.EventSystems;
 namespace DraculasBox.Editor
 {
     // Two separate Editor Play sessions exercise real asset imports and recovery on domain reload.
-    public static class CampaignPlayChecks
+    public static partial class CampaignPlayChecks
     {
         private const string Key = "DraculasBox.CheckCampaign.";
         private const string Evidence = "DraculasBox/Evidence/CampaignMapPlay";
@@ -286,7 +286,7 @@ namespace DraculasBox.Editor
             Need(app.assets.Level("c1_01").title=="归棺","ordinary gameplay reads the published name");
             app.OpenCampaign();yield return Ready();
             yield return Click("campaign-new-chapter");string extra=Draft().chapter;
-            yield return Click("campaign-back");
+            yield return Click("chapter-apply");
             Need(app.UI.Root.Find("Chapter page").GetComponent<TMP_Text>().text=="2 / 2","returning from the fifth chapter explicitly shows the second page");
             Capture("chapter-page-last");
             yield return Click("campaign-back");yield return Click("campaign");
@@ -352,20 +352,19 @@ namespace DraculasBox.Editor
             yield return Click("save");yield return Click("leave-editor");yield return Page(GamePage.Campaign);
             yield return Click("campaign-review");
             Need(!app.UI.FindButton("campaign-publish").interactable,"missing winning route leaves a new board editable and unpublished");
-            yield return Click("campaign-fix");yield return Click("test");yield return Page(GamePage.Playing);
+            yield return Click("campaign-fix-"+fresh);yield return Page(GamePage.Playing);
             app.Act(Command.Left);app.Act(Command.Reset);app.Act(Command.Undo);app.Act(Command.Undo);app.Act(Command.Right);
             yield return Page(GamePage.Editing);
             Need(Draft().working.Plan(fresh).route=="R"&&!app.Progress.Done(fresh),"F5 records the winning route across reset and undo without awarding progress");
-            yield return Click("leave-editor");yield return Drag(fresh,"c1_01",lower);
+            yield return Click("leave-editor");yield return Click("campaign-popup-close");yield return Drag(fresh,"c1_01",lower);
             yield return Click("campaign-back");
             yield return Click("campaign-new-chapter");string newChapter=Draft().chapter,seed=Draft().selection;
             Set("chapter",newChapter);Set("seed",seed);
-            yield return Click("campaign-chapter-settings");
-            var chapterTitle=app.UI.Root.Find("Campaign chapter title").GetComponent<TMP_InputField>();
+            var chapterTitle=app.UI.Root.GetComponentInChildren<TMP_InputField>();
             chapterTitle.text="第五章 · 夜访";yield return Click("chapter-earlier");
             var changed=Draft().working.catalog.chapters;
             Need(changed[3].id==newChapter&&changed[4].requiresChapter==newChapter,"chapter rename and reorder update the actual chapter prerequisites");
-            yield return Click("campaign-chapter-settings");yield return Click("chapter-later");
+            yield return Click("chapter-later");yield return Click("chapter-apply");
             yield return Chapter("chapter_1");yield return Options("c1_02");yield return Click("campaign-copy");
             string moved=Draft().selection;Set("moved",moved);
             yield return Options(moved);yield return Click("campaign-transfer");yield return Click("target-"+newChapter);
@@ -378,7 +377,7 @@ namespace DraculasBox.Editor
             yield return Chapter("chapter_1");app.UI.FocusButton("select-level-"+fresh);
             yield return Click("campaign-review");Capture("review");
             Need(app.UI.FindButton("campaign-publish").interactable,"review lists publishable graph, boards and verified routes");
-            yield return Click("campaign-back");
+            yield return Click("campaign-popup-close");
             Need(new CampaignProject(fixture).Revision==Get("start"),"all pre-publication edits left the original project content intact");
             Need(app.Library.Recovery().id==custom.id&&app.Library.Read(out _).Count==0,"campaign boards and recovery stay out of the personal library");
             yield return Click("select-level-"+fresh);

@@ -19,7 +19,7 @@ namespace DraculasBox.Runtime
         private void Update()
         {
             float q=Time.unscaledTime-pulse;float tap=q<.18f?Mathf.Sin(q/.18f*Mathf.PI)*.075f:0;
-            float target=(pressed?.94f:Selected||hover?1.045f:1)-tap;
+            float target=(pressed?.94f:hover?1.08f:Selected?1.045f:1)-tap;
             transform.localScale=Vector3.Lerp(transform.localScale,Vector3.one*target,1-Mathf.Exp(-Time.unscaledDeltaTime/.045f));
             float rejectTime=Time.unscaledTime-rejected;if(rejectTime<.22f)((RectTransform)transform).anchoredPosition=origin+Vector2.right*Mathf.Sin(rejectTime*83)*(1-rejectTime/.22f)*4;else if(rejected>0){((RectTransform)transform).anchoredPosition=origin;rejected=-10;}
             if(focusGraphic!=null){var c=focusGraphic.color;c.a=Mathf.Lerp(c.a,Selected?1:0,1-Mathf.Exp(-Time.unscaledDeltaTime/.055f));focusGraphic.color=c;}
