@@ -54,7 +54,7 @@ namespace DraculasBox.Runtime
         {
             yield return Ready();bool scene=id=="sun"||id.StartsWith("sun-dir-")||id.StartsWith("width-")||id.StartsWith("height-");
             if(app.Page==GamePage.Editing&&scene&&app.UI.FindButton(id)==null){app.UI.ClickForCheck("scene");yield return null;}
-            if(app.Page==GamePage.Editing&&(id=="save-copy"||id=="export-editor"||id=="editor-help")&&app.UI.FindButton(id)==null){app.UI.ClickForCheck("editor-files");yield return null;}
+            if(app.Page==GamePage.Editing&&(id=="save-copy"||id=="export-editor")&&app.UI.FindButton(id)==null){app.UI.ClickForCheck("editor-files");yield return null;}
             if(app.Page==GamePage.Library&&(id=="duplicate-custom"||id=="export-custom"||id=="remove-custom")&&app.UI.FindButton(id)==null){app.UI.ClickForCheck("more-custom");yield return null;}
             if(app.Page==GamePage.Editing&&id.StartsWith("brush-")&&int.TryParse(id.Substring(6),out int brush)&&brush!=7){app.Creator.RevealBrush((Brush)brush);Canvas.ForceUpdateCanvases();yield return null;}
             app.UI.ClickForCheck(id);yield return new WaitForSecondsRealtime(.08f);yield return Ready();

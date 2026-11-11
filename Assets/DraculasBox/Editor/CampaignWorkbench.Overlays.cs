@@ -10,11 +10,11 @@ namespace DraculasBox.Editor
 {
     internal sealed partial class CampaignWorkbench
     {
-        private enum Overlay { None,Chapter,DeleteChapter,Review,Reload }
+        private enum Overlay { None,Chapter,DeleteChapter,Review,Reload,Level }
         private Overlay overlay;
         private string overlayChapterId,chapterNameDraft,overlayError;
         private TMP_InputField chapterName;
-        private Vector2 chapterPopupCenter;
+        private Vector2 chapterPopupCenter,levelPopupCenter;
 
         private void NewChapter()
         {
@@ -63,13 +63,52 @@ namespace DraculasBox.Editor
             label.transform.SetParent(parent,false);return label;
         }
         private Button OverlayButton(Transform parent,string id,string text,Vector2 pos,Vector2 size,Action action,bool primary=false)
-            =>UI.EditorButton(id,text,pos,size,action,primary,parent,true);
+        {
+            var button=UI.EditorButton(id,text,pos,size,action,primary,parent,true);
+            if(size.x<=40)button.transform.Find("Label").GetComponent<TMP_Text>().rectTransform.sizeDelta=size;
+            return button;
+        }
         private void DrawOverlay()
         {
-            if(overlay==Overlay.Chapter)DrawChapterPopup();
+            if(overlay==Overlay.Level)DrawLevelPopup();
+            else if(overlay==Overlay.Chapter)DrawChapterPopup();
             else if(overlay==Overlay.DeleteChapter)DrawDeleteChapter();
             else if(overlay==Overlay.Review)DrawReviewPopup();
             else if(overlay==Overlay.Reload)DrawReloadPopup();
+        }
+        private void ShowLevelTools(string id)
+        {
+            if(dragId!=null)CancelDrag();selectedId=id;
+            var button=mapView?.Alive==true?mapView.Button(id):null;
+            var at=button==null?Vector2.zero:(Vector2)UI.Root.InverseTransformPoint(button.transform.position);
+            levelPopupCenter=new Vector2(Mathf.Clamp(at.x+176,-468,468),Mathf.Clamp(at.y-92,-154,154));
+            overlay=Overlay.Level;notice="";Draw();
+        }
+        private void DrawLevelPopup()
+        {
+            var level=Data.Board(selectedId);var node=Selected;float height=node.main?330:374;
+            var root=UI.WorkshopOverlay("Level tools",levelPopupCenter,new Vector2(304,height),CloseOverlay);
+            float y=height*.5f-28;
+            OverlayText(root,"Selected level",level.title,new Vector2(-10,y),new Vector2(240,32),22);
+            OverlayButton(root,"level-tools-close","×",new Vector2(127,y),new Vector2(30,28),CloseOverlay);
+            y-=52;
+            OverlayButton(root,"campaign-edit","编辑",new Vector2(-70,y),new Vector2(128,36),()=>OpenBoard(),true);
+            OverlayButton(root,"campaign-test","试玩",new Vector2(70,y),new Vector2(128,36),()=>OpenBoard(true));
+            UI.SetEnabled("campaign-test",new DraculasBox.Core.EditDocument(level).Validation()==null);
+            y-=48;
+            OverlayButton(root,"campaign-main","主线",new Vector2(-70,y),new Vector2(128,34),()=>Edit(()=>doc.SetRole(Current,Selected,null)));
+            OverlayButton(root,"campaign-branch","支线…",new Vector2(70,y),new Vector2(128,34),()=>Switch(Panel.Anchor));
+            UI.WorkshopChoice("campaign-main",node.main);UI.WorkshopChoice("campaign-branch",!node.main);
+            y-=44;var peers=CampaignDocument.Peers(Current,node);int index=peers.IndexOf(node);
+            OverlayButton(root,"campaign-up","向前",new Vector2(-70,y),new Vector2(128,34),()=>Edit(()=>doc.MoveLevel(Current,Selected,-1)));
+            OverlayButton(root,"campaign-down","向后",new Vector2(70,y),new Vector2(128,34),()=>Edit(()=>doc.MoveLevel(Current,Selected,1)));
+            UI.SetEnabled("campaign-up",index>0);UI.SetEnabled("campaign-down",index+1<peers.Count);
+            if(!node.main){y-=44;OverlayButton(root,"campaign-anchor","解锁："+Data.Board(node.requires[0]).title,new Vector2(0,y),new Vector2(268,34),()=>Switch(Panel.Anchor));}
+            y-=44;OverlayButton(root,"campaign-copy","复制关卡",new Vector2(0,y),new Vector2(268,34),()=>Edit(()=>selectedId=doc.AddLevel(Current,Selected,true)));
+            y-=40;OverlayButton(root,"campaign-transfer","移至章节…",new Vector2(0,y),new Vector2(268,34),()=>Switch(Panel.Transfer));UI.SetEnabled("campaign-transfer",Data.catalog.chapters.Length>1);
+            y-=40;var remove=OverlayButton(root,"campaign-remove","移出目录…",new Vector2(0,y),new Vector2(268,34),()=>Switch(Panel.Remove));
+            remove.transform.Find("Label").GetComponent<TMP_Text>().color=new Color32(184,67,88,255);
+            UI.FocusButton("campaign-edit");
         }
         private void DrawChapterPopup()
         {

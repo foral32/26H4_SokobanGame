@@ -13,7 +13,7 @@ namespace DraculasBox.Runtime
         private SpriteMask editMask;private Vector3 editorPan;private float editorZoom=1;
         private SpriteRenderer[] illumination,dust,embers,lampGlows,mirrorRays;private SpriteRenderer ghost;private float deathAt=-1;private float[] shineFrom,shineTo;
         public const float DeathImpactSeconds=.115f,DeathSeconds=.60f;public float EditorZoom=>editorZoom;
-        public const float EditorWidth=1080,EditorHeight=512,EditorX=54,EditorY=-28;
+        public const float EditorWidth=1056,EditorHeight=512,EditorX=66,EditorY=-28;
         private bool paletteCollapsed;private float EditorViewWidth=>paletteCollapsed?1188:EditorWidth;private float EditorViewX=>paletteCollapsed?0:EditorX;
         public void EditorPaletteCollapsed(bool value){paletteCollapsed=value;if(state!=null&&editing)Fit();}
         private SpriteRenderer[] floors,pieces,pieceShadows;private SpriteRenderer player,cape,fangs,coffin,lid,warning;
@@ -51,7 +51,11 @@ namespace DraculasBox.Runtime
                 {
                     BuildStoneWall(p,pos);
                 }
-                if(terrain==' '&&edit){var v=Make("Void "+p,"solid",-25,pos,.96f);v.color=GameThemes.IsClassic?new Color32(30,36,43,255):GameThemes.Current.Background;}
+                if(terrain==' '&&edit)
+                {
+                    int neighbors=0;for(int i=0;i<StoneOffsets.Length;i++)if(d.Inside(p+StoneOffsets[i])&&d.Terrain(p+StoneOffsets[i])==' ')neighbors|=1<<i;
+                    var pit=MakeSprite("Pit "+p,SurfaceSprites.Pit(neighbors),-25,pos,1);pit.color=Color.white;
+                }
             }
             if(s.SunEnabled)BuildSunIndicator();
             BuildDevices();
@@ -100,7 +104,7 @@ namespace DraculasBox.Runtime
         public bool InViewport(Vector2 screen){if(!editing)return true;var w=cameraView.ScreenToWorldPoint(screen);return Mathf.Abs(w.x-normalFrame.x)<=EditorViewWidth*.5f*unitsPerUI&&Mathf.Abs(w.y-normalFrame.y)<=EditorHeight*.5f*unitsPerUI;}
         public void ZoomAt(Vector2 screen,float multiplier){if(!editing||!InViewport(screen))return;var w=cameraView.ScreenToWorldPoint(screen);w.z=0;var p=boardRoot.InverseTransformPoint(w);editorZoom=Mathf.Clamp(editorZoom*multiplier,.65f,4);editorPan=w-normalFrame-p*editorZoom;ClampPan();ApplyFrame();}
         public void Pan(Vector2 pixels){if(!editing)return;editorPan+=(Vector3)(pixels*cameraView.orthographicSize*2/cameraView.pixelHeight);ClampPan();ApplyFrame();}
-        public void BrushPreview(Cell? cell,Brush brush,bool valid){if(ghost==null)return;ghost.enabled=editing&&cell.HasValue;if(!ghost.enabled)return;string icon=brush==Brush.Box?"Box_active_white":brush==Brush.Player?"vampire":brush==Brush.Coffin?"coffin-open":brush==Brush.Lamp?"lamp":brush==Brush.MirrorSlash?"mirror-slash":brush==Brush.MirrorBackslash?"mirror-backslash":"solid";SetSprite(ghost,assets.Sprite(icon));ghost.transform.localPosition=Position(cell.Value);ghost.color=valid?new Color(.85f,.91f,1,.48f):new Color(1,.35f,.28f,.5f);}
+        public void BrushPreview(Cell? cell,Brush brush,bool valid){if(ghost==null)return;ghost.enabled=editing&&cell.HasValue;if(!ghost.enabled)return;string icon=brush==Brush.Box?"Box_active_white":brush==Brush.Player?"vampire":brush==Brush.Coffin?"coffin-open":brush==Brush.Lamp?"lamp":brush==Brush.MirrorSlash?"mirror-slash":brush==Brush.MirrorBackslash?"mirror-backslash":"solid";SetSprite(ghost,brush==Brush.Void?SurfaceSprites.Pit(0):assets.Sprite(icon));ghost.transform.localPosition=Position(cell.Value);ghost.color=valid?new Color(.85f,.91f,1,.48f):new Color(1,.35f,.28f,.5f);}
         public void HighlightInvalid(Cell? cell){if(warning==null)return;warning.enabled=editing&&cell.HasValue;if(cell.HasValue){warning.transform.localPosition=Position(cell.Value);warning.color=new Color(1,.35f,.3f,.8f);}}
         public void FitForCapture(){if(state!=null)Fit();}
         public Vector3 Position(Cell p)=>new Vector3(p.x-(state.Level.Width-1)*.5f,(state.Level.Height-1)*.5f-p.y,0);

@@ -17,14 +17,17 @@ namespace DraculasBox.Runtime
             if(!Application.isPlaying||DraculaApp.CreateCampaignWorkshop==null)return;
             var old=parent.Find("campaign");
             if(old!=null){old.gameObject.SetActive(false);Destroy(old.gameObject);}
-            var size=new Vector2(204,52);
+            var size=new Vector2(238,60);
             var r=Rect("campaign",Vector2.zero,size,parent);
             r.anchorMin=r.anchorMax=r.pivot=new Vector2(1,0);r.anchoredPosition=new Vector2(-28,22);
             var b=ClickTarget(r);
-            var face=Image("Surface",null,Vector2.zero,size,Color.Lerp(Night,GameThemes.Current.Panel,.85f),r);Rounded(face);
-            var line=Image("Outline",null,Vector2.zero,size,Color.Lerp(Night,Quiet,.48f),r);Rounded(line,true);
-            Icon("Icon",GameIcon.Create,new Vector2(-76,0),24,Gold,r);
-            Label(Rect("Label",new Vector2(13,0),new Vector2(156,43),r),"编辑正式关卡",23,White);
+            var theme=GameThemes.Current;
+            var shadow=Image("Shadow",null,new Vector2(0,-4),size,new Color(0,0,0,.25f),r);Rounded(shadow);
+            var face=Image("Surface",null,Vector2.zero,size,Color.Lerp(theme.Button,theme.TitleFace,.72f),r);Rounded(face);
+            var line=Image("Outline",null,Vector2.zero,size,Color.Lerp(theme.TitleFace,theme.TitleDepth,.19f),r);Rounded(line,true);
+            Image("Accent",null,new Vector2(-116,0),new Vector2(3,36),theme.TitleDepth,r).raycastTarget=false;
+            Icon("Icon",GameIcon.Create,new Vector2(-88,0),27,theme.TitleDepth,r);
+            Label(Rect("Label",new Vector2(20,0),new Vector2(178,43),r),"编辑正式关卡",24,theme.Ink);
             var focus=Rect("Focus",Vector2.zero,size+new Vector2(8,8),r).gameObject.AddComponent<SelectionCorners>();
             focus.color=new Color(Gold.r,Gold.g,Gold.b,0);focus.raycastTarget=false;
             Register("campaign",b,app.OpenCampaign,focus);
@@ -62,7 +65,7 @@ namespace DraculasBox.Runtime
             private sealed class Node
             {
                 public Button button;public RectTransform rect;public MenuTileGraphic face;public Graphic frame,focus,locked,done;
-                public TMP_Text number,name;public CanvasGroup group;
+                public TMP_Text number,name;public CanvasGroup group;public Button more;
             }
             private readonly GameUI ui;
             private readonly bool editing;
@@ -73,6 +76,10 @@ namespace DraculasBox.Runtime
             private readonly List<(RectTransform rect,Vector2 from,Vector2 to)> slides=new();
             private Coroutine slide;
             private readonly Image marker;
+            private readonly RectTransform originGhost,dropSlot;
+            private readonly CanvasGroup originAlpha;
+            private readonly MenuTileGraphic originFace;
+            private readonly TMP_Text originNumber;
             private int used;
             private bool changing;
             private string highlighted;
@@ -81,7 +88,7 @@ namespace DraculasBox.Runtime
             public float Offset=>-sheet.anchoredPosition.x;
             public Button Button(string id)=>nodes[id].button;
 
-            public ChapterMapView(GameUI ui,Chapter c,bool editing,Func<string,string> title,Action<string> open,Action<string> focus=null)
+            public ChapterMapView(GameUI ui,Chapter c,bool editing,Func<string,string> title,Action<string> open,Action<string> focus=null,Action<string> options=null)
             {
                 this.ui=ui;this.editing=editing;
                 viewport=ui.Rect("Chapter map",new Vector2(0,5),new Vector2(ChapterMapLayout.ViewWidth,ChapterMapLayout.ViewHeight));
@@ -97,6 +104,14 @@ namespace DraculasBox.Runtime
                     marker=ui.Image("Insertion point",null,Vector2.zero,Vector2.one*8,Gold,wireRoot);
                     marker.rectTransform.localRotation=Quaternion.Euler(0,0,45);
                     marker.gameObject.SetActive(false);
+                    originGhost=ui.Rect("Drag origin",Vector2.zero,Vector2.one*92,sheet);originGhost.anchorMin=originGhost.anchorMax=new Vector2(0,.5f);
+                    originAlpha=originGhost.gameObject.AddComponent<CanvasGroup>();originAlpha.alpha=.24f;originAlpha.blocksRaycasts=false;
+                    originFace=ui.Rect("Ghost tile",Vector2.zero,Vector2.one*92,originGhost).gameObject.AddComponent<MenuTileGraphic>();originFace.raycastTarget=false;
+                    originNumber=ui.Label(ui.Rect("Ghost number",Vector2.zero,new Vector2(88,62),originGhost),"",40,Quiet);
+                    var rim=ui.Rect("Ghost rim",Vector2.zero,Vector2.one*104,originGhost).gameObject.AddComponent<SelectionCorners>();rim.color=Quiet;rim.raycastTarget=false;
+                    originGhost.gameObject.SetActive(false);
+                    dropSlot=ui.Rect("Drop destination",Vector2.zero,Vector2.one*104,sheet);dropSlot.anchorMin=dropSlot.anchorMax=new Vector2(0,.5f);
+                    var target=dropSlot.gameObject.AddComponent<SelectionCorners>();target.color=Gold;target.raycastTarget=false;dropSlot.gameObject.SetActive(false);
                 }
                 foreach(var link in c.levels)
                 {
@@ -112,6 +127,11 @@ namespace DraculasBox.Runtime
                     if(!available)n.locked=ui.Icon("Lock",GameIcon.Lock,Vector2.zero,32,GameThemes.Current.Lock,r);
                     if(!editing&&ui.app.Progress.Done(id))n.done=ui.Icon("Completed",GameIcon.Check,Vector2.zero,17,Gold,r);
                     nodes[id]=n;
+                    if(editing&&options!=null)
+                    {
+                        n.more=ui.EditorButton("level-menu-"+id,"…",new Vector2(43,34),new Vector2(30,26),()=>options(id),false,r);
+                        var moreLabel=n.more.transform.Find("Label").GetComponent<TMP_Text>();moreLabel.fontSize=21;moreLabel.rectTransform.sizeDelta=new Vector2(30,26);n.more.gameObject.SetActive(false);
+                    }
                     row.focus=()=>{
                         if(changing)return;
                         if(editing&&highlighted!=id)
@@ -120,6 +140,7 @@ namespace DraculasBox.Runtime
                             {old.face.color=GameThemes.Current.NodeOpen;old.number.color=GameThemes.Current.NodeInk;}
                             n.face.color=GameThemes.Current.NodeDone;n.number.color=GameThemes.Current.NodeDoneInk;highlighted=id;
                         }
+                        if(editing)foreach(var item in nodes)if(item.Value.more!=null)item.Value.more.gameObject.SetActive(item.Key==id);
                         Reveal(id);focus?.Invoke(id);
                     };
                 }
@@ -133,12 +154,24 @@ namespace DraculasBox.Runtime
                 if(p.x-65<Offset)SetOffset(p.x-65);
                 else if(p.x+65>Offset+viewport.rect.width)SetOffset(p.x+65-viewport.rect.width);
             }
-            public bool Pointer(Vector2 screen,Camera camera,out Vector2 point,out float viewX)
+            public bool Pointer(Vector2 screen,Camera camera,out Vector2 point,out float viewX,float tolerance=0)
             {
                 RectTransformUtility.ScreenPointToLocalPointInRectangle(sheet,screen,camera,out point);
                 RectTransformUtility.ScreenPointToLocalPointInRectangle(viewport,screen,camera,out var local);
-                viewX=local.x;return viewport.rect.Contains(local);
+                var bounds=viewport.rect;bounds.xMin-=tolerance;bounds.xMax+=tolerance;bounds.yMin-=tolerance;bounds.yMax+=tolerance;
+                viewX=local.x;return bounds.Contains(local);
             }
+            public void BeginDragPreview(string id,ChapterMapLayout original)
+            {
+                if(originGhost==null)return;
+                var n=nodes[id];originGhost.anchoredPosition=original.positions[id];originFace.rectTransform.sizeDelta=n.face.rectTransform.sizeDelta;
+                originFace.color=GameThemes.Current.NodeOpen;originNumber.text=original.numbers[id];originNumber.fontSize=n.number.fontSize;
+                originGhost.gameObject.SetActive(true);originGhost.SetAsLastSibling();
+                foreach(var item in nodes)if(item.Value.more!=null)item.Value.more.gameObject.SetActive(false);
+            }
+            public void EndDragPreview()
+            {if(originGhost!=null)originGhost.gameObject.SetActive(false);if(dropSlot!=null)dropSlot.gameObject.SetActive(false);}
+            public Dictionary<string,Vector2> CapturePositions()=>nodes.ToDictionary(item=>item.Key,item=>item.Value.rect.anchoredPosition);
             private void StopSlides()
             {
                 if(slide!=null){ui.StopCoroutine(slide);slide=null;}
@@ -164,10 +197,12 @@ namespace DraculasBox.Runtime
                 slide=null;
             }
             public void SettleFrom(ChapterMapLayout previous)
+                =>SettleFrom(previous.positions);
+            public void SettleFrom(Dictionary<string,Vector2> previous)
             {
                 StopSlides();
                 foreach(var item in nodes)
-                    if(previous.positions.TryGetValue(item.Key,out var from))
+                    if(previous.TryGetValue(item.Key,out var from))
                         Slide(item.Value.rect,from,Layout.positions[item.Key]);
                 if(slides.Count>0)slide=ui.StartCoroutine(Interpolate());
             }
@@ -188,12 +223,12 @@ namespace DraculasBox.Runtime
                 string anchor=projected!=null&&!projected.main?projected.requires[0]:null;
                 if(marker!=null)
                 {
-                    marker.gameObject.SetActive(insertedMain);
-                    if(insertedMain)
-                    {
-                        marker.color=Gold;
-                        marker.rectTransform.anchoredPosition=layout.positions[pending]+Vector2.up*62;
-                    }
+                    marker.gameObject.SetActive(false);
+                }
+                if(dropSlot!=null)
+                {
+                    dropSlot.gameObject.SetActive(pending!=null);
+                    if(pending!=null){dropSlot.anchoredPosition=layout.positions[pending];dropSlot.sizeDelta=Vector2.one*(insertedMain?106:84);dropSlot.SetAsLastSibling();}
                 }
                 used=0;Line(new Vector2(layout.centers[0],0),new Vector2(layout.centers[layout.centers.Length-1],0),GameThemes.Current.Path,3);
                 foreach(var lane in layout.lanes)
@@ -222,6 +257,7 @@ namespace DraculasBox.Runtime
                     n.rect.sizeDelta=n.face.rectTransform.sizeDelta=Vector2.one*size;
                     n.focus.rectTransform.sizeDelta=Vector2.one*(size+12);n.focus.gameObject.SetActive(!dragging);
                     n.group.alpha=link.id==moving?0:1;n.frame.gameObject.SetActive(!main);
+                    if(n.more!=null){n.more.gameObject.SetActive(!dragging&&link.id==selected);((RectTransform)n.more.transform).anchoredPosition=new Vector2(size*.48f,size*.38f);}
                     bool marked=editing?link.id==selected&&!dragging:ui.app.Progress.Done(link.id);
                     n.face.color=active?(main?Gold:Color.Lerp(GameThemes.Current.NodeDone,BranchFrameGraphic.Red,.28f)):
                         marked?GameThemes.Current.NodeDone:n.locked!=null?GameThemes.Current.NodeLocked:GameThemes.Current.NodeOpen;
@@ -236,7 +272,7 @@ namespace DraculasBox.Runtime
             }
             public void Lift(string id,Vector2 point)
             {
-                var n=nodes[id];n.group.alpha=.9f;n.rect.anchoredPosition=point+Vector2.up*5;n.rect.SetAsLastSibling();n.face.color=GameThemes.Current.NodeDone;n.number.color=GameThemes.Current.NodeDoneInk;
+                var n=nodes[id];n.group.alpha=.92f;n.rect.anchoredPosition=point;n.rect.SetAsLastSibling();n.face.color=GameThemes.Current.NodeDone;n.number.color=GameThemes.Current.NodeDoneInk;
             }
             public void HintBranchSocket(Vector2? point)
             {

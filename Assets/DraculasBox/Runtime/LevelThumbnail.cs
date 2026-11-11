@@ -28,7 +28,16 @@ namespace DraculasBox.Runtime
             vh.Clear();if(data==null)return;var rect=GetPixelAdjustedRect();int h=data.rows.Length,w=data.rows[0].Length;float cell=Mathf.Min((rect.width-12)/w,(rect.height-12)/h);var origin=rect.center+new Vector2(-w,h)*cell*.5f;
             for(int y=0;y<h;y++)for(int x=0;x<w;x++)
             {
-                char tile=data.rows[y][x];if(tile==' ')continue;var r=new Rect(origin.x+x*cell,origin.y-(y+1)*cell,cell-.5f,cell-.5f);var p=new Cell(x,y);
+                char tile=data.rows[y][x];var r=new Rect(origin.x+x*cell,origin.y-(y+1)*cell,cell-.5f,cell-.5f);var p=new Cell(x,y);
+                if(tile==' ')
+                {
+                    r.width=r.height=cell;Quad(vh,r,SurfaceSprites.PitDepth,0);float rim=Mathf.Max(.6f,cell*.035f),wall=cell*.11f;
+                    if(y==0||data.rows[y-1][x]!=' '){Quad(vh,new Rect(r.xMin,r.yMax-wall,cell,wall),SurfaceSprites.PitWall,0);Quad(vh,new Rect(r.xMin,r.yMax-rim,cell,rim),SurfaceSprites.PitRim,0);}
+                    if(y==h-1||data.rows[y+1][x]!=' ')Quad(vh,new Rect(r.xMin,r.yMin,cell,rim),SurfaceSprites.PitRim,0);
+                    if(x==0||data.rows[y][x-1]!=' ')Quad(vh,new Rect(r.xMin,r.yMin,rim,cell),SurfaceSprites.PitRim,0);
+                    if(x==w-1||data.rows[y][x+1]!=' ')Quad(vh,new Rect(r.xMax-rim,r.yMin,rim,cell),SurfaceSprites.PitRim,0);
+                    continue;
+                }
                 if(tile=='#')
                 {
                     r.width=r.height=cell;Quad(vh,r,GameThemes.Current.WallTop,0);float line=Mathf.Max(.65f,cell*.055f);

@@ -25,6 +25,7 @@ namespace DraculasBox.Runtime
             get=>page;
             private set
             {
+                if(page!=value&&(page==GamePage.Editing||page==GamePage.Library))creator?.ResetAuthoringTool();
                 page=value;if(audioPlayer==null)return;
                 if(value==GamePage.Title||value==GamePage.Chapters||value==GamePage.Levels||value==GamePage.Playing&&!creatorPlay)
                     audioPlayer.Music(MusicContext.Main);
@@ -108,6 +109,7 @@ namespace DraculasBox.Runtime
             var result=Session.Apply(cmd);if(result.Kind==ActionKind.NoChange)return;
             Board.Present(result);ActionApplied?.Invoke(result);
             if(creatorPlay&&EditingOfficial)Campaign.ObserveTrial(result);
+            else if(creatorPlay&&result.Changed&&Session.State.Won)creator.Document.RecordSolution(Session.WinningRoute());
             bool gateChanged=false,plateChanged=false;for(int i=0;i<Session.State.Level.DoorCount;i++)gateChanged|=result.Before.DoorOpen(i)!=result.After.DoorOpen(i);for(int i=0;i<Session.State.Level.PlateCount;i++)plateChanged|=result.Before.PlatePressed(i)!=result.After.PlatePressed(i);if(gateChanged)Cue("door");else if(plateChanged)Cue("plate");
             string clip=result.Kind==ActionKind.Blocked?"footstep_grass_004":result.Kind==ActionKind.Pushed?"impactWood_heavy_001":result.Kind==ActionKind.Undone?"undo":result.Kind==ActionKind.Reset?"reset":"footstep_concrete_003";Cue(clip);
             if(Session.State.Dead){history.Clear();input.Clear();Page=GamePage.Dying;diedAt=Time.unscaledTime;deathCue=false;return;}
@@ -134,6 +136,7 @@ namespace DraculasBox.Runtime
         public void CloseSettings(){if(settingsReturn==GamePage.Paused){Page=GamePage.Paused;ui.Pause();}else if(settingsReturn==GamePage.Editing){Page=GamePage.Editing;creator.Show();}else ShowTitle();input.Clear();}
         public void Back()
         {
+            if((Page==GamePage.Editing||Page==GamePage.Library)&&creator.CloseAuthoringTool())return;
             if(Page==GamePage.Campaign){Campaign.Back();return;}
             if(Page==GamePage.Editing&&(creator.ClosePanels()||creator.CancelRectangle())||Page==GamePage.Library&&ui.CloseWorkshopPopup())return;
             switch(Page){case GamePage.Chapters:ShowTitle();break;case GamePage.Levels:ShowChapters();break;case GamePage.Playing:case GamePage.Dead:if(creatorPlay)ReturnToEditor();else Pause();break;case GamePage.Paused:Resume();break;case GamePage.Settings:CloseSettings();break;case GamePage.Library:ShowTitle();break;case GamePage.Editing:LeaveEditor();break;case GamePage.Confirming:(confirmationCancel??CancelLeave)();break;case GamePage.Importing:OpenLibrary();break;}
@@ -176,7 +179,7 @@ namespace DraculasBox.Runtime
         }
         public void ConfirmImport(){if(importData==null)return;try{var data=Library.Import(importData);LibrarySelection=data.id;importData=null;Edit(data);}catch(Exception e){ui.ImportResult(importData,"导入失败："+e.Message);}}
         public void EditNew()=>Edit(LevelData.Blank());
-        public void CopyCampaign(){var d=assets.Level(Progress.Data.lastLevel);d.id=Guid.NewGuid().ToString("N");d.title+=" · 副本";Edit(d);}
+        public void CopyCampaign(){var d=assets.Level(Progress.Data.lastLevel);if(assets.replays!=null)d.solution=JsonUtility.FromJson<ReplayCatalog>(assets.replays.text)?.levels?.FirstOrDefault(p=>p.id==d.id)?.route;d.id=Guid.NewGuid().ToString("N");d.title+=" · 副本";Edit(d);}
         public void Edit(LevelData data)=>Navigate(()=>{Page=GamePage.Editing;creator.Open(data);});
         public void RecoverDraft(){var data=Library.Recovery();if(data!=null)Edit(data);}
         public void StartEditorPlay(LevelData data)=>Navigate(()=>{creatorPlay=true;if(EditingOfficial)Campaign.StartTrial(data);Enter(data);});

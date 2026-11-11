@@ -26,12 +26,14 @@ namespace DraculasBox.Runtime
         public readonly float width;
         private readonly List<(MapInsertion target,float left,float right)> slots=new();
         public readonly float[] centers;
+        private readonly string[] mainIds;
 
         public ChapterMapLayout(Chapter chapter,string[] columns=null,string pin=null,float pinX=0)
         {
             columns??=chapter.levels.Where(l=>l.main).Select(l=>l.id).ToArray();
             var branches=chapter.levels.Where(l=>!l.main).ToLookup(l=>l.requires[0]);
             var main=chapter.levels.Where(l=>l.main).ToArray();
+            mainIds=main.Select(l=>l.id).ToArray();
             for(int i=0;i<main.Length;i++)
             {
                 string ordinal=(i+1).ToString();numbers[main[i].id]=ordinal;int n=0;
@@ -80,6 +82,48 @@ namespace DraculasBox.Runtime
             foreach(var slot in slots)
                 if(slot.target.Main==main&&(main||slot.target.above==(p.y>0))&&p.x>=slot.left&&p.x<=slot.right)return slot.target;
             return null;
+        }
+        public MapInsertion? DropTarget(Vector2 center,string moving,MapInsertion? previous=null,bool allowBranch=true)
+        {
+            float height=Mathf.Abs(center.y);
+            if(height>ViewHeight*.5f+18)return null;
+            bool previousBranch=previous.HasValue&&!previous.Value.Main&&previous.Value.above==(center.y>0);
+            bool main=height<=70||height<100&&!previousBranch;
+            if(!main&&!allowBranch)return null;
+            if(main)
+            {
+                int source=Array.IndexOf(mainIds,moving);
+                // Dropping over a node means moving to its place, rather than
+                // requiring the pointer to find a narrow inter-node gap.
+                for(int j=0;j<mainIds.Length;j++)
+                {
+                    if(mainIds[j]==moving||!positions.TryGetValue(mainIds[j],out var pos))continue;
+                    int index=source>=0?(j<source?j:j+1):j+(center.x>=pos.x?1:0);
+                    bool keeping=previous.HasValue&&previous.Value.Main&&
+                        (source>=0?previous.Value.index==index:previous.Value.index==j||previous.Value.index==j+1);
+                    if(Mathf.Abs(center.x-pos.x)>(keeping?68:54))continue;
+                    if(source<0&&previous.HasValue&&previous.Value.Main&&Mathf.Abs(center.x-pos.x)<=12&&
+                        (previous.Value.index==j||previous.Value.index==j+1))return previous;
+                    return new MapInsertion(index);
+                }
+            }
+            MapInsertion? best=null;float distance=float.MaxValue;
+            foreach(var slot in slots)
+            {
+                if(slot.target.Main!=main||!main&&(slot.target.above!=(center.y>0)||slot.target.anchor==moving))continue;
+                float value=main?Mathf.Abs(center.x-(slot.left+slot.right)*.5f):Mathf.Max(0,Mathf.Max(slot.left-center.x,center.x-slot.right));
+                if(value<distance){best=slot.target;distance=value;}
+            }
+            if(!best.HasValue||distance>(main?112:72))return null;
+            if(previous.HasValue&&previous.Value.Main==main&&(main||previous.Value.above==(center.y>0)))
+                foreach(var slot in slots)
+                    if(slot.target.Equals(previous.Value))
+                    {
+                        float value=main?Mathf.Abs(center.x-(slot.left+slot.right)*.5f):Mathf.Max(0,Mathf.Max(slot.left-center.x,center.x-slot.right));
+                        if(value<=distance+12)return previous;
+                        break;
+                    }
+            return best;
         }
         private static string Suffix(int n)
         {

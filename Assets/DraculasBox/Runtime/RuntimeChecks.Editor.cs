@@ -30,7 +30,7 @@ namespace DraculasBox.Runtime
             yield return Click("scene");var saved=doc.Data.Copy();var input=app.UI.Root.Find("Scene properties/Board width").GetComponent<TMP_InputField>();int history=doc.UndoCount;
             input.text="99";input.onEndEdit.Invoke(input.text);Require(input.text==saved.rows[0].Length.ToString()&&doc.Data.ContentEquals(saved)&&doc.UndoCount==history,"invalid numeric size resets without changing data or history");
             input.text="3";input.onEndEdit.Invoke(input.text);Require(doc.Data.ContentEquals(saved)&&app.UI.Root.Find("Editor status").GetComponent<TMP_Text>().text.Contains("裁切"),"refused crop identifies a blocking object");
-            yield return Click("scene");yield return Click("editor-help");Require(app.Page==GamePage.Confirming,"editor help is available on demand");yield return Tap(KeyCode.Escape);Require(app.Creator.Document==doc&&doc.UndoCount==history,"closing help keeps document and history");
+            yield return Click("scene");yield return Click("editor-files");Require(app.UI.FindButton("editor-help")==null,"shortcut help page is removed from the files menu");yield return Click("editor-files");Require(app.Creator.Document==doc&&doc.UndoCount==history,"files menu keeps document and history");
             string exported=app.Library.Export(doc.Data);
             using(var held=new FileStream(exported,FileMode.Open,FileAccess.ReadWrite,FileShare.None))
             {app.ExportEditor();yield return Ready();Require(app.UI.FindButton("error-back")!=null&&app.Page==GamePage.Confirming,"failed export displays an actionable error page");}

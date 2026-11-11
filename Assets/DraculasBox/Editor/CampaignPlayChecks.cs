@@ -16,7 +16,7 @@ namespace DraculasBox.Editor
     public static partial class CampaignPlayChecks
     {
         private const string Key = "DraculasBox.CheckCampaign.";
-        private const string Evidence = "DraculasBox/Evidence/CampaignMapPlay";
+        private static string Evidence => SessionState.GetString("DraculasBox.CampaignEvidenceFolder","DraculasBox/Evidence/CampaignMapPlay");
         [Serializable] private sealed class Report { public bool passed; public string error; public List<string> checks=new(); }
         private static DraculaApp app;
         private static PlaytestDriver driver;

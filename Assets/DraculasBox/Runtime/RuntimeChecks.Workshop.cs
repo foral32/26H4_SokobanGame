@@ -9,7 +9,11 @@ namespace DraculasBox.Runtime
     {
         public void BeginWorkshop(DraculaApp host)
         {
-            app=host;app.SetTestKeyboard(this);report.runtime="Unity Editor workshop";report.width=Screen.width;report.height=Screen.height;folder=System.IO.Path.GetFullPath("DraculasBox/Evidence/EditorWorkshop");System.IO.Directory.CreateDirectory(folder);Application.logMessageReceived+=Log;StartCoroutine(Guard(WorkshopOnly()));
+            app=host;app.SetTestKeyboard(this);report.runtime="Unity Editor workshop";report.width=Screen.width;report.height=Screen.height;folder=System.IO.Path.GetFullPath("DraculasBox/Evidence/EditorWorkshop");
+            #if UNITY_EDITOR
+            folder=UnityEditor.SessionState.GetString("DraculasBox.WorkshopEvidenceFolder",folder);
+            #endif
+            System.IO.Directory.CreateDirectory(folder);Application.logMessageReceived+=Log;StartCoroutine(Guard(WorkshopOnly()));
         }
         private IEnumerator WorkshopOnly()
         {

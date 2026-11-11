@@ -35,9 +35,9 @@ namespace DraculasBox.Runtime
             titleInput.onSelect.AddListener(_=>{titleBorder.effectColor=GameUI.WorkshopAccent;editIcon.color=GameUI.WorkshopAccent;});
             titleInput.onDeselect.AddListener(_=>{titleBorder.effectColor=GameUI.WorkshopLine;editIcon.color=GameUI.Muted;});
             dirtyMark=ui.Text("Unsaved","",new Vector2(112,312),new Vector2(30,36),24,GameUI.WorkshopAccent);
-            ui.EditorButton("editor-files","...",new Vector2(250,312),new Vector2(44,42),()=>ToggleFiles());
-            ui.EditorButton("save","保存",new Vector2(370,312),new Vector2(112,42),()=>Save());
-            ui.EditorButton("test","试玩 F5",new Vector2(520,312),new Vector2(156,42),Play,true);
+            ui.EditorButton("editor-files","...",new Vector2(221,312),new Vector2(44,42),()=>ToggleFiles());
+            ui.EditorButton("save","保存",new Vector2(356,312),new Vector2(156,42),()=>Save());
+            ui.EditorButton("test","试玩",new Vector2(520,312),new Vector2(156,42),Play,true);
             var collapse=ui.WorkshopIcon("palette-toggle",GameIcon.Back,new Vector2(-592,254),new Vector2(36,36),()=>TogglePalette());if(paletteCollapsed)collapse.transform.Find("Icon").localRotation=Quaternion.Euler(0,0,180);
             ui.Text("Operation heading","操作",new Vector2(-532,254),new Vector2(56,36),20,GameUI.WorkshopInk);
             ui.EditorButton("operation-paint","绘制",new Vector2(-442,254),new Vector2(108,36),()=>SetOperation(EditOperation.Paint));
@@ -45,10 +45,14 @@ namespace DraculasBox.Runtime
             ui.Text("Shape heading","形状",new Vector2(-216,254),new Vector2(56,36),20,GameUI.WorkshopInk);
             ui.EditorButton("shape-brush","点涂",new Vector2(-126,254),new Vector2(108,36),()=>SelectShape(PaintShape.Brush));
             ui.EditorButton("shape-rectangle","矩形",new Vector2(-8,254),new Vector2(108,36),()=>SelectShape(PaintShape.Rectangle));
+            ui.EditorButton("solutions","关卡解",new Vector2(187,254),new Vector2(110,36),OpenSolutions);
+            ui.EditorButton("drafts","生成草稿",new Vector2(327,254),new Vector2(138,36),()=>OpenGenerator());
             ui.EditorButton("scene","场景设置",new Vector2(526,254),new Vector2(136,36),ToggleScene);
-            materials=ui.Rect("Materials",new Vector2(-554,-30),new Vector2(124,512));ui.WorkshopPanel("Material surface",Vector2.zero,new Vector2(124,512),materials);
-            string[] labels={"地板","墙体","箱子","吸血鬼","棺材","四向灯","留白","","压力板","自动门","斜镜 /","斜镜 \\"};string[] icons={"solid","Wall_inactive_gray","Box_active_white","vampire","coffin-lid","lamp","solid","","plate","door","mirror-slash","mirror-backslash"};int row=0;
-            var scroll=ui.Rect("Material scroll",new Vector2(0,28),new Vector2(124,448),materials);var hit=scroll.gameObject.AddComponent<Image>();hit.color=Color.clear;materialScroll=scroll.gameObject.AddComponent<ScrollRect>();scroll.gameObject.AddComponent<RectMask2D>();var content=ui.Rect("Material content",Vector2.zero,new Vector2(124,(labels.Length-1)*51),scroll);content.anchorMin=content.anchorMax=new Vector2(.5f,1);content.pivot=new Vector2(.5f,1);content.anchoredPosition=Vector2.zero;materialScroll.viewport=scroll;materialScroll.content=content;materialScroll.horizontal=false;materialScroll.movementType=ScrollRect.MovementType.Clamped;materialScroll.scrollSensitivity=28;
+            ui.EditorShortcut("save","Ctrl+S");ui.EditorShortcut("test","F5");
+            ui.EditorShortcut("operation-paint","B");ui.EditorShortcut("brush-7","X");ui.EditorShortcut("shape-brush","P");ui.EditorShortcut("shape-rectangle","R");
+            materials=ui.Rect("Materials",new Vector2(-543,-30),new Vector2(146,512));ui.WorkshopPanel("Material surface",Vector2.zero,new Vector2(146,512),materials);
+            string[] labels={"地板","墙体","箱子","玩家","棺材","四向灯","缺口","","压力板","自动门","斜镜 /","斜镜 \\"};string[] icons={"solid","Wall_inactive_gray","Box_active_white","vampire","coffin-lid","lamp","solid","","plate","door","mirror-slash","mirror-backslash"};int row=0;
+            var scroll=ui.Rect("Material scroll",new Vector2(0,28),new Vector2(146,448),materials);var hit=scroll.gameObject.AddComponent<Image>();hit.color=Color.clear;materialScroll=scroll.gameObject.AddComponent<ScrollRect>();scroll.gameObject.AddComponent<RectMask2D>();var content=ui.Rect("Material content",Vector2.zero,new Vector2(146,(labels.Length-1)*51),scroll);content.anchorMin=content.anchorMax=new Vector2(.5f,1);content.pivot=new Vector2(.5f,1);content.anchoredPosition=Vector2.zero;materialScroll.viewport=scroll;materialScroll.content=content;materialScroll.horizontal=false;materialScroll.movementType=ScrollRect.MovementType.Clamped;materialScroll.scrollSensitivity=28;
             for(int i=0;i<labels.Length;i++)
             {
                 if(i==7){brushes.Add(null);continue;}int tool=i;var position=new Vector2(0,-25-row++*51);
@@ -56,12 +60,13 @@ namespace DraculasBox.Runtime
                 // The scroll offsets are measured from the content's top, not its center.
                 var item=(RectTransform)button.transform;item.anchorMin=item.anchorMax=new Vector2(.5f,1);item.anchoredPosition=position;brushes.Add(button);
             }
-            var bar=ui.Rect("Material scrollbar",new Vector2(58,28),new Vector2(8,448),materials);var scrollbar=bar.gameObject.AddComponent<Scrollbar>();var handle=ui.WorkshopPanel("Scroll handle",Vector2.zero,Vector2.zero,bar);handle.rectTransform.offsetMin=handle.rectTransform.offsetMax=Vector2.zero;handle.color=new Color(GameUI.WorkshopAccent.r,GameUI.WorkshopAccent.g,GameUI.WorkshopAccent.b,.40f);scrollbar.handleRect=handle.rectTransform;scrollbar.targetGraphic=handle;scrollbar.direction=Scrollbar.Direction.BottomToTop;materialScroll.verticalScrollbar=scrollbar;materialScroll.verticalScrollbarVisibility=ScrollRect.ScrollbarVisibility.AutoHide;
+            var bar=ui.Rect("Material scrollbar",new Vector2(69,28),new Vector2(8,448),materials);var scrollbar=bar.gameObject.AddComponent<Scrollbar>();var handle=ui.WorkshopPanel("Scroll handle",Vector2.zero,Vector2.zero,bar);handle.rectTransform.offsetMin=handle.rectTransform.offsetMax=Vector2.zero;handle.color=new Color(GameUI.WorkshopAccent.r,GameUI.WorkshopAccent.g,GameUI.WorkshopAccent.b,.40f);scrollbar.handleRect=handle.rectTransform;scrollbar.targetGraphic=handle;scrollbar.direction=Scrollbar.Direction.BottomToTop;materialScroll.verticalScrollbar=scrollbar;materialScroll.verticalScrollbarVisibility=ScrollRect.ScrollbarVisibility.AutoHide;
             channelButtons.Clear();channelHeading=ui.Text("Connection group","连接组",Vector2.zero,new Vector2(112,24),16,GameUI.WorkshopInk,TextAlignmentOptions.MidlineLeft);channelHeading.rectTransform.SetParent(materials,false);channelHeading.rectTransform.anchoredPosition=new Vector2(0,-210);
             for(int i=0;i<4;i++){int c=i;channelButtons.Add(ui.EditorButton("channel-"+i,(i+1).ToString(),new Vector2(-43+i*29,-237),new Vector2(25,26),()=>SelectChannel(c),false,materials));}
             materials.gameObject.SetActive(!paletteCollapsed);
-            ui.WorkshopIcon("edit-undo",GameIcon.Undo,new Vector2(-570,-321),new Vector2(46,38),Undo);
-            var redo=ui.WorkshopIcon("edit-redo",GameIcon.Undo,new Vector2(-516,-321),new Vector2(46,38),Redo);redo.transform.Find("Icon").localScale=new Vector3(-1,1,1);
+            ui.WorkshopIcon("edit-undo",GameIcon.Undo,new Vector2(-572,-321),new Vector2(60,38),Undo);
+            var redo=ui.WorkshopIcon("edit-redo",GameIcon.Undo,new Vector2(-504,-321),new Vector2(60,38),Redo);redo.transform.Find("Icon").localScale=new Vector3(-1,1,1);
+            ui.EditorShortcut("edit-undo","Z");ui.EditorShortcut("edit-redo","Y");
             ui.EditorButton("zoom-out","−",new Vector2(390,-321),new Vector2(38,36),()=>Zoom(.8f));
             ui.EditorButton("zoom-fit","100%",new Vector2(466,-321),new Vector2(100,36),()=>{board.ResetEditorView();RefreshLabels();});
             ui.EditorButton("zoom-in","+",new Vector2(542,-321),new Vector2(38,36),()=>Zoom(1.25f));
@@ -86,8 +91,13 @@ namespace DraculasBox.Runtime
         }
         private void BuildFilesPanel()
         {
-            var panelSize=new Vector2(178,app.EditingOfficial?148:194);filesPanel=ui.Rect("Editor files",new Vector2(235,app.EditingOfficial?211:188),panelSize);ui.WorkshopPanel("File surface",Vector2.zero,panelSize,filesPanel);ui.WorkshopPanel("File border",Vector2.zero,panelSize,filesPanel,true);
-            if(!app.EditingOfficial)ui.EditorButton("save-copy","另存副本",new Vector2(0,69),new Vector2(154,36),app.SaveEditorCopy,false,filesPanel);ui.EditorButton("export-editor","导出",new Vector2(0,app.EditingOfficial?46:23),new Vector2(154,36),app.ExportEditor,false,filesPanel);ui.EditorButton("editor-help","快捷键",new Vector2(0,app.EditingOfficial?0:-23),new Vector2(154,36),app.ShowEditorHelp,false,filesPanel);ui.EditorButton("editor-settings","设置",new Vector2(0,app.EditingOfficial?-46:-69),new Vector2(154,36),app.Settings,false,filesPanel);filesPanel.gameObject.SetActive(false);filesPanel.gameObject.AddComponent<WorkshopPopover>();
+            int count=app.EditingOfficial?2:3;var panelSize=new Vector2(178,count*46+10);
+            filesPanel=ui.Rect("Editor files",new Vector2(221,285-panelSize.y*.5f),panelSize);ui.WorkshopPanel("File surface",Vector2.zero,panelSize,filesPanel);ui.WorkshopPanel("File border",Vector2.zero,panelSize,filesPanel,true);
+            float y=(count-1)*23;
+            if(!app.EditingOfficial){ui.EditorButton("save-copy","另存副本",new Vector2(0,y),new Vector2(154,36),app.SaveEditorCopy,false,filesPanel);y-=46;}
+            ui.EditorButton("export-editor","导出",new Vector2(0,y),new Vector2(154,36),app.ExportEditor,false,filesPanel);y-=46;
+            ui.EditorButton("editor-settings","设置",new Vector2(0,y),new Vector2(154,36),app.Settings,false,filesPanel);
+            filesPanel.gameObject.SetActive(false);filesPanel.gameObject.AddComponent<WorkshopPopover>();
         }
         private void ToggleScene(){bool open=!SceneOpen;ClosePanels();scenePanel.gameObject.SetActive(open);RefreshLabels();}
         private void ToggleFiles(){bool open=!filesPanel.gameObject.activeSelf;ClosePanels();filesPanel.gameObject.SetActive(open);}

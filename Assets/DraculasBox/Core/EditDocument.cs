@@ -21,7 +21,11 @@ namespace DraculasBox.Core
         {
             if(transaction==null)return;
             if(cancel)Data=transaction;
-            else if(!Data.ContentEquals(transaction)){undo.Push(transaction);redo.Clear();}
+            else if(!Data.ContentEquals(transaction))
+            {
+                if(!Data.LayoutEquals(transaction))Data.solution=null;
+                undo.Push(transaction);redo.Clear();
+            }
             transaction=null;RefreshDirty();
         }
         public bool Paint(Cell p,Brush brush,int channel=0)
@@ -60,6 +64,31 @@ namespace DraculasBox.Core
         }
         public void ConfigureSun(bool enabled,SunSide from){Begin();Data.sunEnabled=enabled;Data.sunFrom=from;End();}
         public void Rename(string name){Begin();Data.title=string.IsNullOrWhiteSpace(name)?"我的关卡":name.Trim();End();}
+        public void DiscardSolution()
+        {
+            if(string.IsNullOrEmpty(Data.solution))return;
+            Begin();Data.solution=null;End();
+        }
+        public bool RecordSolution(string route)
+        {
+            End();
+            if(!LevelSolver.Proves(Data,route,out _))return false;
+            if(!string.IsNullOrEmpty(Data.solution)&&Data.solution.Length<=route.Length&&LevelSolver.Proves(Data,Data.solution,out _))return false;
+            Begin();Data.solution=route;End();return true;
+        }
+        public bool ApplySearchResult(SearchResult result)
+        {
+            End();
+            if(result?.Outcome!=SearchOutcome.Solved||!Data.ContentEquals(result.SolvedBoard))return false;
+            if(result.Route!=Data.solution){Begin();Data.solution=result.Route;End();}
+            return true;
+        }
+        public void ApplyGenerated(LevelData draft)
+        {
+            if(draft==null||!LevelSolver.Proves(draft,draft.solution,out _))throw new ArgumentException("草稿缺少有效解。");
+            End();var replacement=draft.Copy();replacement.id=Data.id;replacement.title=Data.title;replacement.hint=Data.hint;
+            undo.Push(Data);redo.Clear();Data=replacement;RefreshDirty();
+        }
         public bool Resize(int w,int h)
         {
             if(ResizeError(w,h)!=null)return false;
@@ -70,7 +99,7 @@ namespace DraculasBox.Core
         {
             if(w<3||h<3||w>32||h>32)return "宽、高须为 3–32 格。";
             Func<Cell,bool> outside=p=>p.x>=w||p.y>=h;
-            if(outside(Data.player))return "吸血鬼在裁切区域，请先移开。";
+            if(outside(Data.player))return "玩家在裁切区域，请先移开。";
             if(outside(Data.coffin))return "棺材在裁切区域，请先移开。";
             var blocked=Data.pieces.FirstOrDefault(i=>outside(i.cell));if(blocked!=null)return (blocked.kind==PieceKind.Box?"箱子":blocked.kind==PieceKind.Lamp?"四向灯":"镜子")+"在裁切区域，请先移开。";
             if(Data.plates.Any(i=>outside(i.cell))||Data.doors.Any(i=>outside(i.cell)))return "机关在裁切区域，请先移开。";

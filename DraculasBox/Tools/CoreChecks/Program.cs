@@ -1,6 +1,7 @@
 using System.Text.Json;
 using DraculasBox.Core;
 
+if(args.Length>0&&args[0]=="authoring"){AuthoringChecks.Run();return;}
 if(args.Length>0&&args[0]=="solve"){LevelSearch.Run(args);return;}
 if(args.Length>0&&args[0]=="coffin"){Console.WriteLine("Coffin checks: "+CoffinChecks.Run());return;}
 if(args.Length>0&&args[0]=="audit-exits"){CoffinChecks.Audit();return;}

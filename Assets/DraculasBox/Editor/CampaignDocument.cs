@@ -214,37 +214,29 @@ namespace DraculasBox.Editor
         }
         public static bool Proves(LevelData board, string route, out int pushes)
         {
-            pushes = 0;
-            if (string.IsNullOrEmpty(route)) return false;
-            var session = new Session(new Definition(board));
-            foreach (char key in route)
-            {
-                int index = "URDL".IndexOf(key);
-                if (index < 0 || session.State.Won) return false;
-                var step = session.Apply((Command)index);
-                if (!step.Changed || session.State.Dead) return false;
-                if (step.Kind == ActionKind.Pushed) pushes++;
-            }
-            return session.State.Won;
+            return LevelSolver.Proves(board,route,out pushes);
         }
         public void SaveBoard(LevelData data, string trial)
         {
             var previous = Data.Board(data.id);
             var plan = Data.Plan(data.id);
-            var renamed = previous.Copy();
-            renamed.title = data.title;
-            renamed.hint = data.hint;
-            if (!renamed.ContentEquals(data) || plan == null)
+            bool layoutChanged=!previous.LayoutEquals(data);
+            if (layoutChanged || plan == null || data.solution!=plan.route || !string.IsNullOrEmpty(trial))
             {
-                string path = plan?.route;
-                int pushes = 0;
-                bool valid = new EditDocument(data).Validation() == null;
-                if (!valid || !Proves(data, path, out pushes)) path = valid && Proves(data, trial, out pushes) ? trial : null;
-                var plans = Data.replays.levels.Where(p => p.id != data.id).ToList();
-                if (path != null) plans.Add(new ReplayPlan { id = data.id, route = path, pushes = pushes, essential = Array.Empty<string>() });
-                Data.replays.levels = plans.ToArray();
+                int pushes=0;
+                string best=new[]{plan?.route,data.solution,trial}.Where(p=>!string.IsNullOrEmpty(p)).Distinct()
+                    .OrderBy(p=>p.Length).FirstOrDefault(p=>Proves(data,p,out pushes));
+                if(best==null)Data.replays.levels=Data.replays.levels.Where(p=>p.id!=data.id).ToArray();
+                else if(layoutChanged||plan==null)
+                {
+                    var replacement=new ReplayPlan{id=data.id,route=best,pushes=pushes,essential=Array.Empty<string>()};
+                    Data.replays.levels=Data.replays.levels.Where(p=>p.id!=data.id).Append(replacement).ToArray();
+                }
+                else {plan.route=best;plan.pushes=pushes;}
             }
-            Data.boards[Array.IndexOf(Data.boards, previous)] = data.Copy();
+            // Official routes live in Replays.json; user-authored JSON travels with its route.
+            var board=data.Copy();board.solution=null;
+            Data.boards[Array.IndexOf(Data.boards, previous)] = board;
         }
         public static void ValidateGraph(CampaignContent content)
         {

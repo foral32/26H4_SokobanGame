@@ -16,19 +16,35 @@ namespace DraculasBox.Runtime
         public void SetLabel(string id,string value){var b=FindButton(id);if(b!=null){var t=b.transform.Find("Label")?.GetComponent<TMP_Text>();if(t!=null)t.text=value;}}
         public void SetEnabled(string id,bool value)
         {
-            var b=FindButton(id);if(b==null)return;b.interactable=value;var primary=b.transform.Find("Primary face");if(primary!=null)primary.GetComponent<Image>().color=value?WorkshopPrimary:(light?(GameThemes.IsClassic?new Color32(221,217,224,255):Color.Lerp(WorkshopSurface,WorkshopLine,.5f)):GameThemes.Current.Border);var t=b.GetComponentInChildren<TMP_Text>();if(t!=null)t.color=value?(primary!=null?WorkshopPrimaryInk:light?WorkshopInk:White):light?(GameThemes.IsClassic?new Color32(123,118,130,255):Color.Lerp(WorkshopInk,WorkshopSurface,.5f)):new Color(Quiet.r,Quiet.g,Quiet.b,.38f);var icon=b.transform.Find("Icon")?.GetComponent<Graphic>();if(icon!=null){var c=icon.color;c.a=value?1:.32f;icon.color=c;}
+            var b=FindButton(id);if(b==null)return;b.interactable=value;var primary=b.transform.Find("Primary face");if(primary!=null)primary.GetComponent<Image>().color=value?WorkshopPrimary:(light?(GameThemes.IsClassic?new Color32(221,217,224,255):Color.Lerp(WorkshopSurface,WorkshopLine,.5f)):GameThemes.Current.Border);var t=b.GetComponentInChildren<TMP_Text>();if(t!=null)t.color=value?(primary!=null?WorkshopPrimaryInk:light?WorkshopInk:White):light?(GameThemes.IsClassic?new Color32(123,118,130,255):Color.Lerp(WorkshopInk,WorkshopSurface,.5f)):new Color(Quiet.r,Quiet.g,Quiet.b,.38f);var icon=b.transform.Find("Icon")?.GetComponent<Graphic>();if(icon!=null){var c=icon.color;c.a=value?1:.32f;icon.color=c;}var key=b.transform.Find("Shortcut")?.GetComponent<TMP_Text>();if(key!=null){var c=light?Muted:Quiet;c.a=value?1:.38f;key.color=c;}
         }
         public void Panel(string id,Vector2 center,Vector2 size){if(light){WorkshopPanel(id,center,size);return;}var p=Image(id,null,center,size,GameThemes.Current.Panel);p.raycastTarget=true;}
         public Button BrushButton(int index,string label,string sprite,Vector2 position,Action clicked,Transform parent=null)
         {
-            var r=Rect("brush-"+index,position,new Vector2(116,46),parent);var button=ClickTarget(r);Rounded(button.GetComponent<Image>());button.GetComponent<Image>().color=Color.clear;
-            bool device=index==8||index==9;var icon=Image("Icon",device?null:sprite,new Vector2(-36,0),new Vector2(30,30),sprite=="solid"?SafeColor(index):Color.white,r);if(index==1){icon.sprite=SurfaceSprites.StoneWall(0);icon.color=Color.white;}if(device){icon.sprite=SurfaceSprites.DeviceIcon(index==9);icon.color=BoardView.CircuitColors[0];}
-            Label(Rect("Label",new Vector2(19,0),new Vector2(70,40),r),label,19,WorkshopInk,TextAlignmentOptions.MidlineLeft);
-            var frame=Image("Focus",null,Vector2.zero,new Vector2(116,46),Color.clear,r);Rounded(frame,true);frame.raycastTarget=false;Register("brush-"+index,button,clicked,null,null,false,true,false);return button;
+            var r=Rect("brush-"+index,position,new Vector2(138,46),parent);var button=ClickTarget(r);Rounded(button.GetComponent<Image>());button.GetComponent<Image>().color=Color.clear;
+            bool device=index==8||index==9;var icon=Image("Icon",device?null:sprite,new Vector2(-48,0),new Vector2(28,28),sprite=="solid"?SafeColor(index):Color.white,r);if(index==1){icon.sprite=SurfaceSprites.StoneWall(0);icon.color=Color.white;}if(index==6){icon.sprite=SurfaceSprites.Pit(0);icon.color=Color.white;}if(device){icon.sprite=SurfaceSprites.DeviceIcon(index==9);icon.color=BoardView.CircuitColors[0];}
+            Label(Rect("Label",new Vector2(5,0),new Vector2(68,40),r),label,19,WorkshopInk,TextAlignmentOptions.MidlineLeft);
+            string key=index<7?(index+1).ToString():index==8?"9":index==9?"0":index==10?"Q":"E";
+            ShortcutCap(r,key,new Vector2(55,0),new Vector2(19,24));
+            var frame=Image("Focus",null,Vector2.zero,new Vector2(138,46),Color.clear,r);Rounded(frame,true);frame.raycastTarget=false;Register("brush-"+index,button,clicked,null,null,false,true,false);return button;
+        }
+        private void ShortcutCap(Transform parent,string key,Vector2 position,Vector2 size)
+        {
+            var edge=Image("Shortcut frame",null,position,size,new Color(WorkshopLine.r,WorkshopLine.g,WorkshopLine.b,.55f),parent);Rounded(edge,true);edge.raycastTarget=false;
+            var label=Label(Rect("Shortcut",position,size,parent),key,13,light?Muted:Quiet);label.raycastTarget=false;
+        }
+        public void EditorShortcut(string id,string key)
+        {
+            var button=FindButton(id);if(button==null)return;var r=(RectTransform)button.transform;
+            float width=key.Length>2?50:22;float right=r.rect.width*.5f-11-width*.5f;
+            var title=r.Find("Label")?.GetComponent<TMP_Text>();
+            if(title!=null){title.rectTransform.anchoredPosition=new Vector2(-(width+8)*.5f,0);title.rectTransform.sizeDelta=new Vector2(r.rect.width-width-22,r.rect.height);title.fontSize=Mathf.Min(title.fontSize,20);}
+            var icon=r.Find("Icon") as RectTransform;if(icon!=null)icon.anchoredPosition=new Vector2(-12,0);
+            ShortcutCap(r,key,new Vector2(right,0),new Vector2(width,24));
         }
         private Color SafeColor(int tool)=>tool==1?GameThemes.Current.WallTop:tool==6?Night:BoardView.SafeColor;
         public void SelectBrush(Button button,bool selected,bool dim=false)
-        {var frame=button.transform.Find("Focus").GetComponent<Graphic>();frame.color=new Color(WorkshopAccent.r,WorkshopAccent.g,WorkshopAccent.b,selected?(dim?.35f:1):0);button.GetComponent<Image>().color=selected?GameThemes.Current.WorkshopSelected:Color.clear;var icon=button.transform.Find("Icon").GetComponent<Graphic>();var color=icon.color;color.a=dim?.42f:1;icon.color=color;button.GetComponentInChildren<TMP_Text>().color=dim?Muted:WorkshopInk;}
+        {var frame=button.transform.Find("Focus").GetComponent<Graphic>();frame.color=new Color(WorkshopAccent.r,WorkshopAccent.g,WorkshopAccent.b,selected?(dim?.35f:1):0);button.GetComponent<Image>().color=selected?GameThemes.Current.WorkshopSelected:Color.clear;var icon=button.transform.Find("Icon").GetComponent<Graphic>();var color=icon.color;color.a=dim?.42f:1;icon.color=color;button.GetComponentInChildren<TMP_Text>().color=dim?Muted:WorkshopInk;var key=button.transform.Find("Shortcut")?.GetComponent<TMP_Text>();if(key!=null)key.color=dim?Color.Lerp(Muted,WorkshopSurface,.45f):Muted;}
         public Button EditorButton(string id,string label,Vector2 position,Vector2 size,Action action,bool primary=false,Transform parent=null,bool navigable=false)
         {
             var button=Button(id,label,position,size,action,true,navigable);if(parent!=null)button.transform.SetParent(parent,false);var outer=button.GetComponent<Image>();var face=button.transform.Find("Face");if(light){Rounded(outer);outer.color=WorkshopLine;Rounded(face.GetComponent<Image>());face.GetComponent<Image>().color=WorkshopSurface;button.transform.Find("Label").GetComponent<TMP_Text>().color=WorkshopInk;}if(primary){outer.color=WorkshopPrimary;face.name="Primary face";face.GetComponent<Image>().color=WorkshopPrimary;button.transform.Find("Label").GetComponent<TMP_Text>().color=WorkshopPrimaryInk;}return button;

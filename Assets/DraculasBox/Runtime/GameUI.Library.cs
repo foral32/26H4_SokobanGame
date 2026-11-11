@@ -20,6 +20,7 @@ namespace DraculasBox.Runtime
             Clear();WorkshopTheme();libraryData=list;librarySelected.Clear();libraryPositions.Clear();
             WorkshopIcon("back",GameIcon.Back,new Vector2(-579,312),new Vector2(46,42),app.ShowTitle,null,true);
             Text("Library heading","我的关卡",new Vector2(-370,312),new Vector2(320,46),30,WorkshopInk,TextAlignmentOptions.MidlineLeft);
+            EditorButton("library-generate","生成草稿",new Vector2(65,312),new Vector2(138,42),()=>app.Creator.OpenGenerator(true),false,null,true);
             EditorButton("new","新建",new Vector2(208,312),new Vector2(112,42),app.EditNew,false,null,true);
             EditorButton("import","导入",new Vector2(336,312),new Vector2(112,42),app.OpenImport,false,null,true);
             EditorButton("template","复制主线",new Vector2(514,312),new Vector2(196,42),app.CopyCampaign,false,null,true);
@@ -57,7 +58,7 @@ namespace DraculasBox.Runtime
             if(page>0)WorkshopIcon("prev-page",GameIcon.Back,new Vector2(-100,-321),new Vector2(42,34),()=>app.LibraryPage(page-1),null,true);
             if((page+1)*LibraryPageSize<list.Count)WorkshopIcon("next-page",GameIcon.Arrow,new Vector2(100,-321),new Vector2(42,34),()=>app.LibraryPage(page+1),null,true);
             if(list.Count>LibraryPageSize)Text("Library page",(page+1)+" / "+((list.Count+LibraryPageSize-1)/LibraryPageSize),new Vector2(0,-321),new Vector2(100,36),19,Muted);
-            if(recover)EditorButton("recover","恢复草稿",new Vector2(-52,312),new Vector2(136,42),app.RecoverDraft,false,null,true);
+            if(recover)EditorButton("recover","恢复草稿",new Vector2(-91,312),new Vector2(136,42),app.RecoverDraft,false,null,true);
             if(app.CanRestoreArchive)EditorButton("undo-remove","恢复移除",new Vector2(508,-321),new Vector2(176,36),app.RestoreArchive,false,null,true);
             int selected=rows.FindIndex(r=>r.id=="custom-"+app.LibrarySelection);Focus(Mathf.Max(0,selected));
         }

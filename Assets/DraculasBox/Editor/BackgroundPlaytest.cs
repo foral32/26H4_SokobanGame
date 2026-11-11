@@ -32,7 +32,7 @@ namespace DraculasBox.Editor
         {
             string json=SessionState.GetString("DraculasBox.Themes.Views","");if(string.IsNullOrEmpty(json))return;var saved=JsonUtility.FromJson<ThemeViews>(json);
             for(int i=0;i<saved.ids.Length;i++){var view=EditorUtility.InstanceIDToObject(saved.ids[i]) as EditorWindow;if(view==null)continue;var so=new SerializedObject(view);var p=so.FindProperty("m_EnterPlayModeBehavior");if(p!=null&&p.intValue==2){p.intValue=saved.values[i];so.ApplyModifiedPropertiesWithoutUndo();}}
-            SessionState.EraseString("DraculasBox.Themes.Views");SessionState.EraseString("DraculasBox.ThemeEvidenceFolder");
+            SessionState.EraseString("DraculasBox.Themes.Views");SessionState.EraseString("DraculasBox.ThemeEvidenceFolder");SessionState.EraseString("DraculasBox.WorkshopEvidenceFolder");SessionState.EraseString("DraculasBox.CampaignEvidenceFolder");
         }
         public static void StartWorkshopChecks(){SessionState.SetBool("DraculasBox.Playtest.Workshop",true);try{Start();}catch{SessionState.SetBool("DraculasBox.Playtest.Workshop",false);throw;}}
         public static void Start()

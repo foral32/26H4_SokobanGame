@@ -30,8 +30,7 @@ namespace DraculasBox.Editor
                 UI.WorkshopIcon("campaign-back",GameIcon.Back,new Vector2(-584,311),new Vector2(44,40),Back,null,true);
                 Label("Campaign heading",PanelTitle(),-300,311,480,30);
                 Rule("Header rule",0,278,1220);
-                if(panel==Panel.Actions)DrawInspector();
-                else if(panel==Panel.Anchor||panel==Panel.Transfer)DrawChoices();
+                if(panel==Panel.Anchor||panel==Panel.Transfer)DrawChoices();
                 else DrawConfirmation();
                 if(!string.IsNullOrEmpty(notice))
                     UI.Text("Campaign status",notice,new Vector2(0,-321),new Vector2(1190,53),18,GameThemes.IsClassic?GameUI.Plum:GameUI.WorkshopInk,TextAlignmentOptions.MidlineLeft);
@@ -40,42 +39,9 @@ namespace DraculasBox.Editor
         }
         private string PanelTitle()=>panel switch
         {
-            Panel.Actions=>"关卡操作",Panel.Anchor=>"选择解锁关",Panel.Transfer=>"移至章节",
+            Panel.Anchor=>"选择解锁关",Panel.Transfer=>"移至章节",
             Panel.Remove=>"移出正式目录",_=>"从工程重载"
         };
-        private void DrawInspector()
-        {
-            var level=Data.Board(selectedId);var node=Selected;
-            Label("Selected title",level.title,-311,196,526,30);
-            UI.WorkshopPanel("Board preview",new Vector2(-307,0),new Vector2(524,302)).color=BoardView.SafeColor;
-            UI.Thumbnail("Campaign board",level,new Vector2(-307,0),new Vector2(494,278));
-            Label("Board size",level.rows[0].Length+" × "+level.rows.Length,-517,-188,118,17,true);
-            string route=Data.Plan(level.id)?.route;
-            Label("Recorded route",string.IsNullOrEmpty(route)?"待记录通关路线":"通关路线  "+route.Length+" 步",-196,-188,300,17,true);
-            Button("campaign-edit","编辑棋盘",218,-52,236,()=>OpenBoard(),true);
-            Button("campaign-test","试玩",478,-52,242,()=>OpenBoard(true));
-            UI.SetEnabled("campaign-test",new EditDocument(level).Validation()==null);
-            Rule("Inspector rule",350,-94,498);
-            Label("Type","路线",145,-130,90,19,true);
-            Button("campaign-main","主线",257,-130,106,()=>Edit(()=>doc.SetRole(Current,Selected,null)));
-            Button("campaign-branch","支线",374,-130,106,()=>Switch(Panel.Anchor));
-            UI.WorkshopChoice("campaign-main",node.main);UI.WorkshopChoice("campaign-branch",!node.main);
-            var peers=CampaignDocument.Peers(Current,node);int index=peers.IndexOf(node);
-            Button("campaign-up","上移",481,-130,82,()=>Edit(()=>doc.MoveLevel(Current,Selected,-1)));
-            Button("campaign-down","下移",562,-130,78,()=>Edit(()=>doc.MoveLevel(Current,Selected,1)));
-            UI.SetEnabled("campaign-up",index>0);UI.SetEnabled("campaign-down",index+1<peers.Count);
-            Label("Unlock label","解锁",145,-181,90,19,true);
-            if(node.main)
-            {
-                string prerequisite=index==0?"进入本章时":Data.Board(peers[index-1].id).title+" 通关后";
-                Label("Main prerequisite",prerequisite,400,-181,392,19);
-            }
-            else Button("campaign-anchor",Data.Board(node.requires[0]).title+" 通关后",401,-181,394,()=>Switch(Panel.Anchor));
-            Button("campaign-copy","复制关卡",177,-253,155,()=>Edit(()=>selectedId=doc.AddLevel(Current,Selected,true)));
-            Button("campaign-transfer","移至章节",350,-253,162,()=>Switch(Panel.Transfer));
-            UI.SetEnabled("campaign-transfer",Data.catalog.chapters.Length>1);
-            Button("campaign-remove","移出目录",525,-253,150,()=>Switch(Panel.Remove));
-        }
         private void Pager(string id,float x,float y,int page,int count,Action<int> set,int perPage=Rows)
         {
             int pages=(count+perPage-1)/perPage;if(pages<=1)return;

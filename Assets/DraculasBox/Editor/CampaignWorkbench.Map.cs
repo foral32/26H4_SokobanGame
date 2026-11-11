@@ -22,6 +22,7 @@ namespace DraculasBox.Editor
             if(overlay!=Overlay.None)return false;
             if(panel!=Panel.Outline&&panel!=Panel.Chapters)return false;
             if(dragId!=null){if(keys.Pressed(KeyCode.Escape))CancelDrag();return true;}
+            if(panel==Panel.Outline&&(keys.Pressed(KeyCode.Menu)||keys.Pressed(KeyCode.F10)&&(keys.Held(KeyCode.LeftShift)||keys.Held(KeyCode.RightShift)))){ShowLevelTools(selectedId);return true;}
             bool command=keys.Held(KeyCode.LeftControl)||keys.Held(KeyCode.RightControl)||keys.Held(KeyCode.LeftCommand)||keys.Held(KeyCode.RightCommand);
             if(!command)return false;
             bool z=keys.Pressed(KeyCode.Z),redo=keys.Pressed(KeyCode.Y)||z&&(keys.Held(KeyCode.LeftShift)||keys.Held(KeyCode.RightShift));
@@ -62,27 +63,27 @@ namespace DraculasBox.Editor
             UI.MapPage(Current.title);
             UI.MapAction("campaign-back","返回章节",new Vector2(-506,292),198,Back,GameIcon.Back);
             UI.MapAction("campaign-new","新关卡",new Vector2(517,292),164,NewBoard,GameIcon.Create);
-            mapView=new GameUI.ChapterMapView(UI,Current,true,id=>Data.Board(id).title,SelectLevel,id=>{if(dragId==null)selectedId=id;});
+            mapView=new GameUI.ChapterMapView(UI,Current,true,id=>Data.Board(id).title,SelectLevel,id=>{if(dragId==null)selectedId=id;},ShowLevelTools);
             baseLayout=mapView.Layout;
             foreach(var node in Current.levels)
             {
                 string id=node.id;var handle=mapView.Button(id).gameObject.AddComponent<CampaignRowDrag>();
                 handle.Begin=p=>BeginDrag(id,p);handle.Move=MoveDrag;handle.End=EndDrag;handle.EdgePan=EdgePan;handle.Cancel=CancelDrag;
-                handle.Context=()=>{selectedId=id;Switch(Panel.Actions);};
+                handle.Context=()=>ShowLevelTools(id);
             }
             void Tool(string id,string text,float x,float width,Action click,bool on=true)
             {UI.Button(id,text,new Vector2(x,-313),new Vector2(width,42),click,on);UI.SetEnabled(id,on);}
             HistoryTools();
-            Tool("campaign-chapter-settings","章节…",130,116,()=>ShowChapterTools(chapterId));
-            Tool("campaign-actions","关卡操作",270,116,()=>Switch(Panel.Actions));
+            Tool("campaign-chapter-settings","章节…",334,116,()=>ShowChapterTools(chapterId));
             ReviewAction();
             mapStatus=UI.Text("Campaign status",notice??"",new Vector2(0,-257),new Vector2(1120,32),17,GameUI.Quiet);
             mapView.SetOffset(mapOffset);UI.FocusButton("select-level-"+selectedId);mapView.Show(Current,baseLayout,selectedId);
         }
         private void HistoryTools()
         {
-            UI.Button("campaign-undo","撤销",new Vector2(-533,-313),new Vector2(89,42),()=>History(true));
-            UI.Button("campaign-redo","重做",new Vector2(-432,-313),new Vector2(89,42),()=>History(false));
+            UI.Button("campaign-undo","撤销",new Vector2(-530,-313),new Vector2(116,42),()=>History(true));
+            UI.Button("campaign-redo","重做",new Vector2(-400,-313),new Vector2(116,42),()=>History(false));
+            UI.EditorShortcut("campaign-undo","Ctrl+Z");UI.EditorShortcut("campaign-redo","Ctrl+Y");
             UI.SetEnabled("campaign-undo",doc.CanUndo);UI.SetEnabled("campaign-redo",doc.CanRedo);
         }
         private void ReviewAction()
@@ -103,13 +104,15 @@ namespace DraculasBox.Editor
             var node=Current.levels.First(l=>l.id==id);
             canBranch=!node.main||baseLayout.centers.Length>1&&!Current.levels.Any(l=>!l.main&&l.requires[0]==id);
             mapView.Pointer(screen,app.viewCamera,out var press,out _);
-            grab=Vector2.ClampMagnitude(press-baseLayout.positions[id],44);
+            var offset=press-baseLayout.positions[id];grab=new Vector2(Mathf.Clamp(offset.x,-46,46),Mathf.Clamp(offset.y,-46,46));
+            mapView.BeginDragPreview(id,baseLayout);
         }
         private void MoveDrag(Vector2 screen)
         {
             if(dragId==null)return;
-            bool inside=mapView.Pointer(screen,app.viewCamera,out var point,out _);
-            var target=inside?baseLayout.Target(point):null;
+            bool inside=mapView.Pointer(screen,app.viewCamera,out var point,out _,22);
+            var center=point-grab;
+            var target=inside?baseLayout.DropTarget(center,dragId,aimed,canBranch):null;
             if(!painted||!Nullable.Equals(aimed,target))
             {
                 aimed=target;painted=true;validDrop=false;mapStatus.text="";
@@ -125,7 +128,7 @@ namespace DraculasBox.Editor
                             string anchor=target.Value.anchor;
                             var columns=anchor!=null&&heldMain?CampaignDocument.Main(Current).Select(l=>l.id==dragId?null:l.id).ToArray():null;
                             var preview=new ChapterMapLayout(next,columns,anchor,anchor==null?0:baseLayout.positions[anchor].x);
-                            mapView.Show(next,preview,pending:dragId,dragging:true,minimumWidth:baseLayout.width);
+                            mapView.Show(next,preview,moving:dragId,pending:dragId,dragging:true,minimumWidth:baseLayout.width);
                             validDrop=true;
                         }
                     }
@@ -133,17 +136,17 @@ namespace DraculasBox.Editor
                 }
                 if(!validDrop)mapView.Show(Current,baseLayout,moving:dragId,dragging:true);
             }
+            mapView.Lift(dragId,center);
             if(!validDrop)
             {
-                mapView.Lift(dragId,point-grab);
                 Vector2? socket=null;
-                if(inside&&canBranch&&Mathf.Abs(point.y)>15&&Mathf.Abs(point.y)<72)
+                if(inside&&canBranch&&Mathf.Abs(center.y)>45&&Mathf.Abs(center.y)<100)
                 {
-                    var nearby=baseLayout.Target(new Vector2(point.x,Mathf.Sign(point.y)*ChapterMapLayout.BranchY));
+                    var nearby=baseLayout.DropTarget(new Vector2(center.x,Mathf.Sign(center.y)*ChapterMapLayout.BranchY),dragId);
                     if(nearby.HasValue&&nearby.Value.anchor!=dragId)
                     {
                         float x=baseLayout.positions[nearby.Value.anchor].x;
-                        if(Mathf.Abs(x-point.x)<43)socket=new Vector2(x,point.y>0?60:-91);
+                        if(Mathf.Abs(x-center.x)<70)socket=new Vector2(x,center.y>0?60:-91);
                     }
                 }
                 mapView.HintBranchSocket(socket);
@@ -151,7 +154,7 @@ namespace DraculasBox.Editor
         }
         private void EdgePan(Vector2 screen,float dt)
         {
-            if(dragId==null||!mapView.Pointer(screen,app.viewCamera,out _,out float x))return;
+            if(dragId==null||!mapView.Pointer(screen,app.viewCamera,out _,out float x,22))return;
             float edge=ChapterMapLayout.ViewWidth*.5f-44;
             if(Mathf.Abs(x)<=edge)return;
             float before=mapView.Offset;mapView.Pan(Mathf.Sign(x)*430*dt);
@@ -161,7 +164,7 @@ namespace DraculasBox.Editor
         {
             if(dragId==null)return;MoveDrag(screen);
             if(!validDrop){CancelDrag();return;}
-            string id=dragId;var target=aimed.Value;var previous=mapView.Layout;dragId=null;
+            string id=dragId;var target=aimed.Value;var previous=mapView.CapturePositions();dragId=null;
             Edit(()=>{CampaignDocument.Place(Current,Current.levels.First(l=>l.id==id),target);selectedId=id;});
             mapView?.SettleFrom(previous);
         }
@@ -170,7 +173,7 @@ namespace DraculasBox.Editor
             if(dragId==null)return;dragId=null;aimed=null;validDrop=false;
             if(mapView?.Alive==true)
             {
-                mapView.Show(Current,baseLayout,selectedId);
+                mapView.EndDragPreview();mapView.Show(Current,baseLayout,selectedId);
                 UI.FocusButton("select-level-"+selectedId);
                 mapStatus.text="";
             }

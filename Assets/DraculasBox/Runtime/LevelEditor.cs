@@ -20,7 +20,7 @@ namespace DraculasBox.Runtime
         public int Channel {get;private set;}
         public void Initialize(DraculaApp owner){app=owner;ui=app.UI;board=app.Board;pointer=new PointerEventData(EventSystem.current);}
         public void Open(LevelData data)=>Open(data,app.Library.Read(out _).FirstOrDefault(d=>d.id==data.id));
-        public void Open(LevelData data,LevelData baseline){FinishStroke();Document=new EditDocument(data,false);Document.SavedBaseline(baseline);Selected=Brush.Box;Shape=PaintShape.Brush;board.ResetEditorView();Show();}
+        public void Open(LevelData data,LevelData baseline){ResetAuthoringTool();proofBoard=null;FinishStroke();Document=new EditDocument(data,false);Document.SavedBaseline(baseline);Selected=Brush.Box;Shape=PaintShape.Brush;board.ResetEditorView();Show();}
         public void Show()=>BuildWorkshop();
         public void Select(Brush brush){if(brush==Brush.Erase){SetOperation(EditOperation.Erase);return;}ClosePanels();CancelRectangle(false);FinishStroke();Selected=brush;Operation=EditOperation.Paint;RefreshOperation();RefreshShapeControls();RefreshChannelControls();RevealBrush(brush);}
         public void SelectChannel(int channel){CancelRectangle(false);FinishStroke();Channel=Mathf.Clamp(channel,0,3);board.EditorChannel=Channel;RefreshChannelControls();}
@@ -62,7 +62,7 @@ namespace DraculasBox.Runtime
         }
         public bool PointerSample(Vector2 screen,bool begin,bool held,bool end,bool erase=false,bool rectangle=false)
         {
-            if(panning)return false;
+            if(ToolOpen||panning)return false;
             erase|=Operation==EditOperation.Erase;if(begin&&!OverUI(screen)&&ClosePanels())return false;
             if(RegionActive||begin&&((Shape==PaintShape.Rectangle&&CanRectangle)||rectangle)&&(erase||CanRectangle))return RectangleSample(screen,begin,held,end,erase);
             if(end){FinishStroke();return true;}if(!begin&&!held)return false;if(OverUI(screen)||!board.CellAt(screen,out var cell)){connected=false;return false;}
@@ -73,6 +73,7 @@ namespace DraculasBox.Runtime
         }
         public bool PanSample(Vector2 screen,bool begin,bool held,bool end)
         {
+            if(ToolOpen)return false;
             if(begin)
             {
                 if(OverUI(screen)||!board.InViewport(screen))return false;
@@ -94,20 +95,41 @@ namespace DraculasBox.Runtime
         private void Update()
         {
             if(app==null||app.Page!=GamePage.Editing||app.Transitioning)return;
-            if(savedUntil>0&&Time.unscaledTime>savedUntil){savedUntil=0;RefreshLabels();}if(noticeUntil>0&&Time.unscaledTime>noticeUntil){noticeUntil=0;if(status!=null)status.text="";}
             if(Document.Dirty&&Time.unscaledTime>nextRecovery&&!stroke){nextRecovery=Time.unscaledTime+15;try{app.RecoverBoard(Document.Data);}catch(Exception e){Notice("恢复记录未写入："+e.Message);}}
+            if(ToolOpen){UpdateAuthoringTool();return;}
+            if(savedUntil>0&&Time.unscaledTime>savedUntil){savedUntil=0;RefreshLabels();}if(noticeUntil>0&&Time.unscaledTime>noticeUntil){noticeUntil=0;if(status!=null)status.text="";}
             if(app.Automated)return;if(!Application.isFocused){if(!CancelRectangle(false))FinishStroke();panning=false;board.BrushPreview(null,Selected,true);return;}
             if(PanSample(Input.mousePosition,Input.GetMouseButtonDown(2),Input.GetMouseButton(2),Input.GetMouseButtonUp(2)))return;
             bool control=Input.GetKey(KeyCode.LeftControl)||Input.GetKey(KeyCode.RightControl);
-            if(control&&Input.GetKeyDown(KeyCode.S)){Save();return;}if(Input.GetKeyDown(KeyCode.F5)){Play();return;}
+            foreach(var key in ShortcutKeys)if(Input.GetKeyDown(key)&&HandleShortcut(key,control))return;
             if(ui.HasTextFocus){if(Input.GetKeyDown(KeyCode.Escape))ui.CommitText();return;}
-            if(Input.GetKeyDown(KeyCode.Escape)){if(ClosePanels()||CancelRectangle())return;FinishStroke();app.LeaveEditor();return;}if(Input.GetKeyDown(KeyCode.Z)){Undo();return;}if(Input.GetKeyDown(KeyCode.Y)){Redo();return;}
-            for(int i=0;i<9;i++)if(Input.GetKeyDown(KeyCode.Alpha1+i))Select((Brush)i);if(Input.GetKeyDown(KeyCode.Alpha0))Select(Brush.Door);if(Input.GetKeyDown(KeyCode.Q))Select(Brush.MirrorSlash);if(Input.GetKeyDown(KeyCode.E))Select(Brush.MirrorBackslash);
+            if(Input.GetKeyDown(KeyCode.Escape)){if(ClosePanels()||CancelRectangle())return;FinishStroke();app.LeaveEditor();return;}
             Vector2 mouse=Input.mousePosition;bool over=OverUI(mouse);if(!over&&board.CellAt(mouse,out var hover)){bool valid=CanPreview(hover);board.BrushPreview(hover,EffectiveBrush,valid);board.DeviceGhost(EffectiveBrush,valid);}else board.BrushPreview(null,Selected,true);
             if(!over&&board.InViewport(mouse)&&Mathf.Abs(Input.mouseScrollDelta.y)>.01f){if(!CancelRectangle(false))FinishStroke();board.ZoomAt(mouse,Mathf.Pow(1.15f,Input.mouseScrollDelta.y));RefreshLabels();}
             if(Input.GetMouseButtonDown(0)&&(Input.GetKey(KeyCode.LeftAlt)||Input.GetKey(KeyCode.RightAlt))){PickAt(mouse);return;}
             bool down=Input.GetMouseButtonDown(0)||Input.GetMouseButtonDown(1),held=Input.GetMouseButton(0)||Input.GetMouseButton(1),up=Input.GetMouseButtonUp(0)||Input.GetMouseButtonUp(1);if(down||held||up)PointerSample(mouse,down,held,up,Input.GetMouseButton(1),Input.GetKey(KeyCode.LeftShift)||Input.GetKey(KeyCode.RightShift));
         }
-        private void OnDisable(){panning=false;if(!CancelRectangle(false))FinishStroke();}
+        private static readonly KeyCode[] ShortcutKeys={KeyCode.S,KeyCode.F5,KeyCode.Z,KeyCode.Y,KeyCode.B,KeyCode.X,KeyCode.P,KeyCode.R,
+            KeyCode.Alpha1,KeyCode.Alpha2,KeyCode.Alpha3,KeyCode.Alpha4,KeyCode.Alpha5,KeyCode.Alpha6,KeyCode.Alpha7,KeyCode.Alpha8,KeyCode.Alpha9,KeyCode.Alpha0,KeyCode.Q,KeyCode.E};
+        // The ordinary keyboard path and isolated checks use the same dispatcher.
+        public bool HandleShortcut(KeyCode key,bool control=false)
+        {
+            if(Document==null||ToolOpen)return false;
+            if(control&&key==KeyCode.S){Save();return true;}
+            if(key==KeyCode.F5){Play();return true;}
+            if(ui.HasTextFocus)return false;
+            if(key==KeyCode.Z){Undo();return true;}if(key==KeyCode.Y){Redo();return true;}
+            if(control)return false;
+            if(key==KeyCode.B){SetOperation(EditOperation.Paint);return true;}
+            if(key==KeyCode.X){SetOperation(EditOperation.Erase);return true;}
+            if(key==KeyCode.P){SelectShape(PaintShape.Brush);return true;}
+            if(key==KeyCode.R){if(CanRectangle)SelectShape(PaintShape.Rectangle);return true;}
+            if(key>=KeyCode.Alpha1&&key<=KeyCode.Alpha9){Select((Brush)((int)key-(int)KeyCode.Alpha1));return true;}
+            if(key==KeyCode.Alpha0){Select(Brush.Door);return true;}
+            if(key==KeyCode.Q){Select(Brush.MirrorSlash);return true;}
+            if(key==KeyCode.E){Select(Brush.MirrorBackslash);return true;}
+            return false;
+        }
+        private void OnDisable(){ResetAuthoringTool();panning=false;if(!CancelRectangle(false))FinishStroke();}
     }
 }

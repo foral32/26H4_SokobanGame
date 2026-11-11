@@ -46,6 +46,7 @@ namespace DraculasBox.Runtime
             b.GetComponent<Image>().color=selected?WorkshopAccent:WorkshopLine;
             var face=b.transform.Find("Face")??b.transform.Find("Primary face");if(face!=null)face.GetComponent<Image>().color=selected?WorkshopAccent:WorkshopSurface;
             var label=b.transform.Find("Label").GetComponent<TMP_Text>();label.color=b.interactable?(selected?GameThemes.Current.WorkshopOnAccent:WorkshopInk):new Color(WorkshopInk.r,WorkshopInk.g,WorkshopInk.b,.35f);
+            var key=b.transform.Find("Shortcut")?.GetComponent<TMP_Text>();if(key!=null)key.color=selected?GameThemes.Current.WorkshopOnAccent:Muted;
         }
         public Button WorkshopIcon(string id,GameIcon icon,Vector2 position,Vector2 size,Action action,Transform parent=null,bool navigable=false)
         {var b=EditorButton(id,"",position,size,action,false,parent,navigable);Icon("Icon",icon,Vector2.zero,22,WorkshopInk,b.transform);return b;}

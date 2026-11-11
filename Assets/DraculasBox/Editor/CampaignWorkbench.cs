@@ -34,7 +34,7 @@ namespace DraculasBox.Editor
         private string chapterId, selectedId, notice, trialRoute, publicationError;
         private LevelData recovery, trialBoard;
         private bool rescan,reviewOnReturn;
-        private enum Panel { Chapters, Outline, Actions, Anchor, Transfer, Discard, Remove }
+        private enum Panel { Chapters, Outline, Anchor, Transfer, Discard, Remove }
         private Panel panel;
         private int chapterPage, choicePage;
         private const int Rows = 8;
@@ -163,15 +163,20 @@ namespace DraculasBox.Editor
         {
             reviewOnReturn=fromReview;overlay=Overlay.None;
             if(mapView?.Alive==true)mapOffset=mapView.Offset;
-            var baseline = Data.Board(selectedId);
+            var baseline = Data.Board(selectedId).Copy();
+            baseline.solution=Data.Plan(selectedId)?.route;
             EditingBoard = true;
             app.OpenCampaignBoard(recovery?.id == selectedId ? recovery : baseline, baseline, play);
         }
         public void StageBoard(LevelData data)
         {
-            doc.Change(() => doc.SaveBoard(data, trialRoute));
-            recovery = null;
-            Persist();
+            var prior=recovery;
+            try
+            {
+                doc.Change(()=>{doc.SaveBoard(data,trialRoute);recovery=null;Persist();});
+                data.solution=Data.Plan(data.id)?.route;
+            }
+            catch { recovery=prior;draft.brushRecovery=prior;draft.working=Data;throw; }
         }
         public void RecoverBoard(LevelData data)
         {
@@ -208,8 +213,11 @@ namespace DraculasBox.Editor
             trialRoute = new string(route.ToArray());
             try
             {
-                if (Data.Board(selectedId).ContentEquals(trialBoard)) StageBoard(trialBoard);
-                else RecoverBoard(trialBoard);
+                var baseline=Data.Board(selectedId).Copy();baseline.solution=trialBoard.solution;
+                var editing=app.Creator.Document;
+                editing.RecordSolution(trialRoute);
+                if(baseline.ContentEquals(trialBoard)){StageBoard(editing.Data);editing.Saved();}
+                else RecoverBoard(editing.Data);
                 notice = "已记录通关路线";
             }
             catch (Exception e) { notice = e.Message; }

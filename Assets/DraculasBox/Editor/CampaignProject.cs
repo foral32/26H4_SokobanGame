@@ -155,7 +155,7 @@ namespace DraculasBox.Editor
                 if(error!=null){issues.Add(new PublicationIssue(b,error,false));continue;}
                 var plan = data.Plan(b.id);
                 if (!CampaignDocument.Proves(b, plan?.route, out int pushes) || pushes != plan.pushes)
-                    issues.Add(new PublicationIssue(b,"待试玩通关，记录有效路线",true));
+                    issues.Add(new PublicationIssue(b,"缺少有效关卡解",true));
             }
             return issues;
         }

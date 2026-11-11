@@ -31,16 +31,17 @@ namespace DraculasBox.Core
     }
     [Serializable] public sealed class LevelData
     {
-        public int schemaVersion=1; public string id,title,hint;
+        public int schemaVersion=1; public string id,title,hint,solution;
         public string[] rows;
         public Cell player,coffin;
         public EntityData[] pieces=Array.Empty<EntityData>();
         public DeviceData[] plates=Array.Empty<DeviceData>(),doors=Array.Empty<DeviceData>();
         public bool sunEnabled; public SunSide sunFrom;
-        public LevelData Copy()=>new LevelData{schemaVersion=schemaVersion,id=id,title=title,hint=hint,rows=(string[])rows.Clone(),player=player,coffin=coffin,pieces=pieces.Select(p=>p.Copy()).ToArray(),plates=(plates??Array.Empty<DeviceData>()).Select(p=>p.Copy()).ToArray(),doors=(doors??Array.Empty<DeviceData>()).Select(p=>p.Copy()).ToArray(),sunEnabled=sunEnabled,sunFrom=sunFrom};
-        public bool ContentEquals(LevelData other)
+        public LevelData Copy()=>new LevelData{schemaVersion=schemaVersion,id=id,title=title,hint=hint,solution=solution,rows=(string[])rows.Clone(),player=player,coffin=coffin,pieces=pieces.Select(p=>p.Copy()).ToArray(),plates=(plates??Array.Empty<DeviceData>()).Select(p=>p.Copy()).ToArray(),doors=(doors??Array.Empty<DeviceData>()).Select(p=>p.Copy()).ToArray(),sunEnabled=sunEnabled,sunFrom=sunFrom};
+        public bool ContentEquals(LevelData other)=>other!=null&&id==other.id&&title==other.title&&hint==other.hint&&(solution??"")==(other.solution??"")&&LayoutEquals(other);
+        public bool LayoutEquals(LevelData other)
         {
-            if(other==null||schemaVersion!=other.schemaVersion||id!=other.id||title!=other.title||hint!=other.hint||player!=other.player||coffin!=other.coffin||sunEnabled!=other.sunEnabled||sunFrom!=other.sunFrom||!rows.SequenceEqual(other.rows)||pieces.Length!=other.pieces.Length)return false;
+            if(other==null||schemaVersion!=other.schemaVersion||player!=other.player||coffin!=other.coffin||sunEnabled!=other.sunEnabled||sunFrom!=other.sunFrom||!rows.SequenceEqual(other.rows)||pieces.Length!=other.pieces.Length)return false;
             for(int i=0;i<pieces.Length;i++)if(pieces[i].id!=other.pieces[i].id||pieces[i].kind!=other.pieces[i].kind||pieces[i].cell!=other.pieces[i].cell)return false;
             if(!SameDevices(plates,other.plates)||!SameDevices(doors,other.doors))return false;
             return true;
@@ -61,6 +62,7 @@ namespace DraculasBox.Core
         public string Title=>data.title;
         public Cell Coffin=>data.coffin;
         public int PieceCount=>data.pieces.Length;
+        public bool HasLamp {get;}
         public int PlateCount=>data.plates.Length;
         public int DoorCount=>data.doors.Length;
         public DeviceData Plate(int index)=>data.plates[index].Copy();
@@ -82,14 +84,15 @@ namespace DraculasBox.Core
             string error=draft?DraftError(source):StructuralError(source);
             if(error!=null)throw new ArgumentException(error);
             data=source.Copy();
+            HasLamp=Array.Exists(data.pieces,p=>p.kind==PieceKind.Lamp);
             doorAt=new int[Width*Height];for(int i=0;i<doorAt.Length;i++)doorAt[i]=-1;for(int i=0;i<data.doors.Length;i++)doorAt[data.doors[i].cell.y*Width+data.doors[i].cell.x]=i;
-            if(validate&&!LightField.Compute(Initial()).Safe(data.player))throw new ArgumentException("出生点受光，请移动角色或调整遮挡。");
+            if(validate&&Initial().Dead)throw new ArgumentException("出生点受光，请移动角色或调整遮挡。");
         }
         public State Initial()=>new State(this,data.player,data.pieces.Select(p=>p.cell).ToArray(),data.sunEnabled,data.sunFrom,Command.Right);
         public static string StructuralError(LevelData d)
         {
             string error=DraftError(d);if(error!=null)return error;
-            if(d.player==new Cell(-1,-1))return "请放置吸血鬼。";
+            if(d.player==new Cell(-1,-1))return "请放置玩家。";
             if(d.coffin==new Cell(-1,-1))return "请放置棺材。";
             var plates=d.plates??Array.Empty<DeviceData>();var doors=d.doors??Array.Empty<DeviceData>();
             if(plates.Any(p=>!doors.Any(g=>g.channel==p.channel))||doors.Any(g=>!plates.Any(p=>g.channel==p.channel)))return "压力板与自动门需要有对应的连接组。";
@@ -105,7 +108,7 @@ namespace DraculasBox.Core
             if(!Enum.IsDefined(typeof(SunSide),d.sunFrom))return "无效的日照方向。";
             Func<Cell,bool> floor=p=>p.x>=0&&p.y>=0&&p.x<w&&p.y<d.rows.Length&&d.rows[p.y][p.x]=='.';
             bool player=d.player!=new Cell(-1,-1),coffin=d.coffin!=new Cell(-1,-1);
-            if(player&&!floor(d.player))return "请把吸血鬼放在地板上。";
+            if(player&&!floor(d.player))return "请把玩家放在地板上。";
             if(coffin&&!floor(d.coffin))return "请把棺材放在地板上。";
             if(player&&coffin&&d.player==d.coffin)return "角色出生点不能与棺材重叠。";
             if(d.pieces==null||d.pieces.Length>128)return "物件数据无效或过多。";
@@ -142,7 +145,7 @@ namespace DraculasBox.Core
             Level=d;Player=p;positions=(Cell[])a.Clone();SunEnabled=sun;SunFrom=side;Facing=facing;
             var pressed=new bool[4];for(int i=0;i<d.PlateCount;i++)if(PlatePressed(i))pressed[d.PlateChannel(i)]=true;
             openDoors=new bool[d.DoorCount];for(int i=0;i<openDoors.Length;i++){var cell=d.DoorCell(i);openDoors[i]=pressed[d.DoorChannel(i)]||Player==cell||At(cell)>=0;}
-            Dead=d.Floor(p)&&!LightField.Compute(this).Safe(p);
+            Dead=(sun||d.HasLamp)&&d.Floor(p)&&!LightField.Compute(this).Safe(p);
         }
         internal Cell[] CopyPositions()=>(Cell[])positions.Clone();
         public int At(Cell p){for(int i=0;i<positions.Length;i++)if(positions[i]==p)return i;return -1;}
@@ -237,6 +240,14 @@ namespace DraculasBox.Core
         public int UndoCount=>history.Count;
         public int Moves {get;private set;}
         public Session(Definition d){State=d.Initial();}
+        public string WinningRoute()
+        {
+            if(!State.Won||Moves==0)return null;
+            var route=new char[Moves];int i=Moves-1;route[i]=LevelSolver.Directions[(int)State.Facing];
+            // After Undo the abandoned branch is already gone. Moves stops at the last Reset.
+            foreach(var previous in history){if(i==0)break;route[--i]=LevelSolver.Directions[(int)previous.Facing];}
+            return new string(route);
+        }
         public ActionResult Apply(Command cmd)
         {
             var before=State;
