@@ -40,6 +40,7 @@ namespace DraculasBox.Runtime
         {assets=a;app=host;canvas.worldCamera=camera;canvas.sortingOrder=100;}
         public void Clear()
         {
+            StopChapterCelebration();HideLevelPeek();ClearProgressPresentation();
             if(authoredTitle!=null)authoredTitle.SetActive(false);
             for(int i=content.childCount-1;i>=0;i--)
             {var child=content.GetChild(i).gameObject;child.SetActive(false);if(Application.isPlaying)Destroy(child);else DestroyImmediate(child);}
@@ -54,7 +55,7 @@ namespace DraculasBox.Runtime
         {
             if(pageGroup==null)return;
             float t=entryDuration<=0?1:Mathf.Clamp01((Time.unscaledTime-opened)/entryDuration);
-            pageGroup.alpha=1-Mathf.Pow(1-t,3);pageGroup.blocksRaycasts=t>=.80f;
+            pageGroup.alpha=1-Mathf.Pow(1-t,3);pageGroup.blocksRaycasts=t>=.80f&&!IsChapterCelebrating;
             ((RectTransform)pageGroup.transform).anchoredPosition=new Vector2(0,8*Mathf.Pow(1-t,3));
         }
         public RectTransform Rect(string name,Vector2 position,Vector2 size,Transform parent=null)
@@ -144,7 +145,7 @@ namespace DraculasBox.Runtime
         }
         public void Handle(StudyAction action)
         {
-            if(IsEntering)return;
+            if(IsEntering||IsChapterCelebrating)return;
             if(action==StudyAction.Back){app.Back();return;}if(rows.Count==0)return;if(!rows[selected].button.gameObject.activeInHierarchy){int visible=rows.FindIndex(r=>r.button.gameObject.activeInHierarchy&&r.button.interactable);if(visible<0)return;Focus(visible);}
             if(action==StudyAction.Confirm){if(rows[selected].button.interactable&&rows[selected].enabled&&rows[selected].submit!=null)rows[selected].submit();else rows[selected].button.onClick.Invoke();return;}
             if((int)action>3)return;
@@ -182,7 +183,8 @@ namespace DraculasBox.Runtime
         public void ClickForCheck(string id,int clickCount=1)
         {
             var button=FindButton(id);if(button==null)throw new InvalidOperationException("Missing visible button "+id);
-            var pointer=new PointerEventData(EventSystem.current){position=RectTransformUtility.WorldToScreenPoint(canvas.worldCamera,button.transform.position),clickCount=clickCount};
+            var rect=(RectTransform)button.transform;
+            var pointer=new PointerEventData(EventSystem.current){position=RectTransformUtility.WorldToScreenPoint(canvas.worldCamera,rect.TransformPoint(rect.rect.center)),clickCount=clickCount};
             var hits=new List<RaycastResult>();EventSystem.current.RaycastAll(pointer,hits);
             if(!hits.Any(h=>h.gameObject==button.gameObject))throw new InvalidOperationException("Button not raycast visible "+id);
             ExecuteEvents.Execute(button.gameObject,pointer,ExecuteEvents.pointerClickHandler);

@@ -11,13 +11,12 @@ namespace DraculasBox.Runtime
         private MaterialPropertyBlock spriteProperties;private static readonly int MainTexture=Shader.PropertyToID("_MainTex");
         private readonly List<SpriteRenderer> renderers=new List<SpriteRenderer>();private readonly Stack<SpriteRenderer> spare=new Stack<SpriteRenderer>();
         private SpriteMask editMask;private Vector3 editorPan;private float editorZoom=1;
-        private SpriteRenderer[] illumination,dust,embers,lampGlows,mirrorRays;private SpriteRenderer ghost;private float deathAt=-1;private float[] shineFrom,shineTo;
-        public const float DeathImpactSeconds=.115f,DeathSeconds=.60f;public float EditorZoom=>editorZoom;
+        private SpriteRenderer[] dust,embers,lampGlows,mirrorRays;private SpriteRenderer ghost;private float deathAt=-1;
+        public const float DeathImpactSeconds=.115f,DeathSeconds=.78f;public float EditorZoom=>editorZoom;
         public const float EditorWidth=1056,EditorHeight=512,EditorX=66,EditorY=-28;
         private bool paletteCollapsed;private float EditorViewWidth=>paletteCollapsed?1188:EditorWidth;private float EditorViewX=>paletteCollapsed?0:EditorX;
         public void EditorPaletteCollapsed(bool value){paletteCollapsed=value;if(state!=null&&editing)Fit();}
         private SpriteRenderer[] floors,pieces,pieceShadows;private SpriteRenderer player,cape,fangs,coffin,lid,warning;
-        private Color[] lightFrom,lightTo;
         private State state,previous;private ActionResult action;private float elapsed,duration,wonAt=-1,aspect;private bool editing;
         private Vector3 normalFrame;private float unitsPerUI;
         public int HighestSortingOrder=>37;
@@ -28,24 +27,25 @@ namespace DraculasBox.Runtime
         public void RefreshTheme()
         {
             if(state==null)return;var current=state;bool edit=editing;float won=wonAt,death=deathAt;
-            Load(current,edit);wonAt=won;deathAt=death;Refresh(1);
+            bool wrapped=pauseTarget;float wrap=pauseBlend;
+            Load(current,edit);wonAt=won;deathAt=death;pauseTarget=wrapped;pauseBlend=wrap;Refresh(1);
         }
         public void Initialize(GameAssets a,Camera c){assets=a;cameraView=c;spriteProperties=new MaterialPropertyBlock();boardRoot=new GameObject("Board").transform;boardRoot.SetParent(transform,false);var g=new GameObject("Editor viewport",typeof(SpriteMask));g.transform.SetParent(transform,false);editMask=g.GetComponent<SpriteMask>();editMask.sprite=a.Sprite("solid");editMask.isCustomRangeActive=true;editMask.backSortingOrder=-100;editMask.frontSortingOrder=90;editMask.enabled=false;}
         public void Clear()
         {Recycle(true);}
         private void Recycle(bool hide)
-        {ResetDeathBackdrop();for(int i=renderers.Count-1;i>=0;i--){var r=renderers[i];if(r==null)continue;if(hide)r.gameObject.SetActive(false);spare.Push(r);}renderers.Clear();state=previous=null;if(editMask!=null)editMask.enabled=false;}
+        {ClearCharacterEffects();ClearEditorStamps();ResetDeathBackdrop();HideLightPresentation();burnGlow=null;for(int i=renderers.Count-1;i>=0;i--){var r=renderers[i];if(r==null)continue;if(hide)r.gameObject.SetActive(false);spare.Push(r);}renderers.Clear();state=previous=null;if(editMask!=null)editMask.enabled=false;}
         public void Load(State s,bool edit=false)
         {
             Recycle(false);state=previous=s;action=null;editing=edit;elapsed=duration=0;wonAt=deathAt=-1;Fit();var d=s.Level;
             floors=new SpriteRenderer[d.Width*d.Height];
-            lightFrom=new Color[floors.Length];lightTo=new Color[floors.Length];illumination=new SpriteRenderer[floors.Length];shineFrom=new float[floors.Length];shineTo=new float[floors.Length];
+            terrainVisualStarts=edit?new int[floors.Length]:null;terrainVisualCounts=edit?new int[floors.Length]:null;
             for(int y=0;y<d.Height;y++)for(int x=0;x<d.Width;x++)
             {
-                var p=new Cell(x,y);var pos=Position(p);char terrain=d.Terrain(p);
+                int firstVisual=renderers.Count;var p=new Cell(x,y);var pos=Position(p);char terrain=d.Terrain(p);
                 if(terrain=='.')
                 {
-                    int cell=y*d.Width+x;floors[cell]=MakeSprite("Floor "+p,SurfaceSprites.Floor,-20,pos,1);illumination[cell]=MakeSprite("Illumination "+p,SurfaceSprites.Light(0),-19,pos,.99f);
+                    int cell=y*d.Width+x;floors[cell]=MakeSprite("Floor "+p,SurfaceSprites.Floor,-20,pos,1);
                 }
                 if(terrain=='#')
                 {
@@ -56,6 +56,7 @@ namespace DraculasBox.Runtime
                     int neighbors=0;for(int i=0;i<StoneOffsets.Length;i++)if(d.Inside(p+StoneOffsets[i])&&d.Terrain(p+StoneOffsets[i])==' ')neighbors|=1<<i;
                     var pit=MakeSprite("Pit "+p,SurfaceSprites.Pit(neighbors),-25,pos,1);pit.color=Color.white;
                 }
+                if(edit){int cell=y*d.Width+x;terrainVisualStarts[cell]=firstVisual;terrainVisualCounts[cell]=renderers.Count-firstVisual;}
             }
             if(s.SunEnabled)BuildSunIndicator();
             BuildDevices();
@@ -73,11 +74,17 @@ namespace DraculasBox.Runtime
             warning=Make("Rejected light cell","outline",7,Vector3.zero,.98f);warning.enabled=false;
             ghost=Make("Brush preview","solid",35,Vector3.zero,.88f);ghost.enabled=false;
             BuildRegionPreview();
-            dust=new SpriteRenderer[6];embers=new SpriteRenderer[2];for(int i=0;i<dust.Length;i++){dust[i]=Make("Push dust "+i,"solid",8,Vector3.zero,.05f);dust[i].enabled=false;}for(int i=0;i<embers.Length;i++){embers[i]=Make("Burn ash "+i,"solid",20,Vector3.zero,.055f);embers[i].enabled=false;}
+            dust=new SpriteRenderer[6];for(int i=0;i<dust.Length;i++){dust[i]=Make("Push dust "+i,"solid",8,Vector3.zero,.05f);dust[i].enabled=false;}BuildDeathEffects();
+            BuildCharacterEffects();BuildLightPresentation();
             UpdateFloor();Refresh(1);
             foreach(var unused in spare)if(unused.gameObject.activeSelf)unused.gameObject.SetActive(false);
         }
-        public void Preview(LevelData data){Load(Definition.Preview(data).Initial(),true);}
+        public void Preview(LevelData data,bool preserveStamps=false)
+        {
+            var retained=preserveStamps&&editing&&stampRequests.Count>0?new Dictionary<Cell,StampRequest>(stampRequests):null;
+            Load(Definition.Preview(data).Initial(),true);
+            if(retained!=null){double now=Time.realtimeSinceStartupAsDouble;foreach(var item in retained)if(now-item.Value.at<StampSeconds)stampRequests[item.Key]=item.Value;BindStampVisuals();}
+        }
         private void Fit()
         {
             aspect=cameraView.aspect;var d=state.Level;
@@ -85,13 +92,16 @@ namespace DraculasBox.Runtime
             // Fitting against the whole window would overlap the controls on taller windows.
             float pixelHeight=cameraView.pixelHeight;
             float uiScale=Mathf.Min(pixelHeight*aspect/1280f,pixelHeight/720f);
-            float cellPixels=Mathf.Min((editing?EditorViewWidth:960f)*uiScale/d.Width,(editing?EditorHeight:470f)*uiScale/d.Height);
+            bool horizontalSun=state.SunFrom==SunSide.Left||state.SunFrom==SunSide.Right;
+            float availableWidth=editing?EditorViewWidth-(state.SunEnabled&&horizontalSun?100:0):960;
+            float availableHeight=editing?EditorHeight-(state.SunEnabled&&!horizontalSun?100:0):470;
+            float cellPixels=Mathf.Min(availableWidth*uiScale/d.Width,availableHeight*uiScale/d.Height);
             cameraView.orthographicSize=pixelHeight/(2f*cellPixels);
             cameraView.transform.position=new Vector3(0,0,-10);
             unitsPerUI=uiScale/cellPixels;normalFrame=new Vector3((editing?EditorViewX:-60f)*unitsPerUI,editing?EditorY*unitsPerUI:0,0);editMask.enabled=editing;editMask.transform.localPosition=normalFrame;editMask.transform.localScale=new Vector3(EditorViewWidth,EditorHeight,1)*unitsPerUI;ClampPan();ApplyFrame();
         }
         private void ApplyFrame()
-        {DeathFrame(out var offset,out float scale);boardRoot.localPosition=normalFrame+(editing?editorPan:offset);boardRoot.localScale=Vector3.one*(editing?editorZoom:scale);}
+        {DeathFrame(out var offset,out float scale);boardRoot.localPosition=normalFrame+(editing?editorPan:offset);boardRoot.localScale=Vector3.one*(editing?editorZoom:scale);if(state.SunEnabled)PlaceSunlightSource();}
         public void ResetEditorView(){editorZoom=1;editorPan=Vector3.zero;if(state!=null)Fit();}
         private void ClampPan()
         {
@@ -133,6 +143,7 @@ namespace DraculasBox.Runtime
         public void Present(ActionResult result)
         {
             previous=result.Before;state=result.After;action=result;elapsed=0;duration=result.Kind==ActionKind.Blocked?.08f:result.Kind==ActionKind.Undone?.085f:.115f;deathAt=state.Dead?Time.unscaledTime:-1;
+            StartCharacterAction(result);
             UpdateFloor();warning.enabled=false;
             if(warning.enabled){warning.transform.localPosition=Position(result.RejectedCell);warning.color=new Color(1,.40f,.30f,.9f);}
             if(state.Won)wonAt=Time.unscaledTime;
@@ -141,28 +152,25 @@ namespace DraculasBox.Runtime
         }
         private void UpdateFloor()
         {
-            var light=LightField.Compute(state);var d=state.Level;
+            var light=LightField.Compute(state);var d=state.Level;UpdateLightFields(light);ConfigureDeathLight(light);
             coffinFrom=coffinExposure.color.a;coffinTo=light.Lit(d.Coffin)?.43f:0;
             for(int j=0;j<mirrorRays.Length;j++)if(mirrorRays[j]!=null){var p=state.Position(j);SetSprite(mirrorRays[j],SurfaceSprites.MirrorRay(light.ReflectionEdges[p.y*d.Width+p.x]));mirrorRays[j].color=new Color(1,.86f,.52f,.85f);}
             for(int y=0;y<d.Height;y++)for(int x=0;x<d.Width;x++)
             {
-                int i=y*d.Width+x;if(floors[i]==null)continue;var p=new Cell(x,y);
-                lightFrom[i]=floors[i].color;lightTo[i]=light.Lit(p)?LitColor:SafeColor;shineFrom[i]=illumination[i].color.a;shineTo[i]=light.Lit(p)?.045f:0;int edges=0;if(!light.Lit(new Cell(x-1,y)))edges|=1;if(!light.Lit(new Cell(x+1,y)))edges|=2;if(!light.Lit(new Cell(x,y-1)))edges|=4;if(!light.Lit(new Cell(x,y+1)))edges|=8;SetSprite(illumination[i],SurfaceSprites.Light(edges));
+                int i=y*d.Width+x;if(floors[i]!=null)floors[i].color=dayFloor;
             }
         }
         private void BlendLighting(float t)
         {
-            BlendCoffinLight(t);for(int i=0;i<floors.Length;i++)if(floors[i]!=null)
-            {
-                floors[i].color=Color.Lerp(lightFrom[i],lightTo[i],t);
-                illumination[i].color=new Color(1,.94f,.80f,Mathf.Lerp(shineFrom[i],shineTo[i],t));
-            }
+            BlendCoffinLight(t);
         }
         private void Update()
         {
             if(state==null)return;if(!Mathf.Approximately(aspect,cameraView.aspect))Fit();
+            RestoreStampTransforms();
             ApplyFrame();
             elapsed+=Time.unscaledDeltaTime;Refresh(duration<=0?1:Mathf.Clamp01(elapsed/duration));
+            AnimateEditorStamps();
             
         }
         private void Refresh(float t)
@@ -172,7 +180,8 @@ namespace DraculasBox.Runtime
             for(int i=0;i<pieces.Length;i++){pieces[i].transform.localPosition=Vector3.Lerp(Position(previous.Position(i)),Position(state.Position(i)),travel);if(mirrorRays[i]!=null)mirrorRays[i].transform.localPosition=pieces[i].transform.localPosition;if(lampGlows[i]!=null){lampGlows[i].transform.localPosition=pieces[i].transform.localPosition;lampGlows[i].color=new Color(1,.84f,.45f,.40f);pieces[i].color=Color.Lerp(new Color(.93f,.93f,.93f),Color.white,.5f+.5f*Mathf.Sin(Time.unscaledTime*2));}}
             for(int i=0;i<pieces.Length;i++)if(pieceShadows[i]!=null)pieceShadows[i].transform.localPosition=pieces[i].transform.localPosition+ContactOffset();
             var face=action!=null&&action.Kind==ActionKind.Blocked&&action.Command<=Command.Left?action.Command:state.Facing;
-            string[] names={"up","right","down","left"};SetSprite(player,assets.Sprite("Player_active_white_"+names[(int)face]));
+            string[] names={"up","right","down","left"};
+            SetSprite(player,assets.Sprite("Player_active_white_"+names[(int)face]));
             var pos=Vector3.Lerp(Position(previous.Player),Position(state.Player),travel);
             float wave=(action==null?0:Mathf.Sin(t*Mathf.PI));
             if(action!=null&&action.Kind==ActionKind.Blocked){var dir=LightField.Directions[(int)face];pos+=new Vector3(dir.x,-dir.y)*wave*.06f;}
@@ -181,7 +190,8 @@ namespace DraculasBox.Runtime
             cape.transform.localPosition=Vector3.Lerp(Position(previous.Player),pos,Mathf.Clamp01(t*1.2f)) + new Vector3(-wave*.035f,-.025f,0);
             fangs.transform.localPosition=player.transform.localPosition+Vector3.down*.035f;fangs.transform.localScale=player.transform.localScale;
             fangs.enabled=player.enabled&&face!=Command.Up;
-            PushDust();foreach(var bit in embers)bit.enabled=false;
+            PushDust();foreach(var bit in embers)bit.enabled=false;if(burnGlow!=null)burnGlow.enabled=false;
+            if(!state.Dead||editing)RestoreDeathInk();
             if(!editing&&state.Dead)DeathPose();
             if(wonAt>=0)
             {
@@ -189,6 +199,7 @@ namespace DraculasBox.Runtime
                 player.transform.localScale*=shrink;cape.transform.localScale=Vector3.one*(.94f*shrink);fangs.transform.localScale*=shrink;
                 if(q>.31f){player.enabled=cape.enabled=fangs.enabled=false;lid.enabled=true;lid.transform.localPosition=Position(state.Level.Coffin)+Vector3.right*.65f*(1-Mathf.SmoothStep(0,1,(q-.29f)/.18f));}
             }
+            RefreshCharacterEffects();RefreshLightPresentation(travel);
         }
         private void PushDust()
         {

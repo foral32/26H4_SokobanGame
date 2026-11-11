@@ -88,7 +88,8 @@ namespace DraculasBox.Editor
             var button=app.UI.FindButton(id);
             if(button==null||!button.isActiveAndEnabled||!button.interactable)throw new InvalidOperationException("Unavailable control: "+id);
             var hits=new List<RaycastResult>();
-            var p=new PointerEventData(EventSystem.current){position=RectTransformUtility.WorldToScreenPoint(app.viewCamera,button.transform.position)};
+            var rect=(RectTransform)button.transform;
+            var p=new PointerEventData(EventSystem.current){position=RectTransformUtility.WorldToScreenPoint(app.viewCamera,rect.TransformPoint(rect.rect.center))};
             EventSystem.current.RaycastAll(p,hits);
             if(hits.Count==0||ExecuteEvents.GetEventHandler<IPointerClickHandler>(hits[0].gameObject)!=button.gameObject)
                 throw new InvalidOperationException("Control is covered: "+id+" by "+hits.FirstOrDefault().gameObject);

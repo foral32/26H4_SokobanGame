@@ -5,11 +5,12 @@ using UnityEngine.EventSystems;
 
 namespace DraculasBox.Runtime
 {
-    public sealed class CampaignRowDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
+    public sealed class CampaignRowDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
     {
         public Action<Vector2> Begin,Move,End;
         public Action<Vector2,float> EdgePan;
         public Action Cancel,Context;
+        public Action<bool> HoverChanged;
         private bool held;
         private int pointer;
         private Vector2 last;
@@ -25,10 +26,12 @@ namespace DraculasBox.Runtime
             if(!held||e.pointerId!=pointer)return;
             held=false;e.eligibleForClick=false;End?.Invoke(e.position);
         }
+        public void OnPointerEnter(PointerEventData e)=>HoverChanged?.Invoke(true);
+        public void OnPointerExit(PointerEventData e)=>HoverChanged?.Invoke(false);
         public void OnPointerClick(PointerEventData e){if(e.button==PointerEventData.InputButton.Right)Context?.Invoke();}
         private void Update(){if(held)EdgePan?.Invoke(last,Time.unscaledDeltaTime);}
-        private void OnApplicationFocus(bool focused){if(!focused)Release();}
-        private void OnDisable()=>Release();
+        private void OnApplicationFocus(bool focused){if(!focused){HoverChanged?.Invoke(false);Release();}}
+        private void OnDisable(){HoverChanged?.Invoke(false);Release();}
         private void Release(){if(!held)return;held=false;Cancel?.Invoke();}
     }
 }

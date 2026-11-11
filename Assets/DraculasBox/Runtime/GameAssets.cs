@@ -43,7 +43,7 @@ namespace DraculasBox.Runtime
         public AudioClip Clip(string name)=>audio.FirstOrDefault(a=>a!=null&&a.name==name);
     }
     [Serializable] public sealed class ProgressData
-    {public int schema=1,catalogRevision;public List<string> completed=new List<string>(),unlockedChapters=new List<string>();public string lastLevel="c1_01",theme=GameThemes.DefaultThemeId;public float music=.25f,effects=.55f;}
+    {public int schema=1,catalogRevision;public bool allLevelsUnlocked;public List<string> completed=new List<string>(),unlockedChapters=new List<string>();public string lastLevel="c1_01",theme=GameThemes.DefaultThemeId;public float music=.25f,effects=.55f;}
     public sealed class ProgressStore
     {
         private readonly string path;public ProgressData Data=new ProgressData();public string Warning {get;private set;}
@@ -51,9 +51,9 @@ namespace DraculasBox.Runtime
             try{if(File.Exists(path)){var d=JsonUtility.FromJson<ProgressData>(File.ReadAllText(path));if(d==null||d.schema!=1||d.completed==null)throw new InvalidDataException();Data=d;Data.music=Mathf.Clamp01(Data.music);Data.effects=Mathf.Clamp01(Data.effects);}}
             catch{Warning="进度文件无法读取，已使用新进度；原文件保留。";}Data.theme=GameThemes.Resolve(Data.theme).Id;}
         public bool Done(string id)=>Data.completed.Contains(id);
-        public bool Unlocked(ChapterLink link)=>Done(link.id)||link.requires==null||link.requires.All(Done);
+        public bool Unlocked(ChapterLink link)=>Data.allLevelsUnlocked||Done(link.id)||link.requires==null||link.requires.All(Done);
         public bool ChapterDone(Chapter c)=>c.levels.Where(l=>l.main).All(l=>Done(l.id));
-        public bool ChapterUnlocked(Chapter chapter,ChapterCatalog catalog)=>string.IsNullOrEmpty(chapter.requiresChapter)||Data.unlockedChapters!=null&&Data.unlockedChapters.Contains(chapter.id)||catalog.chapters.Any(c=>c.id==chapter.requiresChapter&&ChapterDone(c));
+        public bool ChapterUnlocked(Chapter chapter,ChapterCatalog catalog)=>Data.allLevelsUnlocked||string.IsNullOrEmpty(chapter.requiresChapter)||Data.unlockedChapters!=null&&Data.unlockedChapters.Contains(chapter.id)||catalog.chapters.Any(c=>c.id==chapter.requiresChapter&&ChapterDone(c));
         public void RememberUnlocks(ChapterCatalog catalog){if(Data.unlockedChapters==null)Data.unlockedChapters=new List<string>();foreach(var chapter in catalog.chapters)if(ChapterUnlocked(chapter,catalog)&&!Data.unlockedChapters.Contains(chapter.id))Data.unlockedChapters.Add(chapter.id);Save();}
         public void Reconcile(ChapterCatalog catalog)
         {
@@ -63,6 +63,20 @@ namespace DraculasBox.Runtime
             var chapter=catalog.chapters.Last(c=>ChapterUnlocked(c,catalog));Data.lastLevel=(chapter.levels.FirstOrDefault(l=>l.main&&!Done(l.id))??chapter.levels.First(l=>l.main)).id;Save();
         }
         public void Complete(string id){if(!Done(id))Data.completed.Add(id);Data.lastLevel=id;Save();}
+        public void UnlockCampaign()
+        {
+            var unlocked=JsonUtility.FromJson<ProgressData>(JsonUtility.ToJson(Data));unlocked.allLevelsUnlocked=true;
+            Atomic(path,JsonUtility.ToJson(unlocked,true));Data=unlocked;Warning=null;
+        }
+        public void ClearCampaign(ChapterCatalog catalog)
+        {
+            var first=catalog.chapters.First(c=>c.levels.Any(l=>l.main));
+            var cleared=new ProgressData{catalogRevision=Math.Max(2,Data.catalogRevision),lastLevel=first.levels.First(l=>l.main).id,
+                theme=Data.theme,music=Data.music,effects=Data.effects};
+            cleared.unlockedChapters=catalog.chapters.Where(c=>string.IsNullOrEmpty(c.requiresChapter)).Select(c=>c.id).ToList();
+            // Commit the new file before replacing live state. A write failure preserves both.
+            Atomic(path,JsonUtility.ToJson(cleared,true));Data=cleared;Warning=null;
+        }
         public void Save(){try{Atomic(path,JsonUtility.ToJson(Data,true));Warning=null;}catch(Exception e){Warning="进度未写入，请检查文件夹权限："+e.Message;}}
         public static void Atomic(string path,string text)
         {

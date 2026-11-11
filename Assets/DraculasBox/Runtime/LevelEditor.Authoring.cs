@@ -35,6 +35,7 @@ namespace DraculasBox.Runtime
         }
         internal void ResetAuthoringTool()
         {
+            app?.CancelCircuitReplies();
             CancelWork();tool=AuthoringTool.None;generatorFromLibrary=false;
             candidate=null;playback=null;playbackRoute=null;toolMessage=null;playSolution=null;draftPreview=null;
         }
@@ -220,6 +221,7 @@ namespace DraculasBox.Runtime
         }
         private void TogglePlayback()
         {
+            app.CancelCircuitReplies();
             if(playback.State.Won){playback=new Session(playback.State.Level);board.Load(playback.State);autoPlay=true;}
             else autoPlay=!autoPlay;
             nextStep=Time.unscaledTime+.32f;RefreshPlayback();
@@ -227,7 +229,7 @@ namespace DraculasBox.Runtime
         private void StepPlayback(bool previous)
         {
             autoPlay=false;
-            if(previous&&playback.UndoCount>0)board.Present(playback.Apply(Command.Undo));
+            if(previous&&playback.UndoCount>0){var undo=playback.Apply(Command.Undo);board.Present(undo);app.CueCircuits(undo);}
             else if(!previous&&!playback.State.Won)AdvancePlayback();
             RefreshPlayback();
         }
@@ -235,6 +237,7 @@ namespace DraculasBox.Runtime
         {
             var command=(Command)LevelSolver.Directions.IndexOf(playbackRoute[playback.Moves]);
             var move=playback.Apply(command);board.Present(move);
+            app.CueCircuits(move);
             app.Cue(playback.State.Won?"goal":move.PushedCount>0?"impactWood_heavy_001":"footstep_concrete_003");
             nextStep=Time.unscaledTime+.32f;
             if(playback.State.Won)autoPlay=false;

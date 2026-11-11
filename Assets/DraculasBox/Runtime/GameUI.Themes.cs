@@ -10,9 +10,9 @@ namespace DraculasBox.Runtime
         private GameIconGraphic themePreviousIcon,themeNextIcon;
         private Color WorkshopPrimary=>GameThemes.IsClassic||GameThemes.Current.Id=="porcelain"?Gold:WorkshopAccent;
         private Color WorkshopPrimaryInk=>GameThemes.IsClassic?Night:GameThemes.Current.Id=="porcelain"?WorkshopInk:GameThemes.Current.WorkshopOnAccent;
-        private static Color SettingsShade
+        private Color SettingsShade
         {
-            get {var color=GameThemes.IsClassic?new Color(.07f,.09f,.14f,.88f):GameThemes.Current.Background;color.a=GameThemes.IsClassic?.88f:.94f;return color;}
+            get {var color=GameThemes.IsClassic?new Color(.07f,.09f,.14f,.88f):GameThemes.Current.Background;color.a=app!=null&&app.Page==GamePage.Paused?.74f:GameThemes.IsClassic?.88f:.94f;return color;}
         }
         private void ThemeChoices(float y=-70,bool compact=false)
         {

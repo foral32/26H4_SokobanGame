@@ -224,6 +224,7 @@ namespace DraculasBox.Editor
         }
         private void Publish()
         {
+            bool published=false;
             try
             {
                 project.Publish(Data, draft.revision);
@@ -231,10 +232,10 @@ namespace DraculasBox.Editor
                 project.ForgetDraft();
                 var chapter = chapterId; var level = selectedId;
                 Load(); chapterId = chapter; selectedId = level; NormalizeSelection();
-                notice = "已写回工程";publicationError=null;overlay=Overlay.None;
+                notice = "已写回工程";publicationError=null;overlay=Overlay.None;published=true;
             }
             catch (Exception e) { notice = publicationError = e.Message; }
-            Draw();
+            Draw();if(published)UI.CelebrateSave("campaign-review");
         }
         private void Reload()
         {

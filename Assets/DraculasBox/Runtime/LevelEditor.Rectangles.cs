@@ -37,8 +37,29 @@ namespace DraculasBox.Runtime
         private void CommitRectangle()
         {
             if(!RegionActive)return;RegionActive=false;board.RegionPreview(null,null);
-            var result=Document.PaintRectangle(regionStart,regionEnd,regionBrush,regionChannel);if(result.Applied>0){previewQueued=true;FlushPreview();}
+            var before=Document.Data.Copy();
+            var result=Document.PaintRectangle(regionStart,regionEnd,regionBrush,regionChannel);if(result.Applied>0)
+            {
+                if(regionBrush!=Brush.Erase)for(int y=Mathf.Min(regionStart.y,regionEnd.y);y<=Mathf.Max(regionStart.y,regionEnd.y);y++)for(int x=Mathf.Min(regionStart.x,regionEnd.x);x<=Mathf.Max(regionStart.x,regionEnd.x);x++)
+                {var cell=new Cell(x,y);if(StampChanged(before,cell,regionBrush))pendingStamps.Add(new BoardView.StampCell(cell,regionBrush));}
+                previewQueued=true;FlushPreview();
+            }
             RefreshLabels();Notice("应用 "+result.Applied+" 格"+(result.Skipped>0?" · 保留 "+result.Skipped+" 个不可放置格":""));
+        }
+        private bool StampChanged(LevelData before,Cell cell,Brush brush)
+        {
+            var after=Document.Data;if(cell.y<0||cell.y>=after.rows.Length||cell.x<0||cell.x>=after.rows[0].Length)return false;
+            if(brush==Brush.Floor||brush==Brush.Wall||brush==Brush.Void)return before.rows[cell.y][cell.x]!=after.rows[cell.y][cell.x];
+            if(brush==Brush.Player)return before.player!=after.player&&after.player==cell;
+            if(brush==Brush.Coffin)return before.coffin!=after.coffin&&after.coffin==cell;
+            if(brush==Brush.Plate||brush==Brush.Door)
+            {
+                var old=System.Array.Find(brush==Brush.Plate?before.plates:before.doors,d=>d.cell==cell);
+                var current=System.Array.Find(brush==Brush.Plate?after.plates:after.doors,d=>d.cell==cell);
+                return current!=null&&(old==null||old.channel!=current.channel);
+            }
+            var was=System.Array.Find(before.pieces,p=>p.cell==cell);var now=System.Array.Find(after.pieces,p=>p.cell==cell);
+            return now!=null&&(was==null||was.id!=now.id||was.kind!=now.kind);
         }
         public bool CancelRectangle(bool notify=true)
         {

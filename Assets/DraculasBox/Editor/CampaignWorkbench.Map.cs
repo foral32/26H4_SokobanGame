@@ -16,12 +16,26 @@ namespace DraculasBox.Editor
         private MapInsertion? aimed;
         private bool validDrop,painted,canBranch;
         private TMP_Text mapStatus;
+        private string hoveredId,peekedId;
+        private void HidePeek(){UI.HideLevelPeek();peekedId=null;}
+        private void HoverNode(string id,bool hovering)
+        {
+            if(hovering)hoveredId=id;
+            else if(hoveredId==id){hoveredId=null;HidePeek();}
+        }
 
         public bool HandleKeys(IStudyKeyboard keys)
         {
-            if(overlay!=Overlay.None)return false;
+            if(overlay!=Overlay.None){HidePeek();return false;}
             if(panel!=Panel.Outline&&panel!=Panel.Chapters)return false;
-            if(dragId!=null){if(keys.Pressed(KeyCode.Escape))CancelDrag();return true;}
+            if(dragId!=null){HidePeek();if(keys.Pressed(KeyCode.Escape))CancelDrag();return true;}
+            if(panel==Panel.Outline&&(keys.Held(KeyCode.Space)||keys.Pressed(KeyCode.Space)))
+            {
+                if(hoveredId!=null&&peekedId!=hoveredId)
+                {UI.ShowLevelPeek(Data.Board(hoveredId),(RectTransform)mapView.Button(hoveredId).transform);peekedId=hoveredId;}
+                return true;
+            }
+            HidePeek();
             if(panel==Panel.Outline&&(keys.Pressed(KeyCode.Menu)||keys.Pressed(KeyCode.F10)&&(keys.Held(KeyCode.LeftShift)||keys.Held(KeyCode.RightShift)))){ShowLevelTools(selectedId);return true;}
             bool command=keys.Held(KeyCode.LeftControl)||keys.Held(KeyCode.RightControl)||keys.Held(KeyCode.LeftCommand)||keys.Held(KeyCode.RightCommand);
             if(!command)return false;
@@ -70,6 +84,7 @@ namespace DraculasBox.Editor
                 string id=node.id;var handle=mapView.Button(id).gameObject.AddComponent<CampaignRowDrag>();
                 handle.Begin=p=>BeginDrag(id,p);handle.Move=MoveDrag;handle.End=EndDrag;handle.EdgePan=EdgePan;handle.Cancel=CancelDrag;
                 handle.Context=()=>ShowLevelTools(id);
+                handle.HoverChanged=hovering=>HoverNode(id,hovering);
             }
             void Tool(string id,string text,float x,float width,Action click,bool on=true)
             {UI.Button(id,text,new Vector2(x,-313),new Vector2(width,42),click,on);UI.SetEnabled(id,on);}
@@ -77,6 +92,7 @@ namespace DraculasBox.Editor
             Tool("campaign-chapter-settings","章节…",334,116,()=>ShowChapterTools(chapterId));
             ReviewAction();
             mapStatus=UI.Text("Campaign status",notice??"",new Vector2(0,-257),new Vector2(1120,32),17,GameUI.Quiet);
+            UI.Text("Peek shortcut","空格 预览",new Vector2(0,-313),new Vector2(164,34),17,GameUI.Quiet);
             mapView.SetOffset(mapOffset);UI.FocusButton("select-level-"+selectedId);mapView.Show(Current,baseLayout,selectedId);
         }
         private void HistoryTools()
@@ -100,6 +116,7 @@ namespace DraculasBox.Editor
         private void BeginDrag(string id,Vector2 screen)
         {
             if(dragId!=null)return;
+            HidePeek();
             dragId=id;aimed=null;painted=false;validDrop=false;
             var node=Current.levels.First(l=>l.id==id);
             canBranch=!node.main||baseLayout.centers.Length>1&&!Current.levels.Any(l=>!l.main&&l.requires[0]==id);

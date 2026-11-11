@@ -59,7 +59,7 @@ namespace DraculasBox.Editor
             Need(overlap&&power,"switching to creation overlaps both tracks without a gain jump or a dip in combined power");
             Need(app.Page==GamePage.Library&&music.Context==MusicContext.Editor&&main.volume<.001f&&Mathf.Abs(editor.volume-.4f)<.002f,"the crossfade settles within 0.9 seconds of changing context");
             Need(main.timeSamples>mainBefore&&editor.timeSamples>editorBefore&&editor.timeSamples>fixture.editorMusic.frequency,"the incoming editor music joins its existing playhead instead of restarting");
-            yield return Click("template");yield return Page(GamePage.Editing);editorBefore=editor.timeSamples;
+            yield return Click("template");yield return Click("copy-level-0");yield return Click("copy-confirm");yield return Page(GamePage.Editing);editorBefore=editor.timeSamples;
             app.Settings();yield return Ready();yield return Click("music-credits");yield return Click("music-credits-back");yield return Click("back");
             Need(app.Page==GamePage.Editing&&music.Context==MusicContext.Editor&&editor.timeSamples>editorBefore,"editor settings and credits return to the original editing music");
             yield return Click("test");yield return Page(GamePage.Playing);yield return new WaitForSecondsRealtime(.14f);

@@ -14,6 +14,14 @@ namespace DraculasBox.Runtime
             var logo=Rect("Title logo",new Vector2(0,126),new Vector2(448,230),parent);
             var artwork=Rect("Logo artwork",Vector2.zero,logo.sizeDelta,logo).gameObject.AddComponent<TitleArtworkGraphic>();
             artwork.Source=Resources.Load<Texture2D>("Title/Wordmark");artwork.raycastTarget=false;
+            InstallTitleEyes(artwork);
+        }
+        private void InstallTitleEyes(TitleArtworkGraphic artwork)
+        {
+            artwork.UseAnimatedEyes(Application.isPlaying);
+            var eyes=artwork.GetComponentInChildren<TitleEyesGraphic>(true);
+            if(eyes==null)eyes=Rect("Vampire eyes",Vector2.zero,artwork.rectTransform.sizeDelta,artwork.transform).gameObject.AddComponent<TitleEyesGraphic>();
+            eyes.Initialize(this,artwork,app!=null&&app.Automated);
         }
         private void TitleAction(string id,string label,Action action)
         {
@@ -46,6 +54,7 @@ namespace DraculasBox.Runtime
             foreach(var child in authoredTitle.transform.Cast<Transform>().Where(t=>RetiredTitleArt.Contains(t.name)).ToArray())RetireTitleObject(child);
             var logo=authoredTitle.transform.Find("Title logo");
             if(logo==null||logo.Find("Logo artwork")==null){RetireTitleObject(logo);BuildTitleLogo(authoredTitle.transform);}
+            else InstallTitleEyes(logo.Find("Logo artwork").GetComponent<TitleArtworkGraphic>());
             var atmosphere=authoredTitle.GetComponentInChildren<MenuAtmosphere>(true);if(atmosphere!=null)atmosphere.titleLayout=true;
             LayoutTitleButtons(authoredTitleButtons);
         }

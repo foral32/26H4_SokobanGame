@@ -10,11 +10,13 @@ namespace DraculasBox.Runtime
     {
         private bool LightingMatches()
         {
-            var state=app.Session.State;var field=LightField.Compute(state);var sprites=app.Board.GetComponentsInChildren<SpriteRenderer>();
+            var state=app.Session.State;var field=LightField.Compute(state);
+            var texture=(Texture2D)typeof(BoardView).GetField("fieldAfter",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).GetValue(app.Board);
+            if(texture==null||app.Board.GetComponentsInChildren<MeshRenderer>().Length!=3)return false;
             for(int y=0;y<state.Level.Height;y++)for(int x=0;x<state.Level.Width;x++)
             {
-                var p=new Cell(x,y);if(!state.Level.Floor(p))continue;var floor=sprites.First(r=>r.name=="Floor "+p);
-                if(Vector4.Distance(floor.color,field.Lit(p)?BoardView.LitColor:BoardView.SafeColor)>.002f)return false;
+                int i=y*state.Level.Width+x;var p=new Cell(x,y);var pixel=texture.GetPixel(x,state.Level.Height-1-y);
+                if((pixel.r>.5f)!=state.Level.Floor(p)||(pixel.g>.5f)!=field.Lamp[i]||(pixel.b>.5f)!=((field.LampAxes[i]&1)!=0)||(pixel.a>.5f)!=((field.LampAxes[i]&2)!=0))return false;
             }
             return true;
         }

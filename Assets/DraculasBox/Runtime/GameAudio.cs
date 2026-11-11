@@ -4,11 +4,11 @@ namespace DraculasBox.Runtime
 {
     public enum MusicContext { Main,Editor }
 
-    public sealed class GameAudio:MonoBehaviour
+    public sealed partial class GameAudio:MonoBehaviour
     {
         public const float CrossfadeSeconds=.9f;
         private GameAssets assets;
-        private AudioSource main,editor,effects;
+        private AudioSource main,editor,effects,burn;
         private float master,targetMaster,blend,from,to,elapsed,duration;
         private bool initialized;
         public MusicContext Context {get;private set;}
@@ -22,8 +22,10 @@ namespace DraculasBox.Runtime
         public void Initialize(GameAssets a)
         {
             if(main==null){main=Source("Main music");editor=Source("Editor music");effects=Source("Effects");}
+            if(burn==null)burn=Source("Burn");
             if(initialized&&assets==a&&main.clip==a.mainMusic&&editor.clip==a.editorMusic)return;
             assets=a;main.Stop();editor.Stop();main.clip=a.mainMusic;editor.clip=a.editorMusic;
+            BuildCircuitSounds();CancelCircuitReplies();
             main.loop=editor.loop=true;master=targetMaster=blend=from=to=elapsed=duration=0;
             Context=MusicContext.Main;initialized=true;ApplyVolumes();
             // Both loops share a DSP start and continue silently when not selected.
@@ -46,6 +48,7 @@ namespace DraculasBox.Runtime
         {
             targetMaster=Mathf.Clamp01(music);
             if(effects!=null)effects.volume=Mathf.Clamp01(soundEffects);
+            if(burn!=null)burn.volume=Mathf.Clamp01(soundEffects);
         }
         private void Update()
         {
@@ -58,6 +61,7 @@ namespace DraculasBox.Runtime
                 blend=Mathf.Lerp(from,to,t*t*(3-2*t));if(t>=1)duration=0;
             }
             ApplyVolumes();
+            UpdateCircuitReplies();
         }
         private void ApplyVolumes()
         {
@@ -69,8 +73,13 @@ namespace DraculasBox.Runtime
         private void OnEnable()
         {if(initialized){main.UnPause();editor.UnPause();}}
         private void OnDisable()
-        {if(initialized){main.Pause();editor.Pause();effects.Stop();}}
+        {CancelCircuitReplies();if(initialized){main.Pause();editor.Pause();effects.Stop();burn.Stop();}}
         public void Cue(string key)
-        {var clip=assets?.Clip(key);if(clip!=null&&effects!=null){effects.pitch=1;effects.PlayOneShot(clip);}}
+        {
+            if(key=="undo"||key=="reset"||key=="IrisClose")burn?.Stop();
+            var clip=assets?.Clip(key);if(clip==null)return;
+            if(key=="burn"&&burn!=null){burn.Stop();burn.clip=clip;burn.pitch=1;burn.Play();return;}
+            if(effects!=null){effects.pitch=1;effects.PlayOneShot(clip);}
+        }
     }
 }

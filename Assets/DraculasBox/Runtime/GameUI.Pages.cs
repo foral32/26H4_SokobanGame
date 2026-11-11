@@ -61,10 +61,12 @@ namespace DraculasBox.Runtime
         }
         public void Levels(Chapter chapter)
         {
+            playableMap=null;
             var mainCount=chapter.levels.Count(l=>l.main);
             if(mainCount>7||chapter.levels.Any(l=>!l.main&&l.branchAbove)||chapter.levels.Where(l=>!l.main).GroupBy(l=>l.requires?.FirstOrDefault()).Any(g=>g.Count()>1))
             {
                 PlayableChapterMap(chapter);
+                ChapterExit(chapter);
                 return;
             }
             Clear();Backdrop();Text("Heading",chapter.title,new Vector2(0,276),new Vector2(900,65),40);
@@ -87,6 +89,7 @@ namespace DraculasBox.Runtime
             }
             MenuAction("back","返回章节",new Vector2(-462,-298),190,app.ShowChapters,GameIcon.Back);
             int current=Array.FindIndex(chapter.levels,l=>l.id==app.Progress.Data.lastLevel);Focus(Mathf.Max(0,current));
+            ChapterExit(chapter);
         }
         public void Playing(string title,bool creator)
         {
@@ -120,8 +123,9 @@ namespace DraculasBox.Runtime
             volumeMarks=new Image[2][];
             for(int channel=0;channel<2;channel++){volumeMarks[channel]=new Image[10];for(int i=0;i<10;i++)volumeMarks[channel][i]=Image("Volume "+channel+" "+i,null,new Vector2(-120+i*29,89-channel*95),new Vector2(23,4),Quiet);}
             ThemeChoices();
-            MenuAction("back","返回",new Vector2(0,-204),220,app.CloseSettings,GameIcon.Back);
-            MenuAction("music-credits","音乐署名",new Vector2(0,-279),220,app.ShowMusicCredits);
+            if(app.MainMenuSettings){ProgressResetEntry();ProgressUnlockEntry();}
+            MenuAction("back","返回",new Vector2(0,app.MainMenuSettings?-238:-204),220,app.CloseSettings,GameIcon.Back);
+            MenuAction("music-credits","音乐署名",new Vector2(0,app.MainMenuSettings?-302:-279),220,app.ShowMusicCredits);
             RefreshSettings();Focus(0);
         }
         public void RefreshSettings()

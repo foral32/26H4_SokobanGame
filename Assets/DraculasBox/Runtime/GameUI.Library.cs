@@ -23,7 +23,7 @@ namespace DraculasBox.Runtime
             EditorButton("library-generate","生成草稿",new Vector2(65,312),new Vector2(138,42),()=>app.Creator.OpenGenerator(true),false,null,true);
             EditorButton("new","新建",new Vector2(208,312),new Vector2(112,42),app.EditNew,false,null,true);
             EditorButton("import","导入",new Vector2(336,312),new Vector2(112,42),app.OpenImport,false,null,true);
-            EditorButton("template","复制主线",new Vector2(514,312),new Vector2(196,42),app.CopyCampaign,false,null,true);
+            EditorButton("template","复制正式关卡",new Vector2(514,312),new Vector2(196,42),app.CopyCampaign,false,null,true);
             Image("Library rule",null,new Vector2(0,280),new Vector2(1224,1),WorkshopLine);
             var visible=list.Skip(page*LibraryPageSize).Take(LibraryPageSize).ToArray();
             foreach(var data in visible)

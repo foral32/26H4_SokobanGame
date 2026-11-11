@@ -15,6 +15,7 @@ namespace DraculasBox.Runtime
         private TMP_Text status,validation,dirtyMark;private TMP_InputField titleInput,widthInput,heightInput;
         private float nextRecovery,savedUntil,noticeUntil;private bool stroke,connected,previewQueued,panning;private Cell last;private Vector2 previousMouse;
         private readonly List<Button> brushes=new List<Button>();private readonly List<RaycastResult> hits=new List<RaycastResult>();private PointerEventData pointer;
+        private readonly List<BoardView.StampCell> pendingStamps=new List<BoardView.StampCell>();
         public EditDocument Document {get;private set;}
         public Brush Selected {get;private set;}=Brush.Box;
         public int Channel {get;private set;}
@@ -39,18 +40,18 @@ namespace DraculasBox.Runtime
         public void CommitPending(){FinishStroke();ui.CommitText();FlushPreview();}
         public bool Save()
         {
-            CommitPending();try{if(app.EditingOfficial)app.Campaign.StageBoard(Document.Data);else app.Library.Save(Document.Data);}catch(Exception e){Notice("保存失败："+e.Message);noticeUntil=0;return false;}
-            Document.Saved();try{if(!app.EditingOfficial)app.Library.DiscardRecovery(Document.Data.id);Notice("");}catch(Exception e){Notice("关卡已保存，草稿未清理："+e.Message);noticeUntil=0;}savedUntil=Time.unscaledTime+.95f;RefreshLabels();return true;
+            CommitPending();bool changed=Document.Dirty;try{if(app.EditingOfficial)app.Campaign.StageBoard(Document.Data);else app.Library.Save(Document.Data);}catch(Exception e){Notice("保存失败："+e.Message);noticeUntil=0;return false;}
+            Document.Saved();try{if(!app.EditingOfficial)app.Library.DiscardRecovery(Document.Data.id);Notice("");}catch(Exception e){Notice("关卡已保存，草稿未清理："+e.Message);noticeUntil=0;}savedUntil=Time.unscaledTime+.95f;RefreshLabels();if(changed)ui.CelebrateSave();return true;
         }
         public void Play(){CommitPending();string error=Document.Validation();if(error!=null){Notice(error);return;}app.StartEditorPlay(Document.Data.Copy());}
-        public void Undo(){if(CancelRectangle())return;FinishStroke();if(Document.Undo())RefreshDocument();}
-        public void Redo(){if(CancelRectangle())return;FinishStroke();if(Document.Redo())RefreshDocument();}
+        public void Undo(){if(CancelRectangle())return;FinishStroke();if(Document.Undo()){pendingStamps.Clear();board.ClearEditorStamps();RefreshDocument();}}
+        public void Redo(){if(CancelRectangle())return;FinishStroke();if(Document.Redo()){pendingStamps.Clear();board.ClearEditorStamps();RefreshDocument();}}
         public bool ResizeTo(int width,int height){FinishStroke();string error=Document.ResizeError(width,height);if(error!=null){Notice(error);return false;}Document.Resize(width,height);RefreshDocument();return true;}
         private void Dimension(string value,bool width){if(int.TryParse(value,out var size))ResizeTo(width?size:Document.Data.rows[0].Length,width?Document.Data.rows.Length:size);else Notice("请输入 3–32 的整数。");(width?widthInput:heightInput)?.SetTextWithoutNotify((width?Document.Data.rows[0].Length:Document.Data.rows.Length).ToString());}
         private void Resize(int dx,int dy)=>ResizeTo(Document.Data.rows[0].Length+dx,Document.Data.rows.Length+dy);
         private void Zoom(float scale){board.ZoomAt(board.Screen(new Cell(Document.Data.rows[0].Length/2,Document.Data.rows.Length/2)),scale);RefreshLabels();}
         private void RefreshDocument(){previewQueued=true;FlushPreview();RefreshLabels();}
-        public void FlushPreview(){if(!previewQueued)return;previewQueued=false;board.Preview(Document.Data);RefreshLabels();}
+        public void FlushPreview(){if(!previewQueued)return;previewQueued=false;board.Preview(Document.Data,true);if(pendingStamps.Count>0){board.StampCells(pendingStamps);pendingStamps.Clear();}RefreshLabels();}
         private void FinishStroke(){if(RegionActive){CommitRectangle();return;}if(stroke){stroke=false;connected=false;Document.End();RefreshLabels();}}
         private bool OverUI(Vector2 screen){hits.Clear();pointer.position=screen;EventSystem.current.RaycastAll(pointer,hits);return hits.Count>0;}
         public Brush PickAt(Vector2 screen)
@@ -68,7 +69,7 @@ namespace DraculasBox.Runtime
             if(end){FinishStroke();return true;}if(!begin&&!held)return false;if(OverUI(screen)||!board.CellAt(screen,out var cell)){connected=false;return false;}
             if(!begin&&stroke&&connected&&cell==last)return false;if(begin){FinishStroke();Document.Begin();stroke=true;connected=false;}if(!stroke)return false;if(!connected)last=cell;
             var brush=erase?Brush.Erase:Selected;bool painted=false;int steps=Mathf.Max(Mathf.Abs(cell.x-last.x),Mathf.Abs(cell.y-last.y));
-            for(int k=steps==0?0:1;k<=steps;k++){float t=steps==0?0:(float)k/steps;var p=new Cell(Mathf.RoundToInt(Mathf.Lerp(last.x,cell.x,t)),Mathf.RoundToInt(Mathf.Lerp(last.y,cell.y,t)));painted|=Document.Paint(p,brush,Channel);}
+            for(int k=steps==0?0:1;k<=steps;k++){float t=steps==0?0:(float)k/steps;var p=new Cell(Mathf.RoundToInt(Mathf.Lerp(last.x,cell.x,t)),Mathf.RoundToInt(Mathf.Lerp(last.y,cell.y,t)));bool applied=Document.Paint(p,brush,Channel);painted|=applied;if(applied&&brush!=Brush.Erase)pendingStamps.Add(new BoardView.StampCell(p,brush));}
             last=cell;connected=true;if(painted){previewQueued=true;Notice("");}else if(begin)Notice("请先移开物件，或选择空地板。");return painted;
         }
         public bool PanSample(Vector2 screen,bool begin,bool held,bool end)

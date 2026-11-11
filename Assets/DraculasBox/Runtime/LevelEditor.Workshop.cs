@@ -17,7 +17,7 @@ namespace DraculasBox.Runtime
         private void BuildWorkshop()
         {
             bool wasErasing=Operation==EditOperation.Erase;
-            ui.Clear();ui.WorkshopTheme();brushes.Clear();stroke=panning=false;previewQueued=false;
+            ui.Clear();ui.WorkshopTheme();brushes.Clear();pendingStamps.Clear();stroke=panning=false;previewQueued=false;
             board.EditorPaletteCollapsed(paletteCollapsed);board.Preview(Document.Data);
             ui.Image("Header rule",null,new Vector2(0,280),new Vector2(1224,1),GameUI.WorkshopLine);
             ui.Image("Tool rule",null,new Vector2(0,228),new Vector2(1224,1),GameUI.WorkshopLine);

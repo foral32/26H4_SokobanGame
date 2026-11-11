@@ -20,6 +20,7 @@ namespace DraculasBox.Editor
             => UI.Image(id,null,new Vector2(x,y),new Vector2(w,h),GameUI.WorkshopLine);
         private void Draw()
         {
+            HidePeek();hoveredId=null;
             if(mapView?.Alive==true)mapOffset=mapView.Offset;
             mapView=null;
             if(panel==Panel.Chapters)DrawChapters();

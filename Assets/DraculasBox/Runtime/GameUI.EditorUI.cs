@@ -10,7 +10,7 @@ namespace DraculasBox.Runtime
 {
     public sealed partial class GameUI
     {
-        private TMP_Text importStatus;private TMP_InputField importPath;private RectTransform importPreview;
+        private TMP_Text importStatus;private TMP_InputField importPath;private RectTransform importPreview,importDialog;
         public bool HasTextFocus=>EventSystem.current!=null&&EventSystem.current.currentSelectedGameObject!=null&&EventSystem.current.currentSelectedGameObject.GetComponent<TMP_InputField>()?.isFocused==true;
         public void CommitText(){if(!HasTextFocus)return;EventSystem.current.currentSelectedGameObject.GetComponent<TMP_InputField>().DeactivateInputField();EventSystem.current.SetSelectedGameObject(null);}
         public void SetLabel(string id,string value){var b=FindButton(id);if(b!=null){var t=b.transform.Find("Label")?.GetComponent<TMP_Text>();if(t!=null)t.text=value;}}
@@ -61,34 +61,60 @@ namespace DraculasBox.Runtime
         {Dim(heading);Text("Operation error",message,new Vector2(0,34),new Vector2(920,180),23,Lilac);MenuAction("error-back","返回",new Vector2(0,-164),210,back,GameIcon.Back);Focus(0);}
         public LevelThumbnail Thumbnail(string name,LevelData data,Vector2 center,Vector2 size,Transform parent=null)
         {var thumbnail=Rect(name,center,size,parent).gameObject.AddComponent<LevelThumbnail>();thumbnail.color=Color.white;thumbnail.raycastTarget=false;thumbnail.Configure(assets);thumbnail.Set(data);return thumbnail;}
+        private void DialogClose(string id,Vector2 position,Transform parent,Action close)
+        {
+            var button=EditorButton(id,"",position,new Vector2(32,32),close,false,parent,true);
+            foreach(float angle in new[]{-45f,45f})
+            {var stroke=Image("Close stroke",null,Vector2.zero,new Vector2(14,1.6f),WorkshopInk,button.transform);stroke.rectTransform.localRotation=Quaternion.Euler(0,0,angle);}
+        }
         public void ImportPage(string path)
         {
-            Clear();Backdrop();Text("Import heading","导入关卡",new Vector2(0,275),new Vector2(700,60),40);
-            Text("Import format","本游戏 JSON 关卡 · 3–32 格",new Vector2(0,210),new Vector2(1000,38),19,Quiet);
-            importPath=Input("Import path",path??"",new Vector2(-75,142),new Vector2(760,44),v=>app.SetImportPath(v),2048);
-            Button("browse-import","选择文件",new Vector2(450,142),new Vector2(170,44),app.BrowseImport);
-            Button("preview-import","预览",new Vector2(450,82),new Vector2(170,42),app.PreviewImport);
-            importPreview=Rect("Import preview",new Vector2(0,-35),new Vector2(660,230));
-            importStatus=Text("Import status","",new Vector2(0,-187),new Vector2(1000,64),19,Quiet);
-            MenuAction("cancel-import","返回",new Vector2(-440,-285),180,app.OpenLibrary,GameIcon.Back);
-            MenuAction("confirm-import","导入并编辑",new Vector2(390,-285),250,app.ConfirmImport,GameIcon.Check);SetEnabled("confirm-import",false);Focus(0);
+            CloseWorkshopPopup();
+            importDialog=WorkshopOverlay("Import dialog",Vector2.zero,new Vector2(780,250),app.CloseImport);
+            var header=Rect("Import header",new Vector2(0,-72),new Vector2(780,144),importDialog);header.anchorMin=header.anchorMax=new Vector2(.5f,1);
+            Label(Rect("Import heading",new Vector2(-40,38),new Vector2(636,40),header),"导入关卡",27,WorkshopInk,TextAlignmentOptions.MidlineLeft);
+            DialogClose("cancel-import",new Vector2(347,38),header,app.CloseImport);
+            importPath=Input("Import path",path??"",new Vector2(-66,-20),new Vector2(582,44),app.SetImportPath,2048);importPath.transform.SetParent(header,false);
+            importPath.onValueChanged.AddListener(app.SetImportPath);
+            importPath.onSubmit.AddListener(_=>app.PreviewImport());
+            var placeholder=Label(Rect("Placeholder",Vector2.zero,new Vector2(562,38),importPath.textViewport),"选择或粘贴 JSON 文件路径",19,Muted,TextAlignmentOptions.MidlineLeft);importPath.placeholder=placeholder;
+            EditorButton("browse-import","选择文件",new Vector2(297,-20),new Vector2(120,44),app.BrowseImport,false,header,true);
+            importPreview=Rect("Import preview",new Vector2(0,-2),new Vector2(710,218),importDialog);importPreview.gameObject.SetActive(false);
+            var footer=Rect("Import actions",new Vector2(0,34),new Vector2(720,60),importDialog);footer.anchorMin=footer.anchorMax=new Vector2(.5f,0);
+            importStatus=Label(Rect("Import status",new Vector2(0,46),new Vector2(712,48),footer),"",18,Muted,TextAlignmentOptions.MidlineLeft);
+            EditorButton("preview-import","预览",new Vector2(-299,0),new Vector2(116,42),app.PreviewImport,false,footer,true);
+            EditorButton("confirm-import","导入并编辑",new Vector2(276,0),new Vector2(162,42),app.ConfirmImport,true,footer,true);
+            SetEnabled("confirm-import",false);FocusButton("browse-import");
         }
         public void SetImportPathText(string value){if(importPath!=null)importPath.SetTextWithoutNotify(value);}
         public string ImportPathText=>importPath==null?"":importPath.text;
         public void ImportResult(LevelData data,string message)
         {
-            for(int i=importPreview.childCount-1;i>=0;i--)Destroy(importPreview.GetChild(i).gameObject);
-            if(data!=null)Thumbnail("Incoming level",data,Vector2.zero,new Vector2(390,220),importPreview);
-            importStatus.text=message;importStatus.color=data==null?Lilac:Quiet;SetEnabled("confirm-import",data!=null);
+            if(importPreview==null)return;
+            for(int i=importPreview.childCount-1;i>=0;i--){var child=importPreview.GetChild(i).gameObject;child.SetActive(false);Destroy(child);}
+            var size=new Vector2(780,data==null?250:474);importDialog.sizeDelta=size;importPreview.gameObject.SetActive(data!=null);
+            foreach(string surface in new[]{"Overlay surface","Overlay border","Overlay shadow"})
+                ((RectTransform)importDialog.Find(surface)).sizeDelta=size+(surface=="Overlay shadow"?Vector2.one*4:Vector2.zero);
+            if(data!=null){WorkshopPanel("Preview surface",Vector2.zero,new Vector2(710,218),importPreview).color=BoardView.SafeColor;Thumbnail("Incoming level",data,Vector2.zero,new Vector2(688,206),importPreview);}
+            importStatus.text=message;importStatus.color=data==null?WorkshopAccent:Muted;SetEnabled("confirm-import",data!=null);
         }
         public void ConfirmRemove(LevelData data,Action remove,Action cancel)
         {
             Dim("移除关卡？");Thumbnail("Remove preview",data,new Vector2(0,65),new Vector2(270,160));Text("Remove title",data.title,new Vector2(0,-47),new Vector2(700,42),26,White);Text("Remove note","移入本地回收区，可恢复。",new Vector2(0,-95),new Vector2(800,35),18,Quiet);
             MenuAction("confirm-remove","移除",new Vector2(-135,-178),190,remove,GameIcon.Exit);MenuAction("cancel-remove","取消",new Vector2(135,-178),190,cancel,GameIcon.Back);Focus(1);
         }
-        public void ExportResult(string path,Action back)
+        public void ExportResult(string path,string title,Action back)
         {
-            Dim("已导出");Icon("Export check",GameIcon.Check,new Vector2(0,91),48,Gold);Input("Export path",path,new Vector2(0,-8),new Vector2(1010,50),_=>{},2048).readOnly=true;MenuAction("export-back","返回",new Vector2(0,-153),210,back,GameIcon.Back);Focus(0);
+            CloseWorkshopPopup();
+            var root=WorkshopOverlay("Export dialog",Vector2.zero,new Vector2(740,248),back);
+            Icon("Export check",GameIcon.Check,new Vector2(-321,83),24,WorkshopAccent,root);
+            Label(Rect("Export heading",new Vector2(-27,83),new Vector2(544,40),root),"已导出",27,WorkshopInk,TextAlignmentOptions.MidlineLeft);
+            DialogClose("export-close",new Vector2(337,83),root,back);
+            Label(Rect("Export file",new Vector2(0,30),new Vector2(674,32),root),title,21,WorkshopInk,TextAlignmentOptions.MidlineLeft);
+            var field=Input("Export path",path,new Vector2(0,-7),new Vector2(674,38),_=>{},2048);field.transform.SetParent(root,false);field.readOnly=true;field.textComponent.fontSize=16;
+            EditorButton("export-folder","打开文件夹",new Vector2(-262,-81),new Vector2(150,42),()=>Application.OpenURL(new Uri(System.IO.Path.GetDirectoryName(path)).AbsoluteUri),false,root,true);
+            EditorButton("export-copy","复制路径",new Vector2(-108,-81),new Vector2(130,42),()=>{GUIUtility.systemCopyBuffer=path;SetLabel("export-copy","已复制");},false,root,true);
+            EditorButton("export-back","完成",new Vector2(278,-81),new Vector2(118,42),back,true,root,true);FocusButton("export-back");
         }
     }
 }

@@ -8,11 +8,10 @@ namespace DraculasBox.Runtime
         private SpriteRenderer regionFill;private SpriteRenderer[] regionEdges;
         private void BuildSunIndicator()
         {
-            var travel=LightField.SunTravel[(int)state.SunFrom];var direction=new Vector3(travel.x,-travel.y,0);bool horizontal=travel.x!=0;
-            float extent=(horizontal?state.Level.Width:state.Level.Height)*.5f;
-            var edge=-direction*extent;var rotation=SunRotation(state.SunFrom);
-            var sun=MakeSprite("Incoming sunlight",SurfaceSprites.SunSource,-16,edge-direction*57*unitsPerUI,42*unitsPerUI);sun.color=new Color32(245,211,142,255);
-            var arrow=MakeSprite("Sun direction",SurfaceSprites.SourceArrow,-16,edge-direction*18*unitsPerUI,28*unitsPerUI);arrow.transform.localRotation=rotation;arrow.color=new Color32(245,211,142,255);
+            sunlightIcon=MakeSprite("Incoming sunlight",SurfaceSprites.SunSource,32,Vector3.zero,1);
+            bool paleBackdrop=editing?GameThemes.Current.WorkshopBackground.grayscale>.6f:GameThemes.Current.LightMenu;
+            sunlightIcon.color=paleBackdrop?new Color32(170,117,49,255):new Color32(245,211,142,255);
+            sunlightHaze=MakeSprite("Sunlight haze",SurfaceSprites.SunlightHaze,-40,Vector3.zero,1);sunlightHaze.color=new Color(.95f,.79f,.61f,.30f);
         }
         private void BuildRegionPreview()
         {
