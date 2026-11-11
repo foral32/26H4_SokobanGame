@@ -10,6 +10,7 @@ namespace DraculasBox.Runtime
         void Back();
         bool HandleKeys(IStudyKeyboard keyboard);
         bool EditingBoard { get; }
+        string LevelPrefix(string id);
         void StageBoard(LevelData data);
         void RecoverBoard(LevelData data);
         void CloseBoard(bool discard);

@@ -21,9 +21,9 @@ namespace DraculasBox.Runtime
         public int Channel {get;private set;}
         public void Initialize(DraculaApp owner){app=owner;ui=app.UI;board=app.Board;pointer=new PointerEventData(EventSystem.current);}
         public void Open(LevelData data)=>Open(data,app.Library.Read(out _).FirstOrDefault(d=>d.id==data.id));
-        public void Open(LevelData data,LevelData baseline){ResetAuthoringTool();proofBoard=null;FinishStroke();Document=new EditDocument(data,false);Document.SavedBaseline(baseline);Selected=Brush.Box;Shape=PaintShape.Brush;board.ResetEditorView();Show();}
+        public void Open(LevelData data,LevelData baseline){ResetAuthoringTool();proofBoard=null;ClearSelection();FinishStroke();Operation=EditOperation.Paint;Document=new EditDocument(data,false);Document.SavedBaseline(baseline);Selected=Brush.Box;Shape=PaintShape.Brush;board.ResetEditorView();Show();}
         public void Show()=>BuildWorkshop();
-        public void Select(Brush brush){if(brush==Brush.Erase){SetOperation(EditOperation.Erase);return;}ClosePanels();CancelRectangle(false);FinishStroke();Selected=brush;Operation=EditOperation.Paint;RefreshOperation();RefreshShapeControls();RefreshChannelControls();RevealBrush(brush);}
+        public void Select(Brush brush){if(brush==Brush.Erase){SetOperation(EditOperation.Erase);return;}ClosePanels();ClearSelection();CancelRectangle(false);FinishStroke();Selected=brush;Operation=EditOperation.Paint;RefreshOperation();RefreshShapeControls();RefreshChannelControls();RevealBrush(brush);}
         public void SelectChannel(int channel){CancelRectangle(false);FinishStroke();Channel=Mathf.Clamp(channel,0,3);board.EditorChannel=Channel;RefreshChannelControls();}
         private void RefreshLabels()
         {
@@ -37,16 +37,16 @@ namespace DraculasBox.Runtime
             Cell? invalid=null;if(error!=null&&board.State!=null&&board.State.Level.Floor(Document.Data.player)&&!LightField.Compute(board.State).Safe(Document.Data.player))invalid=Document.Data.player;board.HighlightInvalid(invalid);
         }
         private void Notice(string text){if(status!=null)status.text=text;if(validation!=null)validation.gameObject.SetActive(string.IsNullOrEmpty(text)&&Document.Validation()!=null);noticeUntil=Time.unscaledTime+3;}
-        public void CommitPending(){FinishStroke();ui.CommitText();FlushPreview();}
+        public void CommitPending(){CancelSelectionGesture();FinishStroke();ui.CommitText();FlushPreview();}
         public bool Save()
         {
             CommitPending();bool changed=Document.Dirty;try{if(app.EditingOfficial)app.Campaign.StageBoard(Document.Data);else app.Library.Save(Document.Data);}catch(Exception e){Notice("保存失败："+e.Message);noticeUntil=0;return false;}
             Document.Saved();try{if(!app.EditingOfficial)app.Library.DiscardRecovery(Document.Data.id);Notice("");}catch(Exception e){Notice("关卡已保存，草稿未清理："+e.Message);noticeUntil=0;}savedUntil=Time.unscaledTime+.95f;RefreshLabels();if(changed)ui.CelebrateSave();return true;
         }
         public void Play(){CommitPending();string error=Document.Validation();if(error!=null){Notice(error);return;}app.StartEditorPlay(Document.Data.Copy());}
-        public void Undo(){if(CancelRectangle())return;FinishStroke();if(Document.Undo()){pendingStamps.Clear();board.ClearEditorStamps();RefreshDocument();}}
-        public void Redo(){if(CancelRectangle())return;FinishStroke();if(Document.Redo()){pendingStamps.Clear();board.ClearEditorStamps();RefreshDocument();}}
-        public bool ResizeTo(int width,int height){FinishStroke();string error=Document.ResizeError(width,height);if(error!=null){Notice(error);return false;}Document.Resize(width,height);RefreshDocument();return true;}
+        public void Undo(){if(CancelSelectionGesture()||CancelRectangle())return;ClearSelection();FinishStroke();if(Document.Undo()){pendingStamps.Clear();board.ClearEditorStamps();RefreshDocument();}}
+        public void Redo(){if(CancelSelectionGesture()||CancelRectangle())return;ClearSelection();FinishStroke();if(Document.Redo()){pendingStamps.Clear();board.ClearEditorStamps();RefreshDocument();}}
+        public bool ResizeTo(int width,int height){ClearSelection();FinishStroke();string error=Document.ResizeError(width,height);if(error!=null){Notice(error);return false;}Document.Resize(width,height);RefreshDocument();return true;}
         private void Dimension(string value,bool width){if(int.TryParse(value,out var size))ResizeTo(width?size:Document.Data.rows[0].Length,width?Document.Data.rows.Length:size);else Notice("请输入 3–32 的整数。");(width?widthInput:heightInput)?.SetTextWithoutNotify((width?Document.Data.rows[0].Length:Document.Data.rows.Length).ToString());}
         private void Resize(int dx,int dy)=>ResizeTo(Document.Data.rows[0].Length+dx,Document.Data.rows.Length+dy);
         private void Zoom(float scale){board.ZoomAt(board.Screen(new Cell(Document.Data.rows[0].Length/2,Document.Data.rows.Length/2)),scale);RefreshLabels();}
@@ -64,7 +64,9 @@ namespace DraculasBox.Runtime
         public bool PointerSample(Vector2 screen,bool begin,bool held,bool end,bool erase=false,bool rectangle=false)
         {
             if(ToolOpen||panning)return false;
-            erase|=Operation==EditOperation.Erase;if(begin&&!OverUI(screen)&&ClosePanels())return false;
+            if(begin&&!OverUI(screen)&&ClosePanels())return false;
+            if(Operation==EditOperation.Select){if(erase){ClearSelection();return true;}return SelectionSample(screen,begin,held,end);}
+            erase|=Operation==EditOperation.Erase;
             if(RegionActive||begin&&((Shape==PaintShape.Rectangle&&CanRectangle)||rectangle)&&(erase||CanRectangle))return RectangleSample(screen,begin,held,end,erase);
             if(end){FinishStroke();return true;}if(!begin&&!held)return false;if(OverUI(screen)||!board.CellAt(screen,out var cell)){connected=false;return false;}
             if(!begin&&stroke&&connected&&cell==last)return false;if(begin){FinishStroke();Document.Begin();stroke=true;connected=false;}if(!stroke)return false;if(!connected)last=cell;
@@ -78,7 +80,7 @@ namespace DraculasBox.Runtime
             if(begin)
             {
                 if(OverUI(screen)||!board.InViewport(screen))return false;
-                ui.CommitText();ClosePanels();
+                ui.CommitText();ClosePanels();CancelSelectionGesture();
                 if(!CancelRectangle(false))FinishStroke();
                 panning=true;previousMouse=screen;
                 board.BrushPreview(null,Selected,true);
@@ -92,25 +94,25 @@ namespace DraculasBox.Runtime
         {
             var d=Document.Data;bool device=d.plates.Any(e=>e.cell==p)||d.doors.Any(e=>e.cell==p);bool occupied=d.player==p||d.coffin==p||d.pieces.Any(e=>e.cell==p);if(EffectiveBrush==Brush.Erase||Selected==Brush.Floor)return true;if(Selected==Brush.Wall||Selected==Brush.Void)return !occupied&&!device;if(Selected==Brush.Plate||Selected==Brush.Door)return d.rows[p.y][p.x]=='.'&&d.coffin!=p;return d.rows[p.y][p.x]=='.'&&!occupied;
         }
-        private void LateUpdate(){if(app!=null&&app.Page==GamePage.Editing){FlushPreview();if(RegionActive)board.RegionPreview(regionStart,regionEnd,regionBrush==Brush.Erase);}}
+        private void LateUpdate(){if(app!=null&&app.Page==GamePage.Editing){FlushPreview();if(RegionActive)board.RegionPreview(regionStart,regionEnd,regionBrush==Brush.Erase);else RefreshSelectionPreview();}}
         private void Update()
         {
             if(app==null||app.Page!=GamePage.Editing||app.Transitioning)return;
             if(Document.Dirty&&Time.unscaledTime>nextRecovery&&!stroke){nextRecovery=Time.unscaledTime+15;try{app.RecoverBoard(Document.Data);}catch(Exception e){Notice("恢复记录未写入："+e.Message);}}
             if(ToolOpen){UpdateAuthoringTool();return;}
             if(savedUntil>0&&Time.unscaledTime>savedUntil){savedUntil=0;RefreshLabels();}if(noticeUntil>0&&Time.unscaledTime>noticeUntil){noticeUntil=0;if(status!=null)status.text="";}
-            if(app.Automated)return;if(!Application.isFocused){if(!CancelRectangle(false))FinishStroke();panning=false;board.BrushPreview(null,Selected,true);return;}
+            if(app.Automated)return;if(!Application.isFocused){CancelSelectionGesture();if(!CancelRectangle(false))FinishStroke();panning=false;board.BrushPreview(null,Selected,true);return;}
             if(PanSample(Input.mousePosition,Input.GetMouseButtonDown(2),Input.GetMouseButton(2),Input.GetMouseButtonUp(2)))return;
             bool control=Input.GetKey(KeyCode.LeftControl)||Input.GetKey(KeyCode.RightControl);
             foreach(var key in ShortcutKeys)if(Input.GetKeyDown(key)&&HandleShortcut(key,control))return;
             if(ui.HasTextFocus){if(Input.GetKeyDown(KeyCode.Escape))ui.CommitText();return;}
-            if(Input.GetKeyDown(KeyCode.Escape)){if(ClosePanels()||CancelRectangle())return;FinishStroke();app.LeaveEditor();return;}
-            Vector2 mouse=Input.mousePosition;bool over=OverUI(mouse);if(!over&&board.CellAt(mouse,out var hover)){bool valid=CanPreview(hover);board.BrushPreview(hover,EffectiveBrush,valid);board.DeviceGhost(EffectiveBrush,valid);}else board.BrushPreview(null,Selected,true);
-            if(!over&&board.InViewport(mouse)&&Mathf.Abs(Input.mouseScrollDelta.y)>.01f){if(!CancelRectangle(false))FinishStroke();board.ZoomAt(mouse,Mathf.Pow(1.15f,Input.mouseScrollDelta.y));RefreshLabels();}
+            if(Input.GetKeyDown(KeyCode.Escape)){if(ClosePanels()||CancelSelectionGesture()||ClearSelection()||CancelRectangle())return;FinishStroke();app.LeaveEditor();return;}
+            Vector2 mouse=Input.mousePosition;bool over=OverUI(mouse);if(Operation!=EditOperation.Select&&!over&&board.CellAt(mouse,out var hover)){bool valid=CanPreview(hover);board.BrushPreview(hover,EffectiveBrush,valid);board.DeviceGhost(EffectiveBrush,valid);}else board.BrushPreview(null,Selected,true);
+            if(!over&&board.InViewport(mouse)&&Mathf.Abs(Input.mouseScrollDelta.y)>.01f){CancelSelectionGesture();if(!CancelRectangle(false))FinishStroke();board.ZoomAt(mouse,Mathf.Pow(1.15f,Input.mouseScrollDelta.y));RefreshLabels();}
             if(Input.GetMouseButtonDown(0)&&(Input.GetKey(KeyCode.LeftAlt)||Input.GetKey(KeyCode.RightAlt))){PickAt(mouse);return;}
             bool down=Input.GetMouseButtonDown(0)||Input.GetMouseButtonDown(1),held=Input.GetMouseButton(0)||Input.GetMouseButton(1),up=Input.GetMouseButtonUp(0)||Input.GetMouseButtonUp(1);if(down||held||up)PointerSample(mouse,down,held,up,Input.GetMouseButton(1),Input.GetKey(KeyCode.LeftShift)||Input.GetKey(KeyCode.RightShift));
         }
-        private static readonly KeyCode[] ShortcutKeys={KeyCode.S,KeyCode.F5,KeyCode.Z,KeyCode.Y,KeyCode.B,KeyCode.X,KeyCode.P,KeyCode.R,
+        private static readonly KeyCode[] ShortcutKeys={KeyCode.S,KeyCode.F5,KeyCode.Z,KeyCode.Y,KeyCode.A,KeyCode.B,KeyCode.X,KeyCode.P,KeyCode.R,KeyCode.Delete,KeyCode.Backspace,KeyCode.LeftBracket,KeyCode.RightBracket,
             KeyCode.Alpha1,KeyCode.Alpha2,KeyCode.Alpha3,KeyCode.Alpha4,KeyCode.Alpha5,KeyCode.Alpha6,KeyCode.Alpha7,KeyCode.Alpha8,KeyCode.Alpha9,KeyCode.Alpha0,KeyCode.Q,KeyCode.E};
         // The ordinary keyboard path and isolated checks use the same dispatcher.
         public bool HandleShortcut(KeyCode key,bool control=false)
@@ -121,16 +123,18 @@ namespace DraculasBox.Runtime
             if(ui.HasTextFocus)return false;
             if(key==KeyCode.Z){Undo();return true;}if(key==KeyCode.Y){Redo();return true;}
             if(control)return false;
-            if(key==KeyCode.B){SetOperation(EditOperation.Paint);return true;}
-            if(key==KeyCode.X){SetOperation(EditOperation.Erase);return true;}
+            if(SelectionShortcut(key))return true;
+            if(key==KeyCode.A){SetOperation(EditOperation.Select);return true;}
+            if(key==KeyCode.Q||key==KeyCode.B){SetOperation(EditOperation.Paint);return true;}
+            if(key==KeyCode.E||key==KeyCode.X){SetOperation(EditOperation.Erase);return true;}
             if(key==KeyCode.P){SelectShape(PaintShape.Brush);return true;}
             if(key==KeyCode.R){if(CanRectangle)SelectShape(PaintShape.Rectangle);return true;}
             if(key>=KeyCode.Alpha1&&key<=KeyCode.Alpha9){Select((Brush)((int)key-(int)KeyCode.Alpha1));return true;}
             if(key==KeyCode.Alpha0){Select(Brush.Door);return true;}
-            if(key==KeyCode.Q){Select(Brush.MirrorSlash);return true;}
-            if(key==KeyCode.E){Select(Brush.MirrorBackslash);return true;}
+            if(key==KeyCode.LeftBracket){Select(Brush.MirrorSlash);return true;}
+            if(key==KeyCode.RightBracket){Select(Brush.MirrorBackslash);return true;}
             return false;
         }
-        private void OnDisable(){ResetAuthoringTool();panning=false;if(!CancelRectangle(false))FinishStroke();}
+        private void OnDisable(){ResetAuthoringTool();CancelSelectionGesture();panning=false;if(!CancelRectangle(false))FinishStroke();}
     }
 }

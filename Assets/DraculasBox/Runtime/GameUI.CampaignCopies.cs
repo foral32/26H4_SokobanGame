@@ -60,7 +60,7 @@ namespace DraculasBox.Runtime
                 for(int i=0;i<6;i++)
                 {
                     int index=pageIndex*6+i;bool visible=index<chapter.levels.Length;tiles[i].gameObject.SetActive(visible);ids[i]=visible?chapter.levels[index].id:null;
-                    if(!visible)continue;var data=assets.Level(ids[i]);thumbs[i].Set(data);names[i].text=layout.numbers[ids[i]]+"  "+data.title;
+                    if(!visible)continue;var data=assets.Level(ids[i]);thumbs[i].Set(data);names[i].text=CampaignLabels.Name(assets.Catalog,ids[i],data.title);
                 }
                 for(int i=0;i<chapters.Length;i++)WorkshopChoice("copy-chapter-"+chapters[i].id,i==chapterIndex);
                 paging.text=pages>1?(pageIndex+1)+" / "+pages:"";

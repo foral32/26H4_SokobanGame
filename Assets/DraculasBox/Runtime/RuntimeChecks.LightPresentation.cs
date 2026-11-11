@@ -100,7 +100,7 @@ namespace DraculasBox.Runtime
             Require(app.Page==GamePage.Settings,"theme test reaches actual settings "+id);app.SelectTheme(id);
             Require(GameThemes.Current.Id==id,"theme is applied before capturing "+id);app.CloseSettings();yield return Ready();
         }
-        private Color[] LightPixels(Cell[] cells)
+        private Color[] LightPixels(Cell[] cells,Vector2[] offsets=null)
         {
             var camera=app.viewCamera;var before=camera.targetTexture;float aspect=camera.aspect;var active=RenderTexture.active;
             var target=new RenderTexture(1280,720,24);var image=new Texture2D(1280,720,TextureFormat.RGB24,false);var result=new Color[cells.Length];
@@ -108,7 +108,8 @@ namespace DraculasBox.Runtime
             {
                 camera.targetTexture=target;camera.aspect=1280f/720;app.Board.FitForCapture();Canvas.ForceUpdateCanvases();camera.Render();RenderTexture.active=target;
                 image.ReadPixels(new Rect(0,0,1280,720),0,0);image.Apply();
-                for(int i=0;i<cells.Length;i++){var point=app.Board.Screen(cells[i]);result[i]=image.GetPixel(Mathf.RoundToInt(point.x),Mathf.RoundToInt(point.y));}
+                var root=app.Board.transform.Find("Board");
+                for(int i=0;i<cells.Length;i++){var point=camera.WorldToScreenPoint(root.TransformPoint(app.Board.Position(cells[i])+(offsets==null?Vector3.zero:(Vector3)offsets[i])));result[i]=image.GetPixel(Mathf.RoundToInt(point.x),Mathf.RoundToInt(point.y));}
             }
             finally{camera.targetTexture=before;camera.aspect=aspect;RenderTexture.active=active;app.Board.FitForCapture();target.Release();Destroy(target);Destroy(image);}
             return result;

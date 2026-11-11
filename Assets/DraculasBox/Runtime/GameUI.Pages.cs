@@ -124,8 +124,8 @@ namespace DraculasBox.Runtime
             for(int channel=0;channel<2;channel++){volumeMarks[channel]=new Image[10];for(int i=0;i<10;i++)volumeMarks[channel][i]=Image("Volume "+channel+" "+i,null,new Vector2(-120+i*29,89-channel*95),new Vector2(23,4),Quiet);}
             ThemeChoices();
             if(app.MainMenuSettings){ProgressResetEntry();ProgressUnlockEntry();}
-            MenuAction("back","返回",new Vector2(0,app.MainMenuSettings?-238:-204),220,app.CloseSettings,GameIcon.Back);
-            MenuAction("music-credits","音乐署名",new Vector2(0,app.MainMenuSettings?-302:-279),220,app.ShowMusicCredits);
+            MenuAction("music-credits","音乐署名",new Vector2(0,app.MainMenuSettings?-238:-204),220,app.ShowMusicCredits);
+            MenuAction("back","返回",new Vector2(0,app.MainMenuSettings?-302:-279),220,app.CloseSettings,GameIcon.Back);
             RefreshSettings();Focus(0);
         }
         public void RefreshSettings()
@@ -136,10 +136,11 @@ namespace DraculasBox.Runtime
         }
         public void ConfirmLeave(Action save,Action discard,Action cancel)
         {
-            Dim("保存修改？");
-            MenuAction("save-leave","保存并离开",new Vector2(0,40),310,save,GameIcon.Check);
-            MenuAction("discard-leave","不保存，离开",new Vector2(0,-30),310,discard,GameIcon.Exit);
-            MenuAction("cancel-leave","继续编辑",new Vector2(0,-100),310,cancel,GameIcon.Back);Focus(0);
+            CloseWorkshopPopup();var root=WorkshopOverlay("Leave dialog",Vector2.zero,new Vector2(610,180),cancel);
+            Label(Rect("Leave heading",new Vector2(0,38),new Vector2(546,44),root),"保存修改？",27,WorkshopInk,TextAlignmentOptions.MidlineLeft);
+            EditorButton("discard-leave","不保存",new Vector2(-207,-44),new Vector2(132,42),discard,false,root,true);
+            EditorButton("cancel-leave","继续编辑",new Vector2(-9,-44),new Vector2(132,42),cancel,false,root,true);
+            EditorButton("save-leave","保存并离开",new Vector2(192,-44),new Vector2(162,42),save,true,root,true);FocusButton("save-leave");
         }
     }
 }

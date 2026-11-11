@@ -1,329 +1,366 @@
 {
-  "levels": [
-    {
-      "id": "c1_01",
-      "route": "RRRUU",
-      "shortest": "RRRUU",
-      "pushes": 2,
-      "essential": []
-    },
-    {
-      "id": "c1_02",
-      "route": "LLLLU",
-      "shortest": "LLLLU",
-      "pushes": 4,
-      "essential": []
-    },
-    {
-      "id": "c1_03",
-      "route": "ULDRDRD",
-      "shortest": "ULDRDRD",
-      "pushes": 1,
-      "essential": []
-    },
-    {
-      "id": "c1_04",
-      "route": "LLLRULLULDRDRDRD",
-      "shortest": "LLLRULLULDRDRDRD",
-      "pushes": 7,
-      "essential": []
-    },
-    {
-      "id": "c1_05",
-      "route": "UULLURRDRRD",
-      "shortest": "UULLURRDRRD",
-      "pushes": 4,
-      "essential": [
-        "A",
-        "B"
-      ]
-    },
-    {
-      "id": "c1_06",
-      "route": "ULURRUU",
-      "shortest": "ULURRUU",
-      "pushes": 3,
-      "essential": [
-        "A",
-        "L"
-      ]
-    },
-    {
-      "id": "c1_07",
-      "route": "ULULDDURDDRD",
-      "shortest": "ULULDDURDDRD",
-      "pushes": 4,
-      "essential": [
-        "A",
-        "B",
-        "L"
-      ]
-    },
-    {
-      "id": "c2_01",
-      "route": "RDLDDRRDRRRD",
-      "shortest": "RDLDRRRRDRDD",
-      "pushes": 3,
-      "alternate": "RDLDRRRRDRDD",
-      "essential": [
-        "A"
-      ]
-    },
-    {
-      "id": "c2_02",
-      "route": "RDRULURRURDDR",
-      "shortest": "RURDLDRRDRUUR",
-      "pushes": 6,
-      "essential": [
-        "A",
-        "B",
-        "L"
-      ]
-    },
-    {
-      "id": "c2_04",
-      "route": "LDLDRURURUR",
-      "shortest": "LDLDRURURUR",
-      "pushes": 3,
-      "essential": [
-        "A",
-        "B",
-        "L"
-      ]
-    },
-    {
-      "id": "c2_07",
-      "route": "DRURDRDRRUULDDRDLLULULDDL",
-      "shortest": "DRURDRDRRUULDDRDLLULULDDL",
-      "pushes": 10,
-      "essential": [
-        "A",
-        "B",
-        "L"
-      ]
-    },
-    {
-      "id": "c3_01",
-      "route": "RRDRRR",
-      "shortest": "RRDRRR",
-      "pushes": 2,
-      "essential": [
-        "A"
-      ]
-    },
-    {
-      "id": "c3_02",
-      "route": "RUDRRRRR",
-      "shortest": "RUDRRRRR",
-      "pushes": 1,
-      "essential": [
-        "A"
-      ]
-    },
-    {
-      "id": "c3_03",
-      "route": "DRRUULLDRURRRRR",
-      "shortest": "DRRUULLDRURRRRR",
-      "pushes": 2,
-      "essential": [
-        "A",
-        "B"
-      ]
-    },
-    {
-      "id": "c3_04",
-      "route": "DRRRDLLLRRRRRDDD",
-      "shortest": "DRRRDLLLRRRRRDDD",
-      "pushes": 3,
-      "essential": [
-        "A",
-        "B",
-        "L"
-      ]
-    },
-    {
-      "id": "c2_08",
-      "route": "UDLURURRRR",
-      "shortest": "UDLURURRRR",
-      "pushes": 3,
-      "essential": [
-        "B",
-        "A"
-      ]
-    },
-    {
-      "id": "c2_09",
-      "route": "RRUDLLLLUURURU",
-      "shortest": "RRUDLLLLUURURU",
-      "pushes": 4,
-      "essential": [
-        "A",
-        "L",
-        "M",
-        "B",
-        "C"
-      ]
-    },
-    {
-      "id": "c2_b01",
-      "route": "UUUURDRRRURDLLLLDLDRRRRRDD",
-      "shortest": "UUUURDRRRURDLLLLDLDRRRRRDD",
-      "pushes": 9,
-      "essential": [
-        "A",
-        "B",
-        "L"
-      ]
-    },
-    {
-      "id": "c2_b02",
-      "route": "RDDUULLLLLDLDRRDRRUULDRDLULDRDLD",
-      "shortest": "RDDUULLLLLDLDRRDRRUULDRDLULDRDLD",
-      "pushes": 11,
-      "essential": [
-        "A",
-        "C",
-        "L",
-        "M"
-      ]
-    },
-    {
-      "id": "c3_05",
-      "route": "URRURRR",
-      "shortest": "URRURRR",
-      "pushes": 2,
-      "essential": [
-        "L",
-        "A",
-        "B"
-      ]
-    },
-    {
-      "id": "c3_06",
-      "route": "DRRRDULLLLDRRRRRLDRRDDD",
-      "shortest": "DRRRDULLLLDRRRRRLDRRDDD",
-      "pushes": 8,
-      "essential": [
-        "A",
-        "B",
-        "L"
-      ]
-    },
-    {
-      "id": "c3_b01",
-      "route": "RDRULURRDRURR",
-      "shortest": "RDRULURRDRURR",
-      "pushes": 5,
-      "essential": [
-        "A",
-        "B"
-      ]
-    },
-    {
-      "id": "c3_b02",
-      "route": "DRRRDULLLLDRRLDDRULURRRRLDRRDDD",
-      "shortest": "DRRRDULLLLDRRLDDRULURRRRLDRRDDD",
-      "pushes": 10,
-      "essential": [
-        "A",
-        "B",
-        "L",
-        "C"
-      ]
-    },
-    {
-      "id": "c4_01",
-      "route": "ULUU",
-      "shortest": "ULUU",
-      "pushes": 1,
-      "essential": [
-        "M"
-      ],
-      "wrong": "LU"
-    },
-    {
-      "id": "c4_02",
-      "route": "DDRUURRRRD",
-      "shortest": "DDRUURRRRD",
-      "pushes": 5,
-      "essential": [
-        "M",
-        "N"
-      ],
-      "wrong": "R"
-    },
-    {
-      "id": "c4_03",
-      "route": "UULDDULDL",
-      "shortest": "UULDDULDL",
-      "pushes": 3,
-      "essential": [
-        "L",
-        "M",
-        "N"
-      ],
-      "wrong": "UULDLD"
-    },
-    {
-      "id": "c4_04",
-      "route": "DRRRRLLULLURRUURRRD",
-      "shortest": "DRRRRLLULLURRUURRRD",
-      "pushes": 6,
-      "essential": [
-        "L",
-        "M",
-        "N"
-      ],
-      "wrong": "URRR"
-    },
-    {
-      "id": "c4_05",
-      "route": "RRRRDDDDLLLURRDRUULLLLRRRUULLLLD",
-      "shortest": "RRRRDDDDLLLURRDRUULLLLRRRUULLLLD",
-      "pushes": 9,
-      "essential": [
-        "M",
-        "N",
-        "A"
-      ],
-      "wrong": "RRRDDDRDLLLUULL"
-    },
-    {
-      "id": "c4_06",
-      "route": "RRUULRDDLLULUURDUURRRLLLDDRRRRDD",
-      "shortest": "RRUULRDDLLULUURDUURRRLLLDDRRRRDD",
-      "pushes": 6,
-      "essential": [
-        "L",
-        "M",
-        "N",
-        "A"
-      ],
-      "wrong": "UURRR"
-    },
-    {
-      "id": "c4_b01",
-      "route": "RRURRULUULDRDLLLUUL",
-      "shortest": "RRURRULUULDRDLLLUUL",
-      "pushes": 5,
-      "essential": [
-        "K",
-        "M",
-        "N"
-      ],
-      "wrong": "RRURRULLLL"
-    },
-    {
-      "id": "c4_b02",
-      "route": "LLLDDLDDRRRRLLLULURRRRLLLUURRRRD",
-      "shortest": "LLLDDLDDRRRRLLLULURRRRLLLUURRRRD",
-      "pushes": 11,
-      "essential": [
-        "L",
-        "M",
-        "N"
-      ],
-      "wrong": "LLLDDLDDRRRLLULURRRR"
-    }
-  ]
+    "levels": [
+        {
+            "id": "c1_01",
+            "route": "RRRUU",
+            "shortest": "RRRUU",
+            "alternate": "",
+            "wrong": "",
+            "pushes": 2,
+            "essential": []
+        },
+        {
+            "id": "c1_02",
+            "route": "LLLLU",
+            "shortest": "LLLLU",
+            "alternate": "",
+            "wrong": "",
+            "pushes": 4,
+            "essential": []
+        },
+        {
+            "id": "c1_04",
+            "route": "LLLRULLULDRDRDRD",
+            "shortest": "LLLRULLULDRDRDRD",
+            "alternate": "",
+            "wrong": "",
+            "pushes": 7,
+            "essential": []
+        },
+        {
+            "id": "c1_06",
+            "route": "ULURRUU",
+            "shortest": "ULURRUU",
+            "alternate": "",
+            "wrong": "",
+            "pushes": 3,
+            "essential": [
+                "A",
+                "L"
+            ]
+        },
+        {
+            "id": "c2_01",
+            "route": "RDLDDRRDRRRD",
+            "shortest": "RDLDRRRRDRDD",
+            "alternate": "RDLDRRRRDRDD",
+            "wrong": "",
+            "pushes": 3,
+            "essential": [
+                "A"
+            ]
+        },
+        {
+            "id": "c2_02",
+            "route": "RDRULURRURDDR",
+            "shortest": "RURDLDRRDRUUR",
+            "alternate": "",
+            "wrong": "",
+            "pushes": 6,
+            "essential": [
+                "A",
+                "B",
+                "L"
+            ]
+        },
+        {
+            "id": "c2_04",
+            "route": "LDLDRURURUR",
+            "shortest": "LDLDRURURUR",
+            "alternate": "",
+            "wrong": "",
+            "pushes": 3,
+            "essential": [
+                "A",
+                "B",
+                "L"
+            ]
+        },
+        {
+            "id": "c2_07",
+            "route": "DRURDRDRRUULDDRDLLULULDDL",
+            "shortest": "DRURDRDRRUULDDRDLLULULDDL",
+            "alternate": "",
+            "wrong": "",
+            "pushes": 10,
+            "essential": [
+                "A",
+                "B",
+                "L"
+            ]
+        },
+        {
+            "id": "c3_01",
+            "route": "RRDRRR",
+            "shortest": "RRDRRR",
+            "alternate": "",
+            "wrong": "",
+            "pushes": 2,
+            "essential": [
+                "A"
+            ]
+        },
+        {
+            "id": "c3_02",
+            "route": "RUDRRRRR",
+            "shortest": "RUDRRRRR",
+            "alternate": "",
+            "wrong": "",
+            "pushes": 1,
+            "essential": [
+                "A"
+            ]
+        },
+        {
+            "id": "c3_03",
+            "route": "DRRUULLDRURRRRR",
+            "shortest": "DRRUULLDRURRRRR",
+            "alternate": "",
+            "wrong": "",
+            "pushes": 2,
+            "essential": [
+                "A",
+                "B"
+            ]
+        },
+        {
+            "id": "c3_04",
+            "route": "DRRRDLLLRRRRRDDD",
+            "shortest": "DRRRDLLLRRRRRDDD",
+            "alternate": "",
+            "wrong": "",
+            "pushes": 3,
+            "essential": [
+                "A",
+                "B",
+                "L"
+            ]
+        },
+        {
+            "id": "c2_08",
+            "route": "UDLURURRRR",
+            "shortest": "UDLURURRRR",
+            "alternate": "",
+            "wrong": "",
+            "pushes": 3,
+            "essential": [
+                "B",
+                "A"
+            ]
+        },
+        {
+            "id": "c2_09",
+            "route": "RRUDLLLLUURURU",
+            "shortest": "RRUDLLLLUURURU",
+            "alternate": "",
+            "wrong": "",
+            "pushes": 4,
+            "essential": [
+                "A",
+                "L",
+                "M",
+                "B",
+                "C"
+            ]
+        },
+        {
+            "id": "c2_b01",
+            "route": "UUUURDRRRURDLLLLDLDRRRRRDD",
+            "shortest": "UUUURDRRRURDLLLLDLDRRRRRDD",
+            "alternate": "",
+            "wrong": "",
+            "pushes": 9,
+            "essential": [
+                "A",
+                "B",
+                "L"
+            ]
+        },
+        {
+            "id": "c2_b02",
+            "route": "RDDUULLLLLDLDRRDRRUULDRDLULDRDLD",
+            "shortest": "RDDUULLLLLDLDRRDRRUULDRDLULDRDLD",
+            "alternate": "",
+            "wrong": "",
+            "pushes": 11,
+            "essential": [
+                "A",
+                "C",
+                "L",
+                "M"
+            ]
+        },
+        {
+            "id": "c3_05",
+            "route": "URRURRR",
+            "shortest": "URRURRR",
+            "alternate": "",
+            "wrong": "",
+            "pushes": 2,
+            "essential": [
+                "L",
+                "A",
+                "B"
+            ]
+        },
+        {
+            "id": "c3_06",
+            "route": "DRRRDULLLLDRRRRRLDRRDDD",
+            "shortest": "DRRRDULLLLDRRRRRLDRRDDD",
+            "alternate": "",
+            "wrong": "",
+            "pushes": 8,
+            "essential": [
+                "A",
+                "B",
+                "L"
+            ]
+        },
+        {
+            "id": "c3_b01",
+            "route": "RDRULURRDRURR",
+            "shortest": "RDRULURRDRURR",
+            "alternate": "",
+            "wrong": "",
+            "pushes": 5,
+            "essential": [
+                "A",
+                "B"
+            ]
+        },
+        {
+            "id": "c3_b02",
+            "route": "DRRRDULLLLDRRLDDRULURRRRLDRRDDD",
+            "shortest": "DRRRDULLLLDRRLDDRULURRRRLDRRDDD",
+            "alternate": "",
+            "wrong": "",
+            "pushes": 10,
+            "essential": [
+                "A",
+                "B",
+                "L",
+                "C"
+            ]
+        },
+        {
+            "id": "c4_01",
+            "route": "ULUU",
+            "shortest": "ULUU",
+            "alternate": "",
+            "wrong": "LU",
+            "pushes": 1,
+            "essential": [
+                "M"
+            ]
+        },
+        {
+            "id": "c4_02",
+            "route": "DDRUURRRRD",
+            "shortest": "DDRUURRRRD",
+            "alternate": "",
+            "wrong": "R",
+            "pushes": 5,
+            "essential": [
+                "M",
+                "N"
+            ]
+        },
+        {
+            "id": "c4_03",
+            "route": "UULDDULDL",
+            "shortest": "UULDDULDL",
+            "alternate": "",
+            "wrong": "UULDLD",
+            "pushes": 3,
+            "essential": [
+                "L",
+                "M",
+                "N"
+            ]
+        },
+        {
+            "id": "c4_04",
+            "route": "DRRRRLLULLURRUURRRD",
+            "shortest": "DRRRRLLULLURRUURRRD",
+            "alternate": "",
+            "wrong": "URRR",
+            "pushes": 6,
+            "essential": [
+                "L",
+                "M",
+                "N"
+            ]
+        },
+        {
+            "id": "c4_05",
+            "route": "RRRRDDDDLLLURRDRUULLLLRRRUULLLLD",
+            "shortest": "RRRRDDDDLLLURRDRUULLLLRRRUULLLLD",
+            "alternate": "",
+            "wrong": "RRRDDDRDLLLUULL",
+            "pushes": 9,
+            "essential": [
+                "M",
+                "N",
+                "A"
+            ]
+        },
+        {
+            "id": "c4_06",
+            "route": "RRUULRDDLLULUURDUURRRLLLDDRRRRDD",
+            "shortest": "RRUULRDDLLULUURDUURRRLLLDDRRRRDD",
+            "alternate": "",
+            "wrong": "UURRR",
+            "pushes": 6,
+            "essential": [
+                "L",
+                "M",
+                "N",
+                "A"
+            ]
+        },
+        {
+            "id": "c4_b01",
+            "route": "RRURRULUULDRDLLLUUL",
+            "shortest": "RRURRULUULDRDLLLUUL",
+            "alternate": "",
+            "wrong": "RRURRULLLL",
+            "pushes": 5,
+            "essential": [
+                "K",
+                "M",
+                "N"
+            ]
+        },
+        {
+            "id": "c4_b02",
+            "route": "LLLDDLDDRRRRLLLULURRRRLLLUURRRRD",
+            "shortest": "LLLDDLDDRRRRLLLULURRRRLLLUURRRRD",
+            "alternate": "",
+            "wrong": "LLLDDLDDRRRLLULURRRR",
+            "pushes": 11,
+            "essential": [
+                "L",
+                "M",
+                "N"
+            ]
+        },
+        {
+            "id": "c1_07",
+            "route": "ULULDDURDDRD",
+            "shortest": "",
+            "alternate": "",
+            "wrong": "",
+            "pushes": 4,
+            "essential": []
+        },
+        {
+            "id": "c1_05",
+            "route": "UUURLLURRDRDRD",
+            "shortest": "",
+            "alternate": "",
+            "wrong": "",
+            "pushes": 7,
+            "essential": []
+        }
+    ]
 }

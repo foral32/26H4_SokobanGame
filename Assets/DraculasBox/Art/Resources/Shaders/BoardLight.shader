@@ -27,6 +27,8 @@ Shader "DraculasBox/Board Light"
             TEXTURE2D(_FloorTex); SAMPLER(sampler_FloorTex);
             TEXTURE2D(_Before); SAMPLER(sampler_Before);
             TEXTURE2D(_After); SAMPLER(sampler_After);
+            TEXTURE2D(_RawShadow); SAMPLER(sampler_RawShadow);
+            TEXTURE2D(_SoftShadow); SAMPLER(sampler_SoftShadow);
             CBUFFER_START(UnityPerMaterial)
             float4 _Size, _BaseTint, _ShadeTint, _ClipRect;
             float _Mode, _LightBlend, _ClipEnabled;
@@ -53,13 +55,48 @@ Shader "DraculasBox/Board Light"
                     float core=max(field.b*(1-smoothstep(.004,.016,dist.y)),field.a*(1-smoothstep(.004,.016,dist.x)));
                     return half4(lerp(half3(1,.82,.48),half3(1,.97,.82),core),saturate(shaft*.32+core*.58));
                 }
-                half3 floor=SAMPLE_TEXTURE2D(_FloorTex,sampler_FloorTex,frac(tile)).rgb;
-                if(_Mode>1.5)return half4(floor*lerp(_ShadeTint.rgb,_BaseTint.rgb,field.g),1);
-                // One-cell footprint followed by precisely two cells of projected shade.
-                // Min blending merges overlapping casters without accumulating darkness.
+                half3 floorColor=SAMPLE_TEXTURE2D(_FloorTex,sampler_FloorTex,frac(tile)).rgb;
+                if(_Mode>1.5)return half4(floorColor*lerp(_ShadeTint.rgb,_BaseTint.rgb,field.g),1);
+                float2 rawSize=_Size.xy*32;
+                float2 rawUV=(floor(fieldUV*rawSize)+.5)/rawSize;
+                half3 raw=SAMPLE_TEXTURE2D(_RawShadow,sampler_RawShadow,rawUV).rgb;
+                half3 soft=SAMPLE_TEXTURE2D(_SoftShadow,sampler_SoftShadow,fieldUV).rgb;
+                // Feather only the exterior of the complete union. Preserve the exact
+                // two-cell footprint; filtering must never shade a dangerous sun cell.
+                // A narrow inner feather keeps exposed sides seated on their tile edges.
+                float contour=smoothstep(.50,.82,soft.b)*step(.5,raw.g);
+                float strength=soft.r*contour*raw.b*(1-field.g);
+                return half4(lerp(floorColor*_BaseTint.rgb,_ShadeTint.rgb,strength),1);
+            }
+            ENDHLSL
+        }
+        Pass
+        {
+            Name "Solar union mask"
+            Tags {"LightMode"="DraculasShadowMask"}
+            ZTest Always
+            Blend One One
+            BlendOp Max
+            ColorMask RGB
+            HLSLPROGRAM
+            #pragma vertex MaskVertex
+            #pragma fragment MaskFragment
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            struct Attributes {float3 positionOS:POSITION;float2 uv:TEXCOORD0;};
+            struct Varyings {float4 positionCS:SV_POSITION;float2 uv:TEXCOORD0;};
+            float4 _Size;
+            Varyings MaskVertex(Attributes i)
+            {
+                Varyings o;o.positionCS=float4(i.positionOS.xy/_Size.xy*2,0,1);
+                #if UNITY_UV_STARTS_AT_TOP
+                o.positionCS.y=-o.positionCS.y;
+                #endif
+                o.uv=i.uv;return o;
+            }
+            half4 MaskFragment(Varyings i):SV_Target
+            {
                 float depth=saturate(max(0,i.uv.x-1)*.5);
-                float strength=(.94-.64*pow(depth,1.15))*i.uv.y*(1-field.g);
-                return half4(lerp(floor*_BaseTint.rgb,_ShadeTint.rgb,strength),1);
+                return half4((.94-.64*pow(depth,1.15))*i.uv.y,1,i.uv.y,0);
             }
             ENDHLSL
         }

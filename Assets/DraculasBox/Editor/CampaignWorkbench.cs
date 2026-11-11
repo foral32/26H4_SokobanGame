@@ -43,7 +43,7 @@ namespace DraculasBox.Editor
         private Chapter Current => Data.Chapter(chapterId);
         private ChapterLink Selected => Current.levels.First(l => l.id == selectedId);
         private GameUI UI => app.UI;
-        private bool Dirty => JsonUtility.ToJson(draft.baseline) != JsonUtility.ToJson(Data);
+        private bool Dirty => !CampaignPublication.SameContent(draft.baseline,Data);
         internal CampaignWorkbench(DraculaApp app, CampaignProject project)
         { this.app = app; this.project = project; Load(); }
 
@@ -224,18 +224,28 @@ namespace DraculasBox.Editor
         }
         private void Publish()
         {
-            bool published=false;
+            var review=CreatePublication();
+            string error=review.Check(out var candidate,out _);
+            if(error!=null){publicationError=error;Draw();return;}
             try
             {
-                project.Publish(Data, draft.revision);
-                app.Progress.Reconcile(app.assets.Catalog);
-                project.ForgetDraft();
-                var chapter = chapterId; var level = selectedId;
-                Load(); chapterId = chapter; selectedId = level; NormalizeSelection();
-                notice = "已写回工程";publicationError=null;overlay=Overlay.None;published=true;
+                var remaining=CampaignPublication.Copy(review.Working);
+                // The project transaction includes saving the rebased remaining draft.
+                // A failed draft write rolls back the asset imports as well.
+                CampaignDraftFile next=null;
+                project.Publish(candidate,draft.revision,()=>
+                {
+                    next=new CampaignDraftFile{revision=project.Revision,baseline=CampaignPublication.Copy(project.Source),
+                        working=remaining,chapter=chapterId,selection=selectedId};
+                    project.SaveDraft(next);
+                },true);
+                draft=next;doc=new CampaignDocument(remaining);recovery=null;trialRoute=null;
+                NormalizeSelection();app.Progress.Reconcile(app.assets.Catalog);
+                notice="已写回所选修改";publicationError=null;excludedChanges.Clear();overlay=Overlay.None;
+                if(!Dirty)try{project.ForgetDraft();}catch(Exception e){notice="已写回工程；草稿清理失败："+e.Message;}
             }
-            catch (Exception e) { notice = publicationError = e.Message; }
-            Draw();if(published)UI.CelebrateSave("campaign-review");
+            catch(Exception e){publicationError=e.Message;}
+            Draw();
         }
         private void Reload()
         {
@@ -250,51 +260,6 @@ namespace DraculasBox.Editor
             catch (Exception e) { notice = e.Message; }
             Draw();
         }
-        private readonly struct ChangeSummary
-        {
-            public readonly string subject,detail;public readonly bool removed;
-            public ChangeSummary(string subject,string detail,bool removed=false)
-            {this.subject=subject;this.detail=detail;this.removed=removed;}
-        }
         private static string ChapterName(string title)=>System.Text.RegularExpressions.Regex.Replace(title,@"^第[一二三四五六七八九十百零〇\d]+章\s*[·・.、:：/\-—]?\s*","");
-        private List<ChangeSummary> Changes()
-        {
-            var changes = new List<ChangeSummary>();
-            var old = draft.baseline;
-            var before=old.catalog.chapters.ToDictionary(c=>c.id,c=>new ChapterMapLayout(c));
-            var after=Data.catalog.chapters.ToDictionary(c=>c.id,c=>new ChapterMapLayout(c));
-            string Describe(Dictionary<string,ChapterMapLayout> layouts,Chapter c,ChapterLink l)
-                =>layouts[c.id].numbers[l.id]+(l.main?"":l.branchAbove?" ↑":" ↓");
-            foreach (var c in Data.catalog.chapters)
-            {
-                var was = old.catalog.chapters.FirstOrDefault(o => o.id == c.id);
-                if (was == null) changes.Add(new ChangeSummary(ChapterName(c.title),"新增章节"));
-                else
-                {
-                    if(was.title!=c.title)changes.Add(new ChangeSummary(ChapterName(was.title)+" → "+ChapterName(c.title),"改名"));
-                    int prior=Array.IndexOf(old.catalog.chapters,was)+1,next=Array.IndexOf(Data.catalog.chapters,c)+1;
-                    if(prior!=next)changes.Add(new ChangeSummary(ChapterName(c.title),prior+" → "+next));
-                }
-                foreach (var l in CampaignDocument.Outline(c))
-                {
-                    var b = Data.Board(l.id);
-                    var prevChapter = old.catalog.chapters.FirstOrDefault(o => o.levels.Any(n => n.id == l.id));
-                    if (prevChapter == null) { changes.Add(new ChangeSummary(ChapterName(c.title)+" / "+b.title,l.main?"新增主线":"新增支线")); continue; }
-                    var prev = prevChapter.levels.First(n => n.id == l.id);
-                    string prior = Describe(before,prevChapter,prev), next = Describe(after,c,l);
-                    if (prior != next || prevChapter.id != c.id || !l.main&&!prev.main&&l.requires[0]!=prev.requires[0])
-                        changes.Add(new ChangeSummary(b.title,prevChapter.id!=c.id?ChapterName(prevChapter.title)+" → "+ChapterName(c.title):prior+" → "+next));
-                    var prevBoard=old.Board(b.id).Copy();
-                    if(b.title!=prevBoard.title){changes.Add(new ChangeSummary(prevBoard.title+" → "+b.title,"改名"));prevBoard.title=b.title;}
-                    if (!b.ContentEquals(prevBoard)) changes.Add(new ChangeSummary(b.title,"棋盘"));
-                    else if (Data.Plan(b.id)?.route != old.Plan(b.id)?.route) changes.Add(new ChangeSummary(b.title,"通关路线"));
-                }
-            }
-            var deleted=old.catalog.chapters.Where(c=>!Data.catalog.chapters.Any(n=>n.id==c.id)).ToArray();
-            foreach(var c in deleted)changes.Add(new ChangeSummary(ChapterName(c.title),"删除章节",true));
-            var deletedBoards=new HashSet<string>(deleted.SelectMany(c=>c.levels).Select(l=>l.id));
-            foreach (var b in old.boards.Where(b => !Data.boards.Any(n => n.id == b.id)&&!deletedBoards.Contains(b.id))) changes.Add(new ChangeSummary(b.title,"移出",true));
-            return changes;
-        }
     }
 }

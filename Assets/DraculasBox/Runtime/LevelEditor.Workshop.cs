@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace DraculasBox.Runtime
 {
-    public enum EditOperation {Paint,Erase}
+    public enum EditOperation {Paint,Erase,Select}
     public sealed partial class LevelEditor
     {
         private RectTransform materials,scenePanel,filesPanel;
@@ -16,7 +16,7 @@ namespace DraculasBox.Runtime
         private Brush EffectiveBrush=>Operation==EditOperation.Erase?Brush.Erase:Selected;
         private void BuildWorkshop()
         {
-            bool wasErasing=Operation==EditOperation.Erase;
+            var previousOperation=Operation;
             ui.Clear();ui.WorkshopTheme();brushes.Clear();pendingStamps.Clear();stroke=panning=false;previewQueued=false;
             board.EditorPaletteCollapsed(paletteCollapsed);board.Preview(Document.Data);
             ui.Image("Header rule",null,new Vector2(0,280),new Vector2(1224,1),GameUI.WorkshopLine);
@@ -29,8 +29,15 @@ namespace DraculasBox.Runtime
             titleInput.textViewport.sizeDelta=new Vector2(450,36);
             titleInput.textViewport.anchoredPosition=new Vector2(-20,0);
             titleInput.textComponent.rectTransform.sizeDelta=new Vector2(450,36);
+            if(app.EditingOfficial)
+            {
+                ui.Text("Level prefix",app.Campaign.LevelPrefix(Document.Data.id),new Vector2(-387,312),new Vector2(90,42),22,GameUI.WorkshopInk);
+                titleInput.GetComponent<RectTransform>().anchoredPosition=new Vector2(-117,312);
+                titleInput.GetComponent<RectTransform>().sizeDelta=new Vector2(420,42);
+                titleInput.textViewport.sizeDelta=titleInput.textComponent.rectTransform.sizeDelta=new Vector2(360,36);
+            }
             var titleBorder=titleInput.GetComponent<Outline>();
-            var editIcon=ui.Rect("Edit icon",new Vector2(231,0),new Vector2(22,22),titleInput.transform).gameObject.AddComponent<GameIconGraphic>();
+            var editIcon=ui.Rect("Edit icon",new Vector2(app.EditingOfficial?186:231,0),new Vector2(22,22),titleInput.transform).gameObject.AddComponent<GameIconGraphic>();
             editIcon.icon=GameIcon.Edit;editIcon.color=GameUI.Muted;editIcon.raycastTarget=false;
             titleInput.onSelect.AddListener(_=>{titleBorder.effectColor=GameUI.WorkshopAccent;editIcon.color=GameUI.WorkshopAccent;});
             titleInput.onDeselect.AddListener(_=>{titleBorder.effectColor=GameUI.WorkshopLine;editIcon.color=GameUI.Muted;});
@@ -39,17 +46,18 @@ namespace DraculasBox.Runtime
             ui.EditorButton("save","保存",new Vector2(356,312),new Vector2(156,42),()=>Save());
             ui.EditorButton("test","试玩",new Vector2(520,312),new Vector2(156,42),Play,true);
             var collapse=ui.WorkshopIcon("palette-toggle",GameIcon.Back,new Vector2(-592,254),new Vector2(36,36),()=>TogglePalette());if(paletteCollapsed)collapse.transform.Find("Icon").localRotation=Quaternion.Euler(0,0,180);
-            ui.Text("Operation heading","操作",new Vector2(-532,254),new Vector2(56,36),20,GameUI.WorkshopInk);
-            ui.EditorButton("operation-paint","绘制",new Vector2(-442,254),new Vector2(108,36),()=>SetOperation(EditOperation.Paint));
-            ui.EditorButton("brush-7","擦除",new Vector2(-324,254),new Vector2(108,36),()=>SetOperation(EditOperation.Erase));
-            ui.Text("Shape heading","形状",new Vector2(-216,254),new Vector2(56,36),20,GameUI.WorkshopInk);
-            ui.EditorButton("shape-brush","点涂",new Vector2(-126,254),new Vector2(108,36),()=>SelectShape(PaintShape.Brush));
-            ui.EditorButton("shape-rectangle","矩形",new Vector2(-8,254),new Vector2(108,36),()=>SelectShape(PaintShape.Rectangle));
-            ui.EditorButton("solutions","关卡解",new Vector2(187,254),new Vector2(110,36),OpenSolutions);
-            ui.EditorButton("drafts","生成草稿",new Vector2(327,254),new Vector2(138,36),()=>OpenGenerator());
+            ui.EditorButton("operation-select","选择",new Vector2(-504,254),new Vector2(98,36),()=>SetOperation(EditOperation.Select));
+            ui.EditorButton("operation-paint","绘制",new Vector2(-398,254),new Vector2(98,36),()=>SetOperation(EditOperation.Paint));
+            ui.EditorButton("brush-7","擦除",new Vector2(-292,254),new Vector2(98,36),()=>SetOperation(EditOperation.Erase));
+            ui.Image("Tool separator",null,new Vector2(-230,254),new Vector2(1,24),GameUI.WorkshopLine);
+            ui.EditorButton("shape-brush","点涂",new Vector2(-166,254),new Vector2(98,36),()=>SelectShape(PaintShape.Brush));
+            ui.EditorButton("shape-rectangle","矩形",new Vector2(-60,254),new Vector2(98,36),()=>SelectShape(PaintShape.Rectangle));
+            ui.EditorButton("solutions","关卡解",new Vector2(172,254),new Vector2(110,36),OpenSolutions);
+            ui.EditorButton("drafts","生成草稿",new Vector2(312,254),new Vector2(138,36),()=>OpenGenerator());
             ui.EditorButton("scene","场景设置",new Vector2(526,254),new Vector2(136,36),ToggleScene);
             ui.EditorShortcut("save","Ctrl+S");ui.EditorShortcut("test","F5");
-            ui.EditorShortcut("operation-paint","B");ui.EditorShortcut("brush-7","X");ui.EditorShortcut("shape-brush","P");ui.EditorShortcut("shape-rectangle","R");
+            ui.EditorShortcut("operation-select","A");ui.EditorShortcut("operation-paint","Q");ui.EditorShortcut("brush-7","E");
+            ui.EditorShortcut("shape-brush","P");ui.EditorShortcut("shape-rectangle","R");
             materials=ui.Rect("Materials",new Vector2(-543,-30),new Vector2(146,512));ui.WorkshopPanel("Material surface",Vector2.zero,new Vector2(146,512),materials);
             string[] labels={"地板","墙体","箱子","玩家","棺材","四向灯","缺口","","压力板","自动门","斜镜 /","斜镜 \\"};string[] icons={"solid","Wall_inactive_gray","Box_active_white","vampire","coffin-lid","lamp","solid","","plate","door","mirror-slash","mirror-backslash"};int row=0;
             var scroll=ui.Rect("Material scroll",new Vector2(0,28),new Vector2(146,448),materials);var hit=scroll.gameObject.AddComponent<Image>();hit.color=Color.clear;materialScroll=scroll.gameObject.AddComponent<ScrollRect>();scroll.gameObject.AddComponent<RectMask2D>();var content=ui.Rect("Material content",Vector2.zero,new Vector2(146,(labels.Length-1)*51),scroll);content.anchorMin=content.anchorMax=new Vector2(.5f,1);content.pivot=new Vector2(.5f,1);content.anchoredPosition=Vector2.zero;materialScroll.viewport=scroll;materialScroll.content=content;materialScroll.horizontal=false;materialScroll.movementType=ScrollRect.MovementType.Clamped;materialScroll.scrollSensitivity=28;
@@ -72,7 +80,7 @@ namespace DraculasBox.Runtime
             ui.EditorButton("zoom-in","+",new Vector2(542,-321),new Vector2(38,36),()=>Zoom(1.25f));
             status=ui.Text("Editor status","",new Vector2(-80,-321),new Vector2(640,36),18,GameUI.WorkshopAccent,TextAlignmentOptions.MidlineLeft);
             validation=ui.Text("Validation","",new Vector2(-80,-321),new Vector2(640,36),18,GameUI.WorkshopAccent,TextAlignmentOptions.MidlineLeft);
-            BuildScenePanel();BuildFilesPanel();Select(Selected);if(wasErasing)SetOperation(EditOperation.Erase);SelectChannel(Channel);RefreshLabels();
+            BuildScenePanel();BuildFilesPanel();RefreshOperation();SetOperation(previousOperation);SelectChannel(Channel);RefreshLabels();
         }
         private void BuildScenePanel()
         {
@@ -103,8 +111,8 @@ namespace DraculasBox.Runtime
         private void ToggleFiles(){bool open=!filesPanel.gameObject.activeSelf;ClosePanels();filesPanel.gameObject.SetActive(open);}
         public bool ClosePanels(){ui.CommitText();bool open=SceneOpen||filesPanel!=null&&filesPanel.gameObject.activeSelf;if(scenePanel!=null)scenePanel.gameObject.SetActive(false);if(filesPanel!=null)filesPanel.gameObject.SetActive(false);return open;}
         private void TogglePalette(){CancelRectangle(false);FinishStroke();ClosePanels();paletteCollapsed=!paletteCollapsed;board.EditorPaletteCollapsed(paletteCollapsed);Show();}
-        public void SetOperation(EditOperation operation){ClosePanels();CancelRectangle(false);FinishStroke();Operation=operation;RefreshShapeControls();RefreshChannelControls();RefreshOperation();}
-        private void RefreshOperation(){ui.WorkshopChoice("operation-paint",Operation==EditOperation.Paint);ui.WorkshopChoice("brush-7",Operation==EditOperation.Erase);for(int i=0;i<brushes.Count;i++)if(brushes[i]!=null)ui.SelectBrush(brushes[i],i==(int)Selected,Operation==EditOperation.Erase);}
+        public void SetOperation(EditOperation operation){ClosePanels();CancelSelectionGesture();CancelRectangle(false);FinishStroke();Operation=operation;if(operation!=EditOperation.Select)ClearSelection();RefreshShapeControls();RefreshChannelControls();RefreshOperation();}
+        private void RefreshOperation(){ui.WorkshopChoice("operation-select",Operation==EditOperation.Select);ui.WorkshopChoice("operation-paint",Operation==EditOperation.Paint);ui.WorkshopChoice("brush-7",Operation==EditOperation.Erase);for(int i=0;i<brushes.Count;i++)if(brushes[i]!=null)ui.SelectBrush(brushes[i],i==(int)Selected&&Operation==EditOperation.Paint,Operation!=EditOperation.Paint);}
         public void RevealBrush(Brush brush){if(materialScroll==null)return;int row=(int)brush;if(row>7)row--;float top=row*51,bottom=top+51,offset=materialScroll.content.anchoredPosition.y;if(top<offset)offset=top;else if(bottom>offset+448)offset=bottom-448;offset=Mathf.Clamp(offset,0,materialScroll.content.rect.height-448);materialScroll.content.anchoredPosition=new Vector2(0,offset);}
     }
 }

@@ -290,7 +290,7 @@ namespace DraculasBox.Runtime
             MapPage(chapter.title);
             var main=chapter.levels.Where(l=>l.main).ToArray();
             Text("Chapter progress",main.Count(l=>app.Progress.Done(l.id))+" / "+main.Length,new Vector2(505,285),new Vector2(150,40),22,Quiet);
-            var map=new ChapterMapView(this,chapter,false,id=>assets.Level(id).title,app.LoadLevel);playableMap=map;
+            var map=new ChapterMapView(this,chapter,false,id=>CampaignLabels.Name(assets.Catalog,id,assets.Level(id).title),app.LoadLevel);playableMap=map;
             MenuAction("back","返回章节",new Vector2(-463,-293),190,app.ShowChapters,GameIcon.Back);
             string current=chapter.levels.Any(n=>n.id==app.Progress.Data.lastLevel)?app.Progress.Data.lastLevel:chapter.levels[0].id;
             FocusButton("level-"+current);map.Reveal(current);

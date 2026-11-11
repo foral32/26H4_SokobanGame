@@ -27,6 +27,16 @@ namespace DraculasBox.Editor
         {
             CreateFixture();Bind(fixture);yield return Click("campaign");
             var source=new CampaignProject(fixture).Source;string baseline=JsonUtility.ToJson(source);
+            var staleRoute=JsonUtility.FromJson<CampaignContent>(baseline);
+            var sunnyBoard=staleRoute.Board("c1_02");var sunnyPlan=staleRoute.Plan("c1_02");
+            Need(CampaignDocument.Proves(sunnyBoard,sunnyPlan.route,out int verifiedPushes)&&verifiedPushes==4,
+                "the unchanged sunny route remains a valid four-push proof");
+            sunnyPlan.pushes=3;
+            Need(!CampaignProject.PublicationIssues(staleRoute).Any(issue=>issue.id=="c1_02"),
+                "a valid sunny route is not rejected when only its stored push count is stale");
+            var readyToPublish=CampaignProject.PrepareForPublication(staleRoute);
+            Need(readyToPublish.Plan("c1_02").pushes==4&&sunnyPlan.pushes==3,
+                "publication recalculates stale push metadata on a copy and leaves the recoverable draft untouched");
             var chapters=source.catalog.chapters;string last=chapters.Last().id;
             Need(chapters.All(c=>app.UI.FindButton("chapter-menu-"+c.id)!=null),"each chapter card exposes its own visible more menu");
             yield return ChapterPopup(last);
@@ -59,13 +69,14 @@ namespace DraculasBox.Editor
             field=app.UI.Root.GetComponentInChildren<TMP_InputField>();field.text="误建章节";yield return Click("chapter-apply");
             yield return Click("campaign-review");
             Need(app.UI.FindButton("campaign-fix-"+seed)!=null&&app.UI.FindButton("campaign-fix-"+secondSeed)!=null&&
-                !app.UI.FindButton("campaign-publish").interactable,"publication lists every pending level with a separate action and disables premature writes");
+                app.UI.FindButton("campaign-publish").interactable&&
+                app.UI.Root.GetComponentsInChildren<TMP_Text>().Any(t=>t.text.Contains("尚未记录关卡解")),
+                "publication explains missing route proofs and offers direct editing");
             var review=(RectTransform)app.UI.Root.Find("Publication review");
-            Need(review.rect.width<=900&&review.rect.height<=544&&app.UI.Root.Find("Heading")!=null,"publication is a compact modal that keeps the chapter context visible");
+            Need(review.rect.width<=900&&review.rect.height<=560&&app.UI.Root.Find("Heading")!=null,"publication is a compact modal that keeps the chapter context visible");
             yield return new WaitForSecondsRealtime(.18f);Capture("chapter-pending");
-            yield return Click("campaign-fix-"+seed);yield return Page(GamePage.Playing);
-            Need(app.Session.State.Level.Export().id==seed,"the pending level action directly launches its own trial");
-            app.Back();yield return Page(GamePage.Editing);
+            yield return Click("campaign-fix-"+seed);yield return Page(GamePage.Editing);
+            Need(app.Creator.Document.Data.id==seed,"the pending level action opens the precise board to repair or solve");
             yield return Click("brush-4");var cell=app.Board.Screen(new Cell(3,3));
             app.Creator.PointerSample(cell,true,true,false);app.Creator.PointerSample(cell,false,false,true);yield return null;
             yield return Click("test");yield return Page(GamePage.Playing);app.Act(Command.Right);yield return Page(GamePage.Editing);
@@ -104,7 +115,7 @@ namespace DraculasBox.Editor
             yield return Click("campaign-undo");
             Need(removed.All(id=>Draft().working.boards.Any(b=>b.id==id)&&Draft().working.Plan(id)!=null),"undo restores every main, branch and verified route of a published chapter");
             yield return Click("campaign-redo");yield return Click("campaign-review");
-            Need(app.UI.Root.GetComponentsInChildren<TMP_Text>().Any(t=>t.text=="删除章节")&&
+            Need(app.UI.Root.GetComponentsInChildren<TMP_Text>().Any(t=>t.text.StartsWith("删除章节"))&&
                 app.UI.FindButton("campaign-publish").interactable,"review summarizes chapter removal and allows valid metadata-only publication");
             yield return Click("campaign-reload");yield return Click("campaign-cancel");
             Need(Draft().working.catalog.chapters.Length==3&&app.UI.Root.Find("Publication review")!=null,"cancelling source reload preserves the working chapter changes");

@@ -16,7 +16,7 @@ using Object=UnityEngine.Object;
 
 namespace DraculasBox.Editor.Prototypes
 {
-    public static class SunProjectionPrototype
+    public static partial class SunProjectionPrototype
     {
         public const string Output="DraculasBox/Reviews/SunIntegration-20261111";
         private const int Width=1280,Height=720;
@@ -83,6 +83,17 @@ namespace DraculasBox.Editor.Prototypes
             }
             private GameObject Child(string name){var go=new GameObject(name);go.transform.SetParent(root.transform,false);return go;}
             public void SampleStep(float t){typeof(BoardView).GetMethod("Refresh",Private).Invoke(Board,new object[]{t});}
+            public Color[] SamplePixels(Vector3[] boardPoints)
+            {
+                var prior=RenderTexture.active;var image=new Texture2D(Width,Height,TextureFormat.RGB24,false);var colors=new Color[boardPoints.Length];
+                try
+                {
+                    camera.Render();RenderTexture.active=target;image.ReadPixels(new Rect(0,0,Width,Height),0,0);image.Apply();
+                    var board=(Transform)typeof(BoardView).GetField("boardRoot",Private).GetValue(Board);
+                    for(int i=0;i<boardPoints.Length;i++){var point=camera.WorldToScreenPoint(board.TransformPoint(boardPoints[i]));colors[i]=image.GetPixel(Mathf.RoundToInt(point.x),Mathf.RoundToInt(point.y));}
+                }
+                finally{RenderTexture.active=prior;Object.DestroyImmediate(image);}return colors;
+            }
             public void Capture(string folder,string name,List<string> images)
             {
                 var old=RenderTexture.active;var image=new Texture2D(Width,Height,TextureFormat.RGB24,false);

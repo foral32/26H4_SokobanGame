@@ -75,7 +75,7 @@ namespace DraculasBox.Editor
             yield return Click("campaign");yield return Chapter("chapter_3");
             Need(app.UI.FindButton("campaign-actions")==null,"chapter map has no redundant level-actions page entry");
             app.UI.FocusButton("select-level-c3_04");yield return Click("level-menu-c3_04");
-            Need(app.UI.Root.Find("Level tools")!=null&&app.UI.FindButton("campaign-edit")!=null&&app.UI.FindButton("campaign-copy")!=null,"node ellipsis opens compact level tools on the map");
+            Need(app.UI.Root.Find("Level tools")!=null&&app.UI.FindButton("campaign-edit")==null&&app.UI.FindButton("campaign-copy")!=null,"node ellipsis opens compact level tools on the map without duplicate editing actions");
             Capture("node-menu");yield return Click("level-tools-close");
             yield return Options("c3_04");Need(app.UI.Root.Find("Level tools")!=null,"right-click opens the same compact node menu");yield return Click("level-tools-close");
 
@@ -116,10 +116,10 @@ namespace DraculasBox.Editor
             Need(app.UI.FindButton("shape-rectangle").transform.Find("Shortcut").GetComponent<TMP_Text>().text=="R","rectangle displays its actual R shortcut");
             Need(app.UI.FindButton("brush-3").transform.Find("Label").GetComponent<TMP_Text>().text=="玩家"&&app.UI.FindButton("brush-6").transform.Find("Label").GetComponent<TMP_Text>().text=="缺口","palette uses player and gap terminology");
             editor.Select(Brush.Box);Need(editor.HandleShortcut(KeyCode.R)&&editor.Shape==PaintShape.Rectangle,"R dispatches rectangle mode");
-            Need(editor.HandleShortcut(KeyCode.X)&&editor.Operation==EditOperation.Erase,"X dispatches erase without losing material");
-            Need(editor.HandleShortcut(KeyCode.B)&&editor.Operation==EditOperation.Paint&&editor.Selected==Brush.Box,"B restores painting with the chosen material");
+            Need(editor.HandleShortcut(KeyCode.E)&&editor.Operation==EditOperation.Erase,"E dispatches erase without losing material");
+            Need(editor.HandleShortcut(KeyCode.Q)&&editor.Operation==EditOperation.Paint&&editor.Selected==Brush.Box,"Q restores painting with the chosen material");
             Need(editor.HandleShortcut(KeyCode.P)&&editor.Shape==PaintShape.Brush,"P returns to point painting");
-            Need(editor.HandleShortcut(KeyCode.Q)&&editor.Selected==Brush.MirrorSlash&&editor.HandleShortcut(KeyCode.E)&&editor.Selected==Brush.MirrorBackslash,"Q and E keep the existing mirror bindings");
+            Need(editor.HandleShortcut(KeyCode.LeftBracket)&&editor.Selected==Brush.MirrorSlash&&editor.HandleShortcut(KeyCode.RightBracket)&&editor.Selected==Brush.MirrorBackslash,"brackets select the mirror brushes without colliding with editing modes");
             var title=app.UI.Root.Find("Level title").GetComponent<TMP_InputField>();title.ActivateInputField();EventSystem.current.SetSelectedGameObject(title.gameObject);yield return null;yield return null;
             var shape=editor.Shape;Need(app.UI.HasTextFocus&&!editor.HandleShortcut(KeyCode.R)&&editor.Shape==shape,"typing does not trigger tool shortcuts");app.UI.CommitText();
             yield return Click("editor-files");Need(app.UI.FindButton("editor-help")==null&&app.UI.FindButton("export-editor")!=null,"files popup retains export and removes shortcut help");yield return Click("editor-files");

@@ -11,4 +11,4 @@
 
 正式原创项目的规则与表现设计以本目录为入口。早期机制研究与造型探索保留在 `Investigate`；[Box or Void 学习复刻](../Studies/BoxOrVoid/README.md) 保持独立。
 
-原创模块已在 `Assets/DraculasBox/` 建立，当前实施四章共二十五个主线、六个可选支线与关卡编辑器，支持同关多盏灯与两种固定朝向的镜子。启动与操作说明见 [Dracula’s Box 可玩入口](../DraculasBox/README.md)，开发状态与体验边界以版本路线为准；本轮未分配功能版本号。
+原创模块已在 `Assets/DraculasBox/` 建立，当前正式目录为四章共二十四个主线、六个可选支线与关卡编辑器，支持同关多盏灯与两种固定朝向的镜子。启动与操作说明见 [Dracula’s Box 可玩入口](../DraculasBox/README.md)，开发状态与体验边界以版本路线为准；本轮未分配功能版本号。

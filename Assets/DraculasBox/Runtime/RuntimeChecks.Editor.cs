@@ -74,7 +74,7 @@ namespace DraculasBox.Runtime
             foreach(string text in new[]{"[]","{}","{\"schemaVersion\":1,\"rows\":null}"}){string path=Path.Combine(fixtures,"invalid-root-"+(fileIndex++)+".json");File.WriteAllText(path,text);Rejects(()=>reopened.PreviewImport(path),"invalid JSON root rejected");}
             string oversized=Path.Combine(fixtures,"oversized.json");File.WriteAllText(oversized,new string(' ',LevelLibrary.MaxFileBytes+1));Rejects(()=>reopened.PreviewImport(oversized),"oversized import rejected before parsing");
             var unfinished=fixture.Copy();unfinished.player=unfinished.coffin=new Cell(-1,-1);string incomplete=Path.Combine(fixtures,"unfinished.json");File.WriteAllText(incomplete,JsonUtility.ToJson(unfinished));Require(reopened.PreviewImport(incomplete)!=null,"incomplete but structurally safe draft remains importable for repair");
-            app.OpenLibrary();yield return Ready();yield return Click("invalid-files");Require(app.UI.Root.Find("Operation error").GetComponent<TMP_Text>().text.Contains("broken-layout.json"),"library diagnostics name the malformed file");yield return Click("error-back");Capture("library_workbench_final");
+            app.OpenLibrary();yield return Ready();yield return Click("invalid-files");Require(app.UI.Root.GetComponentsInChildren<TMP_Text>().First(t=>t.name=="Operation error").text.Contains("broken-layout.json"),"library diagnostics name the malformed file");yield return Click("error-back");Capture("library_workbench_final");
         }
     }
 }

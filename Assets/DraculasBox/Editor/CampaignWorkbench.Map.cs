@@ -32,7 +32,7 @@ namespace DraculasBox.Editor
             if(panel==Panel.Outline&&(keys.Held(KeyCode.Space)||keys.Pressed(KeyCode.Space)))
             {
                 if(hoveredId!=null&&peekedId!=hoveredId)
-                {UI.ShowLevelPeek(Data.Board(hoveredId),(RectTransform)mapView.Button(hoveredId).transform);peekedId=hoveredId;}
+                {UI.ShowLevelPeek(Data.Board(hoveredId),(RectTransform)mapView.Button(hoveredId).transform,DisplayName(hoveredId));peekedId=hoveredId;}
                 return true;
             }
             HidePeek();
@@ -77,7 +77,7 @@ namespace DraculasBox.Editor
             UI.MapPage(Current.title);
             UI.MapAction("campaign-back","返回章节",new Vector2(-506,292),198,Back,GameIcon.Back);
             UI.MapAction("campaign-new","新关卡",new Vector2(517,292),164,NewBoard,GameIcon.Create);
-            mapView=new GameUI.ChapterMapView(UI,Current,true,id=>Data.Board(id).title,SelectLevel,id=>{if(dragId==null)selectedId=id;},ShowLevelTools);
+            mapView=new GameUI.ChapterMapView(UI,Current,true,id=>DisplayName(id),SelectLevel,id=>{if(dragId==null)selectedId=id;},ShowLevelTools);
             baseLayout=mapView.Layout;
             foreach(var node in Current.levels)
             {
@@ -105,7 +105,7 @@ namespace DraculasBox.Editor
         private void ReviewAction()
         {
             UI.EditorButton("campaign-review","写回工程",new Vector2(497,-313),new Vector2(154,42),()=>
-            {overlay=Overlay.Review;notice="";publicationError=null;Draw();},Dirty,null,true);
+            {excludedChanges.Clear();overlay=Overlay.Review;notice="";publicationError=null;Draw();},Dirty,null,true);
             UI.SetEnabled("campaign-review",Dirty);
         }
         private void NewBoard()

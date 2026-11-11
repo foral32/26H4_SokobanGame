@@ -21,18 +21,10 @@
                     "branchAbove": false
                 },
                 {
-                    "id": "c1_03",
-                    "main": true,
-                    "requires": [
-                        "c1_02"
-                    ],
-                    "branchAbove": false
-                },
-                {
                     "id": "c1_04",
                     "main": true,
                     "requires": [
-                        "c1_03"
+                        "c1_02"
                     ],
                     "branchAbove": false
                 },
@@ -64,7 +56,7 @@
         },
         {
             "id": "chapter_2",
-            "title": "第二章 · 灯下黑",
+            "title": "第二章 · 阳灯",
             "description": "",
             "requiresChapter": "chapter_1",
             "levels": [
@@ -134,7 +126,7 @@
         },
         {
             "id": "chapter_3",
-            "title": "第三章 · 自由门",
+            "title": "第三章 · 通行",
             "description": "",
             "requiresChapter": "chapter_2",
             "levels": [

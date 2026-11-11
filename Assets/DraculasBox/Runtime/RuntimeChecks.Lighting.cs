@@ -12,7 +12,7 @@ namespace DraculasBox.Runtime
         {
             var state=app.Session.State;var field=LightField.Compute(state);
             var texture=(Texture2D)typeof(BoardView).GetField("fieldAfter",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).GetValue(app.Board);
-            if(texture==null||app.Board.GetComponentsInChildren<MeshRenderer>().Length!=3)return false;
+            if(texture==null||app.Board.GetComponentsInChildren<MeshRenderer>().Length!=2)return false;
             for(int y=0;y<state.Level.Height;y++)for(int x=0;x<state.Level.Width;x++)
             {
                 int i=y*state.Level.Width+x;var p=new Cell(x,y);var pixel=texture.GetPixel(x,state.Level.Height-1-y);

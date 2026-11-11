@@ -13,11 +13,11 @@ namespace DraculasBox.Runtime
         private Cell regionStart,regionEnd;private Brush regionBrush;private int regionChannel;
         public PaintShape Shape {get;private set;}
         public bool RegionActive {get;private set;}
-        private bool CanRectangle=>Operation==EditOperation.Erase||Selected!=Brush.Player&&Selected!=Brush.Coffin;
-        public void SelectShape(PaintShape shape){ClosePanels();CancelRectangle(false);FinishStroke();Shape=shape;RefreshShapeControls();}
+        private bool CanRectangle=>Operation==EditOperation.Select||Operation==EditOperation.Erase||Selected!=Brush.Player&&Selected!=Brush.Coffin;
+        public void SelectShape(PaintShape shape){ClosePanels();CancelSelectionGesture();CancelRectangle(false);FinishStroke();Shape=shape;RefreshShapeControls();}
         private void RefreshShapeControls()
         {
-            ui.SetEnabled("shape-rectangle",CanRectangle);bool area=Shape==PaintShape.Rectangle&&CanRectangle;
+            ui.SetLabel("shape-brush",Operation==EditOperation.Select?"点选":"点涂");ui.SetLabel("shape-rectangle",Operation==EditOperation.Select?"框选":"矩形");ui.SetEnabled("shape-rectangle",CanRectangle);bool area=Shape==PaintShape.Rectangle&&CanRectangle;
             foreach(string id in new[]{"shape-brush","shape-rectangle"})ui.WorkshopChoice(id,(id=="shape-rectangle")==area);
         }
         private void RefreshChannelControls()

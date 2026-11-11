@@ -9,7 +9,7 @@ namespace DraculasBox.Runtime
     {
         private Transform lightRoot;
         private Mesh sunTerrainMesh,sunObjectsMesh,lampFieldMesh;
-        private MeshRenderer sunTerrainRenderer,sunObjectsRenderer,lampFieldRenderer;
+        private MeshRenderer sunTerrainRenderer,lampFieldRenderer;
         private Material shadeMaterial,beamMaterial;
         private Texture2D fieldBefore,fieldAfter;
         private Color32[] fieldPixels;
@@ -34,9 +34,11 @@ namespace DraculasBox.Runtime
                 shadeMaterial=new Material(shader){name="Board solar shade",hideFlags=HideFlags.DontSave};
                 beamMaterial=new Material(shader){name="Board lamp beams",hideFlags=HideFlags.DontSave};shadeMaterial.SetFloat("_BlendOp",(float)BlendOp.Min);
                 beamMaterial.SetFloat("_SrcBlend",(float)BlendMode.SrcAlpha);beamMaterial.SetFloat("_DstBlend",(float)BlendMode.OneMinusSrcAlpha);beamMaterial.SetFloat("_BlendOp",(float)BlendOp.Add);beamMaterial.SetFloat("_Mode",1);
-                sunTerrainMesh=LightMesh("Terrain solar shade",shadeMaterial,-19,out sunTerrainRenderer);
-                sunObjectsMesh=LightMesh("Moving solar shade",shadeMaterial,-19,out sunObjectsRenderer);
                 lampFieldMesh=LightMesh("Cardinal lamp shafts",beamMaterial,-18,out lampFieldRenderer);
+                var shade=new GameObject("Unified solar shade",typeof(MeshFilter),typeof(MeshRenderer));shade.transform.SetParent(lightRoot,false);
+                shade.GetComponent<MeshFilter>().sharedMesh=lampFieldMesh;sunTerrainRenderer=shade.GetComponent<MeshRenderer>();sunTerrainRenderer.sharedMaterial=shadeMaterial;sunTerrainRenderer.sortingOrder=-19;sunTerrainRenderer.shadowCastingMode=ShadowCastingMode.Off;sunTerrainRenderer.receiveShadows=false;
+                sunTerrainMesh=new Mesh{name="Terrain solar shade",hideFlags=HideFlags.DontSave};sunTerrainMesh.MarkDynamic();
+                sunObjectsMesh=new Mesh{name="Moving solar shade",hideFlags=HideFlags.DontSave};sunObjectsMesh.MarkDynamic();
             }
             lightRoot.gameObject.SetActive(true);
             var d=state.Level;
@@ -50,9 +52,9 @@ namespace DraculasBox.Runtime
             }
             dayFloor=LitColor*new Color(1.05f,.93f,.88f,1);
             // Porcelain's pale menu is not a suitable shadow pigment. Keep its blue safe-floor ink.
-            Color shade=GameThemes.Current.LightMenu?SafeColor:GameThemes.Current.Background;
+            Color shadeTint=GameThemes.Current.LightMenu?SafeColor:GameThemes.Current.Background;
             shadeMaterial.SetTexture("_FloorTex",SurfaceSprites.Floor.texture);shadeMaterial.SetColor("_BaseTint",dayFloor);
-            shadeMaterial.SetColor("_ShadeTint",state.SunEnabled?shade:SafeColor);shadeMaterial.SetFloat("_Mode",state.SunEnabled?0:2);
+            shadeMaterial.SetColor("_ShadeTint",state.SunEnabled?shadeTint:SafeColor);shadeMaterial.SetFloat("_Mode",state.SunEnabled?0:2);
             var size=new Vector4(d.Width,d.Height,0,0);shadeMaterial.SetVector("_Size",size);beamMaterial.SetVector("_Size",size);
             BeginShadeMesh();
             if(state.SunEnabled)
@@ -63,7 +65,7 @@ namespace DraculasBox.Runtime
             UploadShadeMesh(sunTerrainMesh);
             BeginShadeMesh();AddBoardQuad();UploadShadeMesh(lampFieldMesh);
             casterPositions=new Vector3[d.PieceCount+d.DoorCount];casterWeights=new float[casterPositions.Length];castersDirty=true;
-            sunObjectsRenderer.enabled=state.SunEnabled;
+            if(state.SunEnabled)EnsureShadowField();
         }
         private Mesh LightMesh(string name,Material material,int order,out MeshRenderer renderer)
         {
@@ -117,6 +119,7 @@ namespace DraculasBox.Runtime
             shadeMaterial.SetFloat("_ClipEnabled",editing?1:0);beamMaterial.SetFloat("_ClipEnabled",editing?1:0);shadeMaterial.SetVector("_ClipRect",rect);beamMaterial.SetVector("_ClipRect",rect);
             if(state.SunEnabled)
             {
+                if(!ShadowFieldReady()){EnsureShadowField();castersDirty=true;}
                 bool changed=castersDirty;var d=state.Level;
                 for(int i=0;i<casterPositions.Length;i++)
                 {
@@ -125,7 +128,7 @@ namespace DraculasBox.Runtime
                     if(casterPositions[i]!=pos||!Mathf.Approximately(casterWeights[i],weight))changed=true;
                     casterPositions[i]=pos;casterWeights[i]=weight;
                 }
-                if(changed){BeginShadeMesh();for(int i=0;i<casterPositions.Length;i++)AddSunCaster(casterPositions[i],casterWeights[i]);UploadShadeMesh(sunObjectsMesh);castersDirty=false;}
+                if(changed){BeginShadeMesh();for(int i=0;i<casterPositions.Length;i++)AddSunCaster(casterPositions[i],casterWeights[i]);UploadShadeMesh(sunObjectsMesh);RenderShadowField();castersDirty=false;}
                 PlaceSunlightSource();
             }
         }
@@ -143,6 +146,7 @@ namespace DraculasBox.Runtime
                 // Read as a screen-edge daylight marker, well separated from board objects.
                 if(horizontal)icon.x=dir.x>0?min.x+48*unitsPerUI:max.x-48*unitsPerUI;
                 else icon.y=dir.y>0?min.y+24*unitsPerUI:max.y-48*unitsPerUI;
+                if(state.SunFrom==SunSide.Top)icon.x=64*unitsPerUI;
             }
             // When a zoomed/panned board edge is offscreen, hide its source rather than
             // clamping it onto a playable cell and making it look like another lamp.
@@ -163,6 +167,7 @@ namespace DraculasBox.Runtime
             ReleaseLightObject(sunTerrainMesh);ReleaseLightObject(sunObjectsMesh);ReleaseLightObject(lampFieldMesh);
             ReleaseLightObject(shadeMaterial);ReleaseLightObject(beamMaterial);ReleaseLightObject(fieldBefore);ReleaseLightObject(fieldAfter);
             ReleaseLightObject(burnMaterial);
+            ReleaseShadowField();
         }
     }
 }

@@ -137,27 +137,47 @@ namespace DraculasBox.Editor
         }
         public void Reload() { using (Lock()) ReadSource(); }
 
+        internal enum IssueKind { Board, MissingRoute, InvalidRoute }
         internal readonly struct PublicationIssue
         {
             public readonly string id,title,message;
-            public readonly bool trial;
-            public PublicationIssue(LevelData board,string message,bool trial)
-            {id=board.id;title=board.title;this.message=message;this.trial=trial;}
+            public readonly IssueKind kind;
+            public bool trial=>kind!=IssueKind.Board;
+            public PublicationIssue(LevelData board,string message,IssueKind kind)
+            {id=board.id;title=board.title;this.message=message;this.kind=kind;}
         }
-        public static List<PublicationIssue> PublicationIssues(CampaignContent data)
+        public static HashSet<string> ChangedProofs(CampaignContent baseline,CampaignContent candidate)
+            =>new(candidate.boards.Where(b=>!b.LayoutEquals(baseline.boards.FirstOrDefault(old=>old.id==b.id))||
+                JsonUtility.ToJson(candidate.Plan(b.id))!=JsonUtility.ToJson(baseline.Plan(b.id))).Select(b=>b.id));
+        public static List<PublicationIssue> PublicationIssues(CampaignContent data,ISet<string> only=null)
         {
             CampaignDocument.ValidateGraph(data);
             var issues=new List<PublicationIssue>();
             foreach (var link in data.catalog.chapters.SelectMany(c => c.levels))
             {
+                if(only!=null&&!only.Contains(link.id))continue;
                 var b = data.Board(link.id);
-                string error = new EditDocument(b).Validation();
-                if(error!=null){issues.Add(new PublicationIssue(b,error,false));continue;}
+                string error = Definition.DraftError(b);
+                if(error==null)error=new EditDocument(b).Validation();
+                if(error!=null){issues.Add(new PublicationIssue(b,error,IssueKind.Board));continue;}
                 var plan = data.Plan(b.id);
-                if (!CampaignDocument.Proves(b, plan?.route, out int pushes) || pushes != plan.pushes)
-                    issues.Add(new PublicationIssue(b,"缺少有效关卡解",true));
+                if(string.IsNullOrEmpty(plan?.route))issues.Add(new PublicationIssue(b,"尚未记录关卡解，请求解或试玩通关。",IssueKind.MissingRoute));
+                else if (!CampaignDocument.Proves(b, plan.route, out _))
+                    issues.Add(new PublicationIssue(b,"已有解法无法通过当前棋盘，请重新求解或试玩。",IssueKind.InvalidRoute));
             }
             return issues;
+        }
+        internal static CampaignContent PrepareForPublication(CampaignContent working)
+        {
+            var publication=JsonUtility.FromJson<CampaignContent>(JsonUtility.ToJson(working));
+            CampaignDocument.ValidateGraph(publication);
+            foreach(var link in publication.catalog.chapters.SelectMany(c=>c.levels))
+            {
+                var board=publication.Board(link.id);
+                var plan=publication.Plan(link.id);
+                if(plan!=null&&CampaignDocument.Proves(board,plan.route,out int pushes))plan.pushes=pushes;
+            }
+            return publication;
         }
         public static string PublicationError(CampaignContent data)
         {
@@ -165,12 +185,14 @@ namespace DraculasBox.Editor
             return issues.Count==0?null:issues[0].title+" · "+issues[0].message;
         }
         // The callback is also used by the regression to interrupt a real multi-file import.
-        public void Publish(CampaignContent working, string expectedRevision, Action afterImport = null)
+        public void Publish(CampaignContent working, string expectedRevision, Action afterImport = null,bool prepared=false)
         {
             using var writeLock = Lock();
             ReadSource();
             if (Revision != expectedRevision) throw new IOException("工程内容已被修改。草稿已保留。请核对差异后从工程重载。");
-            string problem = PublicationError(working);
+            var publication=prepared?CampaignPublication.Copy(working):PrepareForPublication(working);
+            var issues=PublicationIssues(publication,ChangedProofs(Source,publication));
+            string problem=issues.Count==0?null:issues[0].title+" · "+issues[0].message;
             if (problem != null) throw new InvalidOperationException(problem);
             var files = new List<FileEdit>();
             void Stage(string path, object oldData, object newData)
@@ -182,12 +204,12 @@ namespace DraculasBox.Editor
                     before = oldData == null ? null : sourceBytes[path],
                     after = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonUtility.ToJson(newData, true) + "\n")) });
             }
-            foreach (var board in working.boards)
+            foreach (var board in publication.boards)
                 Stage(BoardPath(board.id), Source.boards.FirstOrDefault(b => b.id == board.id), board);
-            Stage(replaysPath, Source.replays, working.replays);
-            Stage(chaptersPath, Source.catalog, working.catalog);
-            if (files.Count == 0) return;
-            bool membershipChanged=!new HashSet<string>(Source.boards.Select(b=>b.id)).SetEquals(working.boards.Select(b=>b.id));
+            Stage(replaysPath, Source.replays, publication.replays);
+            Stage(chaptersPath, Source.catalog, publication.catalog);
+            if (files.Count == 0) { afterImport?.Invoke(); return; }
+            bool membershipChanged=!new HashSet<string>(Source.boards.Select(b=>b.id)).SetEquals(publication.boards.Select(b=>b.id));
             if (membershipChanged && EditorUtility.IsDirty(assets))
                 throw new IOException("GameAssets 有其他未保存修改。请先在 Unity 中保存资源，再重试。");
             var journal = new Journal { files = files.ToArray() };
@@ -201,9 +223,9 @@ namespace DraculasBox.Editor
                     AtomicBytes(f.path, Convert.FromBase64String(f.after));
                     Import(f.path);
                 }
-                if(membershipChanged)BindLevels(working.catalog);
-                afterImport?.Invoke();
+                if(membershipChanged)BindLevels(publication.catalog);
                 ReadSource();
+                afterImport?.Invoke();
                 File.Delete(JournalPath);
             }
             catch { RollBack(journal); ReadSource(); throw; }

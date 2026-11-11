@@ -24,7 +24,7 @@ namespace DraculasBox.Runtime
             var r=Rect("brush-"+index,position,new Vector2(138,46),parent);var button=ClickTarget(r);Rounded(button.GetComponent<Image>());button.GetComponent<Image>().color=Color.clear;
             bool device=index==8||index==9;var icon=Image("Icon",device?null:sprite,new Vector2(-48,0),new Vector2(28,28),sprite=="solid"?SafeColor(index):Color.white,r);if(index==1){icon.sprite=SurfaceSprites.StoneWall(0);icon.color=Color.white;}if(index==6){icon.sprite=SurfaceSprites.Pit(0);icon.color=Color.white;}if(device){icon.sprite=SurfaceSprites.DeviceIcon(index==9);icon.color=BoardView.CircuitColors[0];}
             Label(Rect("Label",new Vector2(5,0),new Vector2(68,40),r),label,19,WorkshopInk,TextAlignmentOptions.MidlineLeft);
-            string key=index<7?(index+1).ToString():index==8?"9":index==9?"0":index==10?"Q":"E";
+            string key=index<7?(index+1).ToString():index==8?"9":index==9?"0":index==10?"[":"]";
             ShortcutCap(r,key,new Vector2(55,0),new Vector2(19,24));
             var frame=Image("Focus",null,Vector2.zero,new Vector2(138,46),Color.clear,r);Rounded(frame,true);frame.raycastTarget=false;Register("brush-"+index,button,clicked,null,null,false,true,false);return button;
         }
@@ -52,13 +52,21 @@ namespace DraculasBox.Runtime
         public void Rule(){Image("Rule",null,new Vector2(490,-76),new Vector2(204,1),new Color(Quiet.r,Quiet.g,Quiet.b,.18f));}
         public void EditorHelp(Action back)
         {
-            Dim("编辑操作");Text("Circuit help","9 / 0 压力板、自动门 · Q / E 斜镜",new Vector2(0,175),new Vector2(1100,38),21,Quiet);Text("Painting help","左键绘制 · 右键擦除 · Alt + 左键取色\n矩形：拖出范围后松开 · Shift 临时框选 · Esc 取消",new Vector2(0,104),new Vector2(1100,85),24,White);
-            Text("Viewport help","滚轮缩放 · 中键拖动画布",new Vector2(0,13),new Vector2(900,48),24,White);
-            Text("History help","Z / Y 撤销、重做 · Ctrl + S 保存\nF5 试玩 / 返回原稿",new Vector2(0,-79),new Vector2(1000,85),24,White);
-            MenuAction("close-help","返回编辑",new Vector2(0,-204),240,back,GameIcon.Back);Focus(0);
+            CloseWorkshopPopup();var root=WorkshopOverlay("Editor help",Vector2.zero,new Vector2(600,352),back);
+            Label(Rect("Help heading",new Vector2(0,134),new Vector2(536,38),root),"编辑操作",27,WorkshopInk,TextAlignmentOptions.MidlineLeft);
+            Label(Rect("Shortcuts",new Vector2(0,21),new Vector2(536,170),root),"A 选择 · Q 绘制 · E 擦除\nP 点涂 / 点选 · R 矩形 / 框选\nDelete 删除选区 · Esc 取消\n中键拖动画布 · 滚轮缩放\nZ / Y 撤销、重做 · Ctrl+S 保存 · F5 试玩",21,WorkshopInk,TextAlignmentOptions.MidlineLeft);
+            EditorButton("close-help","完成",new Vector2(210,-126),new Vector2(116,40),back,true,root,true);FocusButton("close-help");
         }
         public void OperationError(string heading,string message,Action back)
-        {Dim(heading);Text("Operation error",message,new Vector2(0,34),new Vector2(920,180),23,Lilac);MenuAction("error-back","返回",new Vector2(0,-164),210,back,GameIcon.Back);Focus(0);}
+        {
+            CloseWorkshopPopup();var root=WorkshopOverlay("Operation dialog",Vector2.zero,new Vector2(680,328),back);
+            Label(Rect("Error heading",new Vector2(0,119),new Vector2(616,40),root),heading,27,WorkshopInk,TextAlignmentOptions.MidlineLeft);
+            var viewport=Rect("Error viewport",new Vector2(0,7),new Vector2(616,142),root);viewport.gameObject.AddComponent<Image>().color=Color.clear;viewport.gameObject.AddComponent<RectMask2D>();
+            var label=Label(Rect("Operation error",Vector2.zero,new Vector2(616,142),viewport),message,21,WorkshopInk,TextAlignmentOptions.TopLeft);
+            float h=Mathf.Max(142,label.GetPreferredValues(message,616,10000).y);label.rectTransform.sizeDelta=new Vector2(616,h);label.rectTransform.anchorMin=label.rectTransform.anchorMax=label.rectTransform.pivot=new Vector2(.5f,1);label.rectTransform.anchoredPosition=Vector2.zero;
+            var scroll=viewport.gameObject.AddComponent<ScrollRect>();scroll.viewport=viewport;scroll.content=label.rectTransform;scroll.horizontal=false;scroll.scrollSensitivity=38;scroll.movementType=ScrollRect.MovementType.Clamped;
+            EditorButton("error-back","返回",new Vector2(250,-117),new Vector2(116,40),back,true,root,true);FocusButton("error-back");
+        }
         public LevelThumbnail Thumbnail(string name,LevelData data,Vector2 center,Vector2 size,Transform parent=null)
         {var thumbnail=Rect(name,center,size,parent).gameObject.AddComponent<LevelThumbnail>();thumbnail.color=Color.white;thumbnail.raycastTarget=false;thumbnail.Configure(assets);thumbnail.Set(data);return thumbnail;}
         private void DialogClose(string id,Vector2 position,Transform parent,Action close)
@@ -100,8 +108,10 @@ namespace DraculasBox.Runtime
         }
         public void ConfirmRemove(LevelData data,Action remove,Action cancel)
         {
-            Dim("移除关卡？");Thumbnail("Remove preview",data,new Vector2(0,65),new Vector2(270,160));Text("Remove title",data.title,new Vector2(0,-47),new Vector2(700,42),26,White);Text("Remove note","移入本地回收区，可恢复。",new Vector2(0,-95),new Vector2(800,35),18,Quiet);
-            MenuAction("confirm-remove","移除",new Vector2(-135,-178),190,remove,GameIcon.Exit);MenuAction("cancel-remove","取消",new Vector2(135,-178),190,cancel,GameIcon.Back);Focus(1);
+            CloseWorkshopPopup();var root=WorkshopOverlay("Remove dialog",Vector2.zero,new Vector2(520,192),cancel);
+            Label(Rect("Remove title",new Vector2(0,37),new Vector2(456,66),root),"移除「"+data.title+"」？",26,WorkshopInk,TextAlignmentOptions.MidlineLeft);
+            EditorButton("cancel-remove","取消",new Vector2(26,-50),new Vector2(112,40),cancel,false,root,true);
+            EditorButton("confirm-remove","移除",new Vector2(166,-50),new Vector2(124,40),remove,true,root,true);FocusButton("cancel-remove");
         }
         public void ExportResult(string path,string title,Action back)
         {
