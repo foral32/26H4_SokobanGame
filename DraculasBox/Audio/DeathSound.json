@@ -1,0 +1,16 @@
+{
+  "active": "Assets/DraculasBox/Art/Audio/burn.wav",
+  "choice": "01_error_005.wav",
+  "source": "DraculasBox/Audio/Source/InterfaceSounds/error_005.ogg",
+  "sourcePage": "https://kenney.nl/assets/interface-sounds",
+  "license": "CC0-1.0",
+  "processing": "Approved audition with 0.15-second leading and 0.25-second trailing player padding removed; no other change.",
+  "seconds": 0.2035625,
+  "channels": 2,
+  "sampleRate": 48000,
+  "sha256": "d68619f85e4863f3559272e5860e92d8ddfa29785f67bc8e76895b12e41183eb",
+  "matchesApprovedPayload": true,
+  "peak": 0.370574951171875,
+  "reserve": "DraculasBox/Audio/Reserve/08_lowDown.wav",
+  "reserveAdopted": false
+}

@@ -29,11 +29,11 @@ namespace DraculasBox.Editor
             yield return Click("library-generate");yield return Click("close-authoring");yield return Page(GamePage.Library);
             Need(app.Library.Read(out _).Count==0&&app.Library.Recovery()==null,"cancelled preview leaves the personal library and recovery empty");
             yield return Click("library-generate");
-            yield return Click("mechanic-3");yield return Click("mechanic-2");yield return Click("complexity-2");
+            yield return Click("mechanic-0");yield return Click("complexity-2");
             yield return WaitUntilReady(()=>CanClick("adopt-draft"),"draft preview");
             yield return Click("adopt-draft");yield return Page(GamePage.Editing);
             var doc=app.Creator.Document;var generated=doc.Data.Copy();
-            Need(generated.doors.Length>0&&generated.pieces.Any(p=>p.kind==PieceKind.Lamp)&&generated.pieces.Any(p=>p.kind==PieceKind.MirrorSlash||p.kind==PieceKind.MirrorBackslash),"latest generated options take effect, including the mirror light source");
+            Need(!generated.sunEnabled&&DraftPresets.All.Any(p=>p.Title==generated.title),"selected allowed mechanics produce a curated room without sunlight");
             Need(LevelSolver.Proves(generated,generated.solution,out _),"adopted layout has a winning route");
             yield return Click("save");yield return Click("leave-editor");yield return Page(GamePage.Library);
             var saved=app.Library.Read(out _).Single();

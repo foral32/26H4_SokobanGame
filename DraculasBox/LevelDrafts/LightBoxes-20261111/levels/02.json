@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "id": "df9db30923095b87ae95e764fe1cc858",
+  "title": "试作 02 · 顶替",
+  "hint": "",
+  "solution": "DLDRDRDRRUDLLUUR",
+  "rows": [
+    "#########",
+    "#....####",
+    "#...#####",
+    "#.......#",
+    "##..#...#",
+    "#.......#",
+    "#########"
+  ],
+  "pieces": [
+    {
+      "id": "A",
+      "kind": 0,
+      "cell": {
+        "x": 2,
+        "y": 3
+      }
+    },
+    {
+      "id": "L",
+      "kind": 1,
+      "cell": {
+        "x": 7,
+        "y": 3
+      }
+    },
+    {
+      "id": "B",
+      "kind": 0,
+      "cell": {
+        "x": 5,
+        "y": 4
+      }
+    }
+  ],
+  "plates": [],
+  "doors": [],
+  "sunEnabled": false,
+  "sunFrom": 0,
+  "player": {
+    "x": 2,
+    "y": 1
+  },
+  "coffin": {
+    "x": 4,
+    "y": 3
+  }
+}

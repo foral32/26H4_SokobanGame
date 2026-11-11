@@ -103,7 +103,7 @@ namespace DraculasBox.Runtime
 #if !UNITY_EDITOR
             Require(app.UI.FindButton("campaign")==null&&new[]{"play","creator","settings","exit"}.All(id=>app.UI.FindButton(id)!=null),"standalone title has its four player actions and no campaign editor entry");
 #endif
-            Require(app.assets.Clip("burn")!=null&&app.assets.Clip("burn").length>.3f,"burn audio is included");
+            Require(app.assets.Clip("burn")!=null&&app.assets.Clip("burn").length>.01f,"burn audio is included");
             yield return LightingRegression();
             var artwork=app.UI.GetComponentsInChildren<UnityEngine.UI.Graphic>().Where(g=>g is MenuTileGraphic||g is GameIconGraphic||g is MenuAtmosphere||g is TitleArtworkGraphic).ToArray();
             Require(artwork.Length>=6&&artwork.All(g=>g.GetComponent<CanvasRenderer>()!=null),"menu graphics have canvas renderers");

@@ -10,7 +10,7 @@ namespace DraculasBox.Editor
 {
     internal sealed partial class CampaignWorkbench
     {
-        private enum Overlay { None,Chapter,DeleteChapter,Review,Reload,Level,Remove,Transfer,Anchor }
+        private enum Overlay { None,Chapter,DeleteChapter,Review,Reload,Level,Remove,Transfer,Anchor,ImportCustom }
         private Overlay overlay;
         private string overlayChapterId,chapterNameDraft,overlayError;
         private TMP_InputField chapterName;
@@ -71,7 +71,8 @@ namespace DraculasBox.Editor
         }
         private void DrawOverlay()
         {
-            if(overlay==Overlay.Remove)DrawRemoveLevel();
+            if(overlay==Overlay.ImportCustom)DrawCustomImport();
+            else if(overlay==Overlay.Remove)DrawRemoveLevel();
             else if(overlay==Overlay.Transfer||overlay==Overlay.Anchor)DrawTargetPopup();
             else if(overlay==Overlay.Level)DrawLevelPopup();
             else if(overlay==Overlay.Chapter)DrawChapterPopup();

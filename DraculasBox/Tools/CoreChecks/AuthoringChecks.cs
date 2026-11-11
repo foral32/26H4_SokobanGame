@@ -54,11 +54,12 @@ internal static class AuthoringChecks
             {
                 var options=(DraftMechanic)mask;
                 var level=DraftGenerator.Generate(options,grade,seed+mask*71);
-                Check(LevelSolver.Proves(level,level.solution,out int pushes)&&pushes>=(int)grade+1,"generated proof "+mask+"/"+grade+"/"+seed);
-                Check(level.sunEnabled==options.HasFlag(DraftMechanic.Sun),"sun selection");
-                Check(level.pieces.Any(p=>p.kind==PieceKind.Lamp)==((mask&10)!=0),"lamp selection");
-                Check(level.pieces.Any(p=>p.kind==PieceKind.MirrorBackslash||p.kind==PieceKind.MirrorSlash)==((mask&8)!=0),"mirror selection");
-                Check((level.doors.Length>0)==((mask&4)!=0)&&level.doors.Length==level.plates.Length,"circuit selection");
+                Check(LevelSolver.Proves(level,level.solution,out int pushes)&&pushes>0,"preset proof "+mask+"/"+grade+"/"+seed);
+                if(options.HasFlag(DraftMechanic.Mirror))options|=DraftMechanic.Lamp;
+                var preset=DraftPresets.All.Single(p=>p.Title==level.title);
+                Check((preset.Mechanics&~options)==0,"allowed mechanics");
+                Check(DraftGenerator.Choices(options,grade).Contains(preset),"closest available difficulty");
+                Check(Math.Max(level.rows.Length,level.rows[0].Length)<=9,"compact dimensions");
                 lengths.Add(level.solution.Length);pushesList.Add(pushes);drafts++;
             }
             ranges[(int)grade]=$"{grade} {lengths.Min()}–{lengths.Max()} steps, {pushesList.Min()}–{pushesList.Max()} pushes";

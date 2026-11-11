@@ -53,7 +53,7 @@ namespace DraculasBox.Runtime
             ui.EditorButton("shape-brush","点涂",new Vector2(-166,254),new Vector2(98,36),()=>SelectShape(PaintShape.Brush));
             ui.EditorButton("shape-rectangle","矩形",new Vector2(-60,254),new Vector2(98,36),()=>SelectShape(PaintShape.Rectangle));
             ui.EditorButton("solutions","关卡解",new Vector2(172,254),new Vector2(110,36),OpenSolutions);
-            ui.EditorButton("drafts","生成草稿",new Vector2(312,254),new Vector2(138,36),()=>OpenGenerator());
+            ui.EditorButton("drafts","草稿预设",new Vector2(312,254),new Vector2(138,36),()=>OpenGenerator());
             ui.EditorButton("scene","场景设置",new Vector2(526,254),new Vector2(136,36),ToggleScene);
             ui.EditorShortcut("save","Ctrl+S");ui.EditorShortcut("test","F5");
             ui.EditorShortcut("operation-select","A");ui.EditorShortcut("operation-paint","Q");ui.EditorShortcut("brush-7","E");

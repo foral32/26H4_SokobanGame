@@ -25,6 +25,7 @@
 ExportedObj/
 .consulo/
 *.csproj
+!/DraculasBox/Tools/LevelDesignLab/LevelDesignLab.csproj
 *.unityproj
 *.sln
 *.suo

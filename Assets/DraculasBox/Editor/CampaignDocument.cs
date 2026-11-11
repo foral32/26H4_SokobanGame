@@ -129,6 +129,18 @@ namespace DraculasBox.Editor
             }
             return board.id;
         }
+        public string ImportLevel(Chapter chapter,ChapterLink after,LevelData source)
+        {
+            string error=Definition.DraftError(source);
+            if(error!=null)throw new ArgumentException(error);
+            // Copy first: source identity and library files never become campaign assets.
+            var copy=source.Copy();
+            copy.id=AddLevel(chapter,after,false);
+            copy.title=string.IsNullOrWhiteSpace(copy.title)?"新关卡":copy.title.Trim();
+            copy.hint=copy.hint??"";
+            SaveBoard(copy,null);
+            return copy.id;
+        }
         public static List<ChapterLink> Peers(Chapter c, ChapterLink node) =>
             node.main ? Main(c) : Branches(c, node.requires[0]);
         public void MoveLevel(Chapter c, ChapterLink node, int offset)

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using DraculasBox.Core;
@@ -18,7 +19,7 @@ namespace DraculasBox.Runtime
         private LevelData proofBoard, candidate;
         private int proofPushes;
         private bool shortest, extendSearch, generatorFromLibrary;
-        private DraftMechanic allowed=DraftMechanic.None;
+        private DraftMechanic allowed=(DraftMechanic)15;
         private DraftComplexity complexity=DraftComplexity.Standard;
         private LevelThumbnail draftPreview;
         private Button playSolution;
@@ -134,7 +135,7 @@ namespace DraculasBox.Runtime
         public void OpenGenerator(bool fromLibrary=false)
         {
             BeginTool(AuthoringTool.Generator);generatorFromLibrary=fromLibrary;
-            var sheet=ToolSheet("生成草稿",752,394);
+            var sheet=ToolSheet("草稿预设",752,438);
             ToolText(sheet,"Mechanics","可用机制",-198,103,296,32,20);
             string[] names={"阳光","四向灯","压力板与门","斜镜"};
             for(int i=0;i<Mechanisms.Length;i++)
@@ -143,19 +144,19 @@ namespace DraculasBox.Runtime
                 ui.EditorButton("mechanic-"+i,names[i],new Vector2(-277+i%2*146,60-i/2*48),
                     new Vector2(134,38),()=>ToggleMechanic(mechanism),false,sheet,true);
             }
-            ToolText(sheet,"Difficulty","预期复杂度",-198,-52,296,30,20);
-            string[] grades={"入门","标准","进阶"};
+            ToolText(sheet,"Difficulty","难度",-198,-52,296,30,20);
+            string[] grades={"Ⅰ","Ⅱ","Ⅲ"};
             for(int i=0;i<grades.Length;i++)
             {
                 var grade=(DraftComplexity)i;
                 ui.EditorButton("complexity-"+i,grades[i],new Vector2(-302+i*97,-95),new Vector2(88,38),
                     ()=>{if(complexity!=grade){complexity=grade;GenerateDraft();}},false,sheet,true);
             }
-            ui.WorkshopPanel("Preview surface",new Vector2(162,22),new Vector2(365,188),sheet).color=BoardView.SafeColor;
-            draftPreview=ui.Thumbnail("Draft preview",null,new Vector2(162,22),new Vector2(354,180),sheet);
-            toolMessage=ToolText(sheet,"Draft status","",162,-95,365,40,18,true);
-            ui.EditorButton("reroll","换一稿",new Vector2(83,-154),new Vector2(120,42),GenerateDraft,false,sheet,true);
-            ui.EditorButton("adopt-draft",fromLibrary?"采用草稿":"替换当前棋盘",new Vector2(251,-154),new Vector2(186,42),AdoptDraft,true,sheet,true);
+            ui.WorkshopPanel("Preview surface",new Vector2(162,22),new Vector2(365,254),sheet).color=BoardView.SafeColor;
+            draftPreview=ui.Thumbnail("Draft preview",null,new Vector2(162,22),new Vector2(354,246),sheet);
+            toolMessage=ToolText(sheet,"Draft status","",162,-129,365,32,18,true);
+            ui.EditorButton("reroll","换一稿",new Vector2(83,-178),new Vector2(120,42),GenerateDraft,false,sheet,true);
+            ui.EditorButton("adopt-draft",fromLibrary?"采用草稿":"替换当前棋盘",new Vector2(251,-178),new Vector2(186,42),AdoptDraft,true,sheet,true);
             ui.FocusButton("reroll");GenerateDraft();
         }
         private void ToggleMechanic(DraftMechanic mechanism)
@@ -167,13 +168,17 @@ namespace DraculasBox.Runtime
         }
         private void GenerateDraft()
         {
-            var options=allowed;var grade=complexity;int seed=Guid.NewGuid().GetHashCode();
-            candidate=null;draftPreview.Set(null);
-            RunToolJob(token=>DraftGenerator.Generate(options,grade,seed,token),data=>
+            var options=allowed;
+            complexity=DraftGenerator.Choices(options,complexity)[0].Complexity;
+            var grade=complexity;int seed=Guid.NewGuid().GetHashCode();
+            string previous=candidate?.title??(generatorFromLibrary?null:Document?.Data.title);
+            candidate=null;
+            RunToolJob(token=>DraftGenerator.Generate(options,grade,seed,token,previous),data=>
             {
-                candidate=data;draftPreview.Set(data);LevelSolver.Proves(data,data.solution,out int pushes);
-                toolNote=data.rows[0].Length+" × "+data.rows.Length+"    "+data.solution.Length+" 步 · 推动 "+pushes+" 次";
-            },"正在生成…");
+                candidate=data;draftPreview.Set(data);
+                var preset=DraftPresets.All.First(p=>p.Title==data.title);
+                toolNote=preset.Title+"  ·  "+preset.Difficulty;
+            },"正在载入…");
         }
         private void AdoptDraft()
         {
@@ -201,8 +206,14 @@ namespace DraculasBox.Runtime
             {
                 toolMessage.text=toolNote;
                 for(int i=0;i<Mechanisms.Length;i++)ui.WorkshopChoice("mechanic-"+i,allowed.HasFlag(Mechanisms[i]));
-                for(int i=0;i<3;i++)ui.WorkshopChoice("complexity-"+i,(int)complexity==i);
-                ui.SetEnabled("reroll",!busy);ui.SetEnabled("adopt-draft",!busy&&candidate!=null);
+                for(int i=0;i<3;i++)
+                {
+                    ui.SetEnabled("complexity-"+i,DraftGenerator.Choices(allowed,(DraftComplexity)i)[0].Complexity==(DraftComplexity)i);
+                    ui.WorkshopChoice("complexity-"+i,(int)complexity==i);
+                }
+                bool variety=DraftGenerator.Choices(allowed,complexity).Length>1;
+                ui.SetLabel("reroll",variety?"换一稿":"仅此一稿");
+                ui.SetEnabled("reroll",!busy&&variety);ui.SetEnabled("adopt-draft",!busy&&candidate!=null);
             }
         }
         private void StartPlayback()

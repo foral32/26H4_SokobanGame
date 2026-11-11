@@ -77,6 +77,7 @@ namespace DraculasBox.Editor
             UI.MapPage(Current.title);
             UI.MapAction("campaign-back","返回章节",new Vector2(-506,292),198,Back,GameIcon.Back);
             UI.MapAction("campaign-new","新关卡",new Vector2(517,292),164,NewBoard,GameIcon.Create);
+            UI.MapAction("campaign-import-custom","导入自定义",new Vector2(315,292),190,OpenCustomImport);
             mapView=new GameUI.ChapterMapView(UI,Current,true,id=>DisplayName(id),SelectLevel,id=>{if(dragId==null)selectedId=id;},ShowLevelTools);
             baseLayout=mapView.Layout;
             foreach(var node in Current.levels)

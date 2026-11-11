@@ -1,0 +1,66 @@
+[
+  {
+    "level": "01",
+    "condition": "L:U",
+    "solved": false,
+    "exhausted": true,
+    "visited": 9,
+    "route": ""
+  },
+  {
+    "level": "01",
+    "condition": "L:D",
+    "solved": false,
+    "exhausted": true,
+    "visited": 93,
+    "route": ""
+  },
+  {
+    "level": "02",
+    "condition": "A:R",
+    "solved": false,
+    "exhausted": true,
+    "visited": 8,
+    "route": ""
+  },
+  {
+    "level": "02",
+    "condition": "B:U",
+    "solved": false,
+    "exhausted": true,
+    "visited": 26,
+    "route": ""
+  },
+  {
+    "level": "02",
+    "condition": "A:UDL",
+    "solved": false,
+    "exhausted": true,
+    "visited": 45,
+    "route": ""
+  },
+  {
+    "level": "03",
+    "condition": "single",
+    "solved": false,
+    "exhausted": true,
+    "visited": 16,
+    "route": ""
+  },
+  {
+    "level": "04",
+    "condition": "M:D",
+    "solved": false,
+    "exhausted": true,
+    "visited": 80,
+    "route": ""
+  },
+  {
+    "level": "05",
+    "condition": "no-convoy",
+    "solved": false,
+    "exhausted": true,
+    "visited": 858,
+    "route": ""
+  }
+]
