@@ -36,10 +36,10 @@ namespace DraculasBox.Runtime
             Require(!editor.SceneOpen&&app.UI.FindButton("sun")==null,"scene properties start collapsed");
             Require(Vector4.Distance(app.viewCamera.backgroundColor,GameUI.WorkshopGround)<.001f,"editor uses the selected pale theme");
             Require(app.UI.FindButton("shape-brush").GetComponentInChildren<TMP_Text>().text=="点涂","shape is named independently from paint operation");
-            yield return Click("shape-rectangle");yield return Click("brush-7");
-            Require(editor.Operation==EditOperation.Erase&&editor.Selected==Brush.Box&&editor.Shape==PaintShape.Rectangle,"rectangle erasing keeps material and shape independent");
-            var a=app.Board.Screen(new Cell(4,2));var b=app.Board.Screen(new Cell(6,4));editor.PointerSample(a,true,true,false);editor.PointerSample(b,false,true,false);
-            Require(doc.Data.ContentEquals(baseline),"erase rectangle previews without changing the draft");Capture("workshop_erase_rectangle");editor.PointerSample(b,false,false,true);yield return null;
+            yield return Click("shape-rectangle");
+            Require(editor.Operation==EditOperation.Paint&&editor.Selected==Brush.Box&&editor.Shape==PaintShape.Rectangle,"rectangle erasing keeps material and shape independent");
+            var a=app.Board.Screen(new Cell(4,2));var b=app.Board.Screen(new Cell(6,4));editor.PointerSample(a,true,true,false,true);editor.PointerSample(b,false,true,false,true);
+            Require(doc.Data.ContentEquals(baseline),"erase rectangle previews without changing the draft");Capture("workshop_erase_rectangle");editor.PointerSample(b,false,false,true,true);yield return null;
             Require(doc.Data.pieces.Length==0&&doc.UndoCount==1,"erase rectangle commits once across the covered pieces");editor.Undo();yield return null;Require(doc.Data.ContentEquals(baseline),"erase rectangle undo restores complete content");
             yield return Click("operation-paint");Require(editor.Selected==Brush.Box&&editor.Shape==PaintShape.Rectangle,"return to painting retains box material and rectangle");
             a=app.Board.Screen(new Cell(4,2));b=app.Board.Screen(new Cell(6,4));editor.PointerSample(a,true,true,false);editor.PointerSample(b,false,true,false);editor.PointerSample(b,false,false,true);yield return null;

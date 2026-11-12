@@ -185,6 +185,7 @@ namespace DraculasBox.Runtime
         {if(value==null)return;if(Application.isPlaying)Destroy(value);else DestroyImmediate(value);}
         private void OnDestroy()
         {
+            ClearCanvasResources();
             ReleaseLightObject(sunTerrainMesh);ReleaseLightObject(sunObjectsMesh);ReleaseLightObject(lampFieldMesh);
             ReleaseLightObject(shadeMaterial);ReleaseLightObject(beamMaterial);ReleaseLightObject(fieldBefore);ReleaseLightObject(fieldAfter);
             ReleaseLightObject(burnMaterial);

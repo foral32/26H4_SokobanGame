@@ -34,12 +34,18 @@ namespace DraculasBox.Core
             bool Moves(SelectionLayer layer,Cell p)=>SelectedCell(s,layer,p);
             if(s.Layer==SelectionLayer.Region)
             {
-                bool Occupied(Cell p)=>Data.player==p||Data.coffin==p||Data.pieces.Any(i=>i.cell==p)||Data.plates.Any(i=>i.cell==p)||Data.doors.Any(i=>i.cell==p);
-                for(int y=dest.Min.y;y<=dest.Max.y;y++)for(int x=dest.Min.x;x<=dest.Max.x;x++)
-                {var p=new Cell(x,y);if(!s.Contains(p)&&(Occupied(p)||Data.rows[y][x]!='.'))return "目标区域已有内容。";}
+                // Empty floor is transparent when moving a region. Only its actual contents
+                // move; objects standing in the holes of that footprint stay where they are.
+                for(int y=s.Min.y;y<=s.Max.y;y++)for(int x=s.Min.x;x<=s.Max.x;x++)
+                {
+                    if(Data.rows[y][x]=='.')continue;
+                    var target=new Cell(x+delta.x,y+delta.y);
+                    if(!s.Contains(target)&&Data.rows[target.y][target.x]!='.')return "目标位置已有地形。";
+                }
                 var rows=Data.rows.Select(r=>r.ToCharArray()).ToArray();
                 for(int y=s.Min.y;y<=s.Max.y;y++)for(int x=s.Min.x;x<=s.Max.x;x++)rows[y][x]='.';
-                for(int y=s.Min.y;y<=s.Max.y;y++)for(int x=s.Min.x;x<=s.Max.x;x++)rows[y+delta.y][x+delta.x]=Data.rows[y][x];
+                for(int y=s.Min.y;y<=s.Max.y;y++)for(int x=s.Min.x;x<=s.Max.x;x++)
+                    if(Data.rows[y][x]!='.')rows[y+delta.y][x+delta.x]=Data.rows[y][x];
                 candidate.rows=rows.Select(r=>new string(r)).ToArray();
             }
             if(Moves(SelectionLayer.Player,candidate.player))candidate.player+=delta;

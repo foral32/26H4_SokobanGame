@@ -116,7 +116,7 @@ namespace DraculasBox.Editor
             Need(app.UI.FindButton("shape-rectangle").transform.Find("Shortcut").GetComponent<TMP_Text>().text=="R","rectangle displays its actual R shortcut");
             Need(app.UI.FindButton("brush-3").transform.Find("Label").GetComponent<TMP_Text>().text=="玩家"&&app.UI.FindButton("brush-6").transform.Find("Label").GetComponent<TMP_Text>().text=="缺口","palette uses player and gap terminology");
             editor.Select(Brush.Box);Need(editor.HandleShortcut(KeyCode.R)&&editor.Shape==PaintShape.Rectangle,"R dispatches rectangle mode");
-            Need(editor.HandleShortcut(KeyCode.E)&&editor.Operation==EditOperation.Erase,"E dispatches erase without losing material");
+            Need(!editor.HandleShortcut(KeyCode.E)&&editor.Operation==EditOperation.Paint,"erasing uses the right button without changing the material");
             Need(editor.HandleShortcut(KeyCode.Q)&&editor.Operation==EditOperation.Paint&&editor.Selected==Brush.Box,"Q restores painting with the chosen material");
             Need(editor.HandleShortcut(KeyCode.P)&&editor.Shape==PaintShape.Brush,"P returns to point painting");
             Need(editor.HandleShortcut(KeyCode.LeftBracket)&&editor.Selected==Brush.MirrorSlash&&editor.HandleShortcut(KeyCode.RightBracket)&&editor.Selected==Brush.MirrorBackslash,"brackets select the mirror brushes without colliding with editing modes");

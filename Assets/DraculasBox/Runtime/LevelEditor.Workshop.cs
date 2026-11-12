@@ -5,19 +5,21 @@ using UnityEngine.UI;
 
 namespace DraculasBox.Runtime
 {
-    public enum EditOperation {Paint,Erase,Select}
+    public enum EditOperation {Paint,Select}
     public sealed partial class LevelEditor
     {
         private RectTransform materials,scenePanel,filesPanel;
         private ScrollRect materialScroll;
+        private Button pointShapeButton,rectangleShapeButton;private GameObject shapeDivider;
+        private TMP_Text paintInputHint;
         private bool paletteCollapsed;
         public EditOperation Operation {get;private set;}
         public bool SceneOpen=>scenePanel!=null&&scenePanel.gameObject.activeSelf;
-        private Brush EffectiveBrush=>Operation==EditOperation.Erase?Brush.Erase:Selected;
+        private Brush EffectiveBrush=>stroke&&strokeErase||RegionActive&&regionBrush==Brush.Erase?Brush.Erase:Selected;
         private void BuildWorkshop()
         {
             var previousOperation=Operation;
-            ui.Clear();ui.WorkshopTheme();brushes.Clear();pendingStamps.Clear();stroke=panning=false;previewQueued=false;
+            ui.Clear();ui.WorkshopTheme();brushes.Clear();pendingStamps.Clear();stroke=panning=false;mouseButton=-1;previewQueued=false;
             board.EditorPaletteCollapsed(paletteCollapsed);board.Preview(Document.Data);
             ui.Image("Header rule",null,new Vector2(0,280),new Vector2(1224,1),GameUI.WorkshopLine);
             ui.Image("Tool rule",null,new Vector2(0,228),new Vector2(1224,1),GameUI.WorkshopLine);
@@ -48,15 +50,16 @@ namespace DraculasBox.Runtime
             var collapse=ui.WorkshopIcon("palette-toggle",GameIcon.Back,new Vector2(-592,254),new Vector2(36,36),()=>TogglePalette());if(paletteCollapsed)collapse.transform.Find("Icon").localRotation=Quaternion.Euler(0,0,180);
             ui.EditorButton("operation-select","选择",new Vector2(-504,254),new Vector2(98,36),()=>SetOperation(EditOperation.Select));
             ui.EditorButton("operation-paint","绘制",new Vector2(-398,254),new Vector2(98,36),()=>SetOperation(EditOperation.Paint));
-            ui.EditorButton("brush-7","擦除",new Vector2(-292,254),new Vector2(98,36),()=>SetOperation(EditOperation.Erase));
-            ui.Image("Tool separator",null,new Vector2(-230,254),new Vector2(1,24),GameUI.WorkshopLine);
-            ui.EditorButton("shape-brush","点涂",new Vector2(-166,254),new Vector2(98,36),()=>SelectShape(PaintShape.Brush));
-            ui.EditorButton("shape-rectangle","矩形",new Vector2(-60,254),new Vector2(98,36),()=>SelectShape(PaintShape.Rectangle));
+            shapeDivider=ui.Image("Tool separator",null,new Vector2(-336,254),new Vector2(1,24),GameUI.WorkshopLine).gameObject;
+            pointShapeButton=ui.EditorButton("shape-brush","点涂",new Vector2(-272,254),new Vector2(98,36),()=>SelectShape(PaintShape.Brush));
+            rectangleShapeButton=ui.EditorButton("shape-rectangle","矩形",new Vector2(-166,254),new Vector2(98,36),()=>SelectShape(PaintShape.Rectangle));
+            paintInputHint=ui.Text("Paint input hint","左键绘制 · 右键擦除",new Vector2(0,254),new Vector2(218,36),17,GameUI.Muted);
+            paintInputHint.enableWordWrapping=false;
             ui.EditorButton("solutions","关卡解",new Vector2(172,254),new Vector2(110,36),OpenSolutions);
             ui.EditorButton("drafts","草稿预设",new Vector2(312,254),new Vector2(138,36),()=>OpenGenerator());
             ui.EditorButton("scene","场景设置",new Vector2(526,254),new Vector2(136,36),ToggleScene);
             ui.EditorShortcut("save","Ctrl+S");ui.EditorShortcut("test","F5");
-            ui.EditorShortcut("operation-select","A");ui.EditorShortcut("operation-paint","Q");ui.EditorShortcut("brush-7","E");
+            ui.EditorShortcut("operation-select","A");ui.EditorShortcut("operation-paint","Q");
             ui.EditorShortcut("shape-brush","P");ui.EditorShortcut("shape-rectangle","R");
             materials=ui.Rect("Materials",new Vector2(-543,-30),new Vector2(146,512));ui.WorkshopPanel("Material surface",Vector2.zero,new Vector2(146,512),materials);
             string[] labels={"地板","墙体","箱子","玩家","棺材","四向灯","缺口","","压力板","自动门","斜镜 /","斜镜 \\"};string[] icons={"solid","Wall_inactive_gray","Box_active_white","vampire","coffin-lid","lamp","solid","","plate","door","mirror-slash","mirror-backslash"};int row=0;
@@ -82,7 +85,7 @@ namespace DraculasBox.Runtime
             noteFooter.enableWordWrapping=false;noteFooter.overflowMode=TextOverflowModes.Ellipsis;
             status=ui.Text("Editor status","",new Vector2(-80,-321),new Vector2(640,36),18,GameUI.WorkshopAccent,TextAlignmentOptions.MidlineLeft);
             validation=ui.Text("Validation","",new Vector2(-80,-321),new Vector2(640,36),18,GameUI.WorkshopAccent,TextAlignmentOptions.MidlineLeft);
-            BuildScenePanel();BuildFilesPanel();RefreshOperation();SetOperation(previousOperation);SelectChannel(Channel);RefreshLabels();
+            BuildLineControls();BuildScenePanel();BuildFilesPanel();RefreshOperation();SetOperation(previousOperation);SelectChannel(Channel);RefreshLabels();
         }
         public void OpenNote()
         {
@@ -126,7 +129,7 @@ namespace DraculasBox.Runtime
         public bool ClosePanels(){ui.CommitText();bool open=SceneOpen||filesPanel!=null&&filesPanel.gameObject.activeSelf;if(scenePanel!=null)scenePanel.gameObject.SetActive(false);if(filesPanel!=null)filesPanel.gameObject.SetActive(false);return open;}
         private void TogglePalette(){CancelRectangle(false);FinishStroke();ClosePanels();paletteCollapsed=!paletteCollapsed;board.EditorPaletteCollapsed(paletteCollapsed);Show();}
         public void SetOperation(EditOperation operation){ClosePanels();CancelSelectionGesture();CancelRectangle(false);FinishStroke();Operation=operation;if(operation!=EditOperation.Select)ClearSelection();RefreshShapeControls();RefreshChannelControls();RefreshOperation();}
-        private void RefreshOperation(){ui.WorkshopChoice("operation-select",Operation==EditOperation.Select);ui.WorkshopChoice("operation-paint",Operation==EditOperation.Paint);ui.WorkshopChoice("brush-7",Operation==EditOperation.Erase);for(int i=0;i<brushes.Count;i++)if(brushes[i]!=null)ui.SelectBrush(brushes[i],i==(int)Selected&&Operation==EditOperation.Paint,Operation!=EditOperation.Paint);}
+        private void RefreshOperation(){ui.WorkshopChoice("operation-select",Operation==EditOperation.Select);ui.WorkshopChoice("operation-paint",Operation==EditOperation.Paint);for(int i=0;i<brushes.Count;i++)if(brushes[i]!=null)ui.SelectBrush(brushes[i],i==(int)Selected&&Operation==EditOperation.Paint,Operation!=EditOperation.Paint);}
         public void RevealBrush(Brush brush){if(materialScroll==null)return;int row=(int)brush;if(row>7)row--;float top=row*51,bottom=top+51,offset=materialScroll.content.anchoredPosition.y;if(top<offset)offset=top;else if(bottom>offset+448)offset=bottom-448;offset=Mathf.Clamp(offset,0,materialScroll.content.rect.height-448);materialScroll.content.anchoredPosition=new Vector2(0,offset);}
     }
 }

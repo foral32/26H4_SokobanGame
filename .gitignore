@@ -8,6 +8,7 @@
 
 # Local research, review, and evidence directories
 /Investigate/
+/docs/
 /DraculasBox/Evidence/
 /DraculasBox/Reviews/
 /DraculasBoxChecks/

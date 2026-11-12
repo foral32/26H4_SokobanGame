@@ -170,7 +170,7 @@ namespace DraculasBox.Editor
             Need(editor.Document.Data.ContentEquals(data)&&editor.Document.UndoCount==0,"pointer collision leaves the source untouched");
             start=app.Board.Screen(new Cell(4,3));end=app.Board.Screen(new Cell(4,2));editor.PointerSample(start,true,true,false);editor.PointerSample(end,false,true,false);editor.ClearSelection();
             Need(!editor.SelectionGesture&&editor.Document.Data.ContentEquals(data),"cancel discards an uncommitted selection move");
-            Need(editor.HandleShortcut(KeyCode.Q)&&editor.Operation==EditOperation.Paint&&editor.HandleShortcut(KeyCode.E)&&editor.Operation==EditOperation.Erase,"Q and E switch paint and erase directly");
+            Need(editor.HandleShortcut(KeyCode.Q)&&editor.Operation==EditOperation.Paint&&!editor.HandleShortcut(KeyCode.E),"Q selects unified painting without a separate erase mode");
             Need(editor.HandleShortcut(KeyCode.LeftBracket)&&editor.Selected==Brush.MirrorSlash&&editor.HandleShortcut(KeyCode.RightBracket)&&editor.Selected==Brush.MirrorBackslash,"mirror brushes retain separate unambiguous bracket shortcuts");
             editor.HandleShortcut(KeyCode.A);start=app.Board.Screen(new Cell(4,3));editor.PointerSample(start,true,true,false);editor.PointerSample(start,false,false,true);editor.HandleShortcut(KeyCode.Delete);
             Need(editor.Document.Data.pieces.Length==1&&editor.Document.Data.plates.Length==1,"Delete removes the selected piece and preserves the pressure plate");

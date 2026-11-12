@@ -55,7 +55,7 @@ namespace DraculasBox.Runtime
                 else
                 {
                     var picked=Document.PickSelection(cell);
-                    if(Shape!=PaintShape.Rectangle&&picked.Layer!=SelectionLayer.Region){Selection=picked;movingSelection=true;}
+                    if(picked.Layer!=SelectionLayer.Region){Selection=picked;movingSelection=true;}
                     else{Selection=null;selecting=true;}
                 }
                 board.BrushPreview(null,Selected,true);

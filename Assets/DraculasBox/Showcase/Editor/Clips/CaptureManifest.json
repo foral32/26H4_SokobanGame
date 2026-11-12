@@ -38,10 +38,10 @@
     },
     {
       "id": "pr01",
-      "frames": 339,
+      "frames": 348,
       "fps": 20,
-      "seconds": 16.95,
-      "bytes": 1880449
+      "seconds": 17.4,
+      "bytes": 1682956
     },
     {
       "id": "pr02",
@@ -52,10 +52,10 @@
     },
     {
       "id": "td01",
-      "frames": 240,
+      "frames": 393,
       "fps": 20,
-      "seconds": 12.0,
-      "bytes": 343158
+      "seconds": 19.65,
+      "bytes": 749724
     },
     {
       "id": "td02",
@@ -73,10 +73,12 @@
     },
     {
       "id": "td04",
-      "frames": 113,
+      "frames": 367,
       "fps": 20,
-      "seconds": 5.65,
-      "bytes": 443527
+      "seconds": 18.35,
+      "bytes": 579265,
+      "sourceFrames": 1105,
+      "trimmedIdle": true
     },
     {
       "id": "td05",

@@ -13,11 +13,16 @@ namespace DraculasBox.Runtime
         private Cell regionStart,regionEnd;private Brush regionBrush;private int regionChannel;
         public PaintShape Shape {get;private set;}
         public bool RegionActive {get;private set;}
-        private bool CanRectangle=>Operation==EditOperation.Select||Operation==EditOperation.Erase||Selected!=Brush.Player&&Selected!=Brush.Coffin;
-        public void SelectShape(PaintShape shape){ClosePanels();CancelSelectionGesture();CancelRectangle(false);FinishStroke();Shape=shape;RefreshShapeControls();}
+        private bool CanRectangle=>Selected!=Brush.Player&&Selected!=Brush.Coffin;
+        public void SelectShape(PaintShape shape){if(Operation==EditOperation.Select)return;ClosePanels();CancelSelectionGesture();CancelRectangle(false);FinishStroke();Shape=shape;RefreshShapeControls();}
         private void RefreshShapeControls()
         {
-            ui.SetLabel("shape-brush",Operation==EditOperation.Select?"点选":"点涂");ui.SetLabel("shape-rectangle",Operation==EditOperation.Select?"框选":"矩形");ui.SetEnabled("shape-rectangle",CanRectangle);bool area=Shape==PaintShape.Rectangle&&CanRectangle;
+            bool visible=Operation==EditOperation.Paint;
+            if(pointShapeButton!=null)pointShapeButton.gameObject.SetActive(visible);
+            if(rectangleShapeButton!=null)rectangleShapeButton.gameObject.SetActive(visible);
+            if(shapeDivider!=null)shapeDivider.SetActive(visible);
+            if(paintInputHint!=null)paintInputHint.gameObject.SetActive(visible);
+            ui.SetEnabled("shape-rectangle",true);bool area=Shape==PaintShape.Rectangle;
             foreach(string id in new[]{"shape-brush","shape-rectangle"})ui.WorkshopChoice(id,(id=="shape-rectangle")==area);
         }
         private void RefreshChannelControls()
@@ -29,19 +34,24 @@ namespace DraculasBox.Runtime
         private bool RectangleSample(Vector2 screen,bool begin,bool held,bool end,bool erase)
         {
             if(end){if(RegionActive)CommitRectangle();return true;}
-            if(!begin&&!held)return false;if(OverUI(screen)||!board.CellAt(screen,out var cell))return false;
+            if(!begin&&!held)return false;if(OverUI(screen)||!board.CanvasCellAt(screen,out var cell))return false;
             if(begin){CancelRectangle(false);FinishStroke();RegionActive=true;regionStart=cell;regionBrush=erase?Brush.Erase:Selected;regionChannel=Channel;}
-            if(!RegionActive)return false;regionEnd=cell;board.BrushPreview(null,Selected,true);board.RegionPreview(regionStart,regionEnd,regionBrush==Brush.Erase);
+            if(!RegionActive)return false;regionEnd=cell;board.BrushPreview(null,Selected,true);board.RegionPreview(regionStart,regionEnd,regionBrush==Brush.Erase,regionBrush==Brush.Erase||Document.ExpansionError(regionStart,regionEnd)==null);
             Notice("矩形 "+(Mathf.Abs(regionEnd.x-regionStart.x)+1)+" × "+(Mathf.Abs(regionEnd.y-regionStart.y)+1)+" · 松开应用，Esc 取消");return true;
         }
         private void CommitRectangle()
         {
             if(!RegionActive)return;RegionActive=false;board.RegionPreview(null,null);
             var before=Document.Data.Copy();
-            var result=Document.PaintRectangle(regionStart,regionEnd,regionBrush,regionChannel);if(result.Applied>0)
+            var result=Document.PaintExpandedRectangle(regionStart,regionEnd,regionBrush,regionChannel,out var shift,out var error);
+            if(error!=null){Notice(error);return;}
+            bool resized=before.rows.Length!=Document.Data.rows.Length||before.rows[0].Length!=Document.Data.rows[0].Length;
+            if(resized){board.PreviewExpanded(Document.Data,shift);previewQueued=false;}
+            regionStart+=shift;regionEnd+=shift;
+            if(result.Applied>0)
             {
                 if(regionBrush!=Brush.Erase)for(int y=Mathf.Min(regionStart.y,regionEnd.y);y<=Mathf.Max(regionStart.y,regionEnd.y);y++)for(int x=Mathf.Min(regionStart.x,regionEnd.x);x<=Mathf.Max(regionStart.x,regionEnd.x);x++)
-                {var cell=new Cell(x,y);if(StampChanged(before,cell,regionBrush))pendingStamps.Add(new BoardView.StampCell(cell,regionBrush));}
+                {var cell=new Cell(x,y);if(resized||StampChanged(before,cell,regionBrush))pendingStamps.Add(new BoardView.StampCell(cell,regionBrush));}
                 previewQueued=true;FlushPreview();
             }
             RefreshLabels();Notice("应用 "+result.Applied+" 格"+(result.Skipped>0?" · 保留 "+result.Skipped+" 个不可放置格":""));
@@ -49,7 +59,7 @@ namespace DraculasBox.Runtime
         private bool StampChanged(LevelData before,Cell cell,Brush brush)
         {
             var after=Document.Data;if(cell.y<0||cell.y>=after.rows.Length||cell.x<0||cell.x>=after.rows[0].Length)return false;
-            if(brush==Brush.Floor||brush==Brush.Wall||brush==Brush.Void)return before.rows[cell.y][cell.x]!=after.rows[cell.y][cell.x];
+            if(brush==Brush.Floor||brush==Brush.Wall||brush==Brush.Void)return cell.y>=before.rows.Length||cell.x>=before.rows[0].Length||before.rows[cell.y][cell.x]!=after.rows[cell.y][cell.x];
             if(brush==Brush.Player)return before.player!=after.player&&after.player==cell;
             if(brush==Brush.Coffin)return before.coffin!=after.coffin&&after.coffin==cell;
             if(brush==Brush.Plate||brush==Brush.Door)

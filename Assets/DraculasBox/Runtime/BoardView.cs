@@ -19,7 +19,7 @@ namespace DraculasBox.Runtime
         private SpriteRenderer[] floors,pieces,pieceShadows;private SpriteRenderer player,cape,fangs,coffin,lid,warning;
         private State state,previous;private ActionResult action;private float elapsed,duration,wonAt=-1,aspect;private bool editing;
         private Vector3 normalFrame;private float unitsPerUI;
-        public int HighestSortingOrder=>37;
+        public int HighestSortingOrder=>38;
         public bool IsAnimating=>state!=null&&(elapsed<duration||!editing&&state.Dead&&Time.unscaledTime-deathAt<DeathSeconds);
         public Camera Camera=>cameraView;
         public State State=>state;
@@ -34,10 +34,11 @@ namespace DraculasBox.Runtime
         public void Clear()
         {Recycle(true);}
         private void Recycle(bool hide)
-        {ClearCharacterEffects();ClearEditorStamps();ResetDeathBackdrop();HideLightPresentation();burnGlow=null;for(int i=renderers.Count-1;i>=0;i--){var r=renderers[i];if(r==null)continue;if(hide)r.gameObject.SetActive(false);spare.Push(r);}renderers.Clear();state=previous=null;if(editMask!=null)editMask.enabled=false;}
+        {ClearCharacterEffects();ClearEditorStamps();ResetDeathBackdrop();HideLightPresentation();burnGlow=null;linePreview=null;expansionEdges=null;for(int i=renderers.Count-1;i>=0;i--){var r=renderers[i];if(r==null)continue;if(hide)r.gameObject.SetActive(false);spare.Push(r);}renderers.Clear();state=previous=null;if(editMask!=null)editMask.enabled=false;}
         public void Load(State s,bool edit=false)
         {
             Recycle(false);state=previous=s;action=null;editing=edit;elapsed=duration=0;wonAt=deathAt=-1;Fit();var d=s.Level;
+            if(edit)BuildEditorCanvas();
             floors=new SpriteRenderer[d.Width*d.Height];
             terrainVisualStarts=edit?new int[floors.Length]:null;terrainVisualCounts=edit?new int[floors.Length]:null;
             for(int y=0;y<d.Height;y++)for(int x=0;x<d.Width;x++)
@@ -79,12 +80,22 @@ namespace DraculasBox.Runtime
             UpdateFloor();Refresh(1);
             foreach(var unused in spare)if(unused.gameObject.activeSelf)unused.gameObject.SetActive(false);
         }
-        public void Preview(LevelData data,bool preserveStamps=false)
+        public void Preview(LevelData data,bool preserveStamps=false,Cell? originShift=null)
         {
+            bool keepFrame=preserveStamps&&editing&&state!=null;
+            var origin=keepFrame?boardRoot.TransformPoint(Position(new Cell(0,0))):Vector3.zero;
+            float cameraSize=cameraView.orthographicSize,uiUnits=unitsPerUI;var frame=normalFrame;
             var retained=preserveStamps&&editing&&stampRequests.Count>0?new Dictionary<Cell,StampRequest>(stampRequests):null;
             Load(Definition.Preview(data).Initial(),true);
-            if(retained!=null){double now=Time.realtimeSinceStartupAsDouble;foreach(var item in retained)if(now-item.Value.at<StampSeconds)stampRequests[item.Key]=item.Value;BindStampVisuals();}
+            if(keepFrame)
+            {
+                cameraView.orthographicSize=cameraSize;unitsPerUI=uiUnits;normalFrame=frame;
+                editorPan=origin-normalFrame-Position(originShift??new Cell(0,0))*editorZoom;
+                editMask.transform.localPosition=normalFrame;editMask.transform.localScale=new Vector3(EditorViewWidth,EditorHeight,1)*unitsPerUI;ApplyFrame();
+            }
+            if(retained!=null){double now=Time.realtimeSinceStartupAsDouble;foreach(var item in retained)if(now-item.Value.at<StampSeconds)stampRequests[item.Key+(originShift??new Cell(0,0))]=item.Value;BindStampVisuals();}
         }
+        public void PreviewExpanded(LevelData data,Cell offset)=>Preview(data,true,offset);
         private void Fit()
         {
             aspect=cameraView.aspect;var d=state.Level;
@@ -95,7 +106,7 @@ namespace DraculasBox.Runtime
             bool horizontalSun=state.SunFrom==SunSide.Left||state.SunFrom==SunSide.Right;
             float availableWidth=editing?EditorViewWidth-(state.SunEnabled&&horizontalSun?100:0):960;
             float availableHeight=editing?EditorHeight-(state.SunEnabled&&!horizontalSun?100:0):470;
-            float cellPixels=Mathf.Min(availableWidth*uiScale/d.Width,availableHeight*uiScale/d.Height);
+            float cellPixels=Mathf.Min(availableWidth*uiScale/(d.Width+(editing?2:0)),availableHeight*uiScale/(d.Height+(editing?2:0)));
             cameraView.orthographicSize=pixelHeight/(2f*cellPixels);
             cameraView.transform.position=new Vector3(0,0,-10);
             unitsPerUI=uiScale/cellPixels;normalFrame=new Vector3((editing?EditorViewX:-60f)*unitsPerUI,editing?EditorY*unitsPerUI:0,0);editMask.enabled=editing;editMask.transform.localPosition=normalFrame;editMask.transform.localScale=new Vector3(EditorViewWidth,EditorHeight,1)*unitsPerUI;ClampPan();ApplyFrame();
@@ -114,16 +125,18 @@ namespace DraculasBox.Runtime
         public bool InViewport(Vector2 screen){if(!editing)return true;var w=cameraView.ScreenToWorldPoint(screen);return Mathf.Abs(w.x-normalFrame.x)<=EditorViewWidth*.5f*unitsPerUI&&Mathf.Abs(w.y-normalFrame.y)<=EditorHeight*.5f*unitsPerUI;}
         public void ZoomAt(Vector2 screen,float multiplier){if(!editing||!InViewport(screen))return;var w=cameraView.ScreenToWorldPoint(screen);w.z=0;var p=boardRoot.InverseTransformPoint(w);editorZoom=Mathf.Clamp(editorZoom*multiplier,.65f,4);editorPan=w-normalFrame-p*editorZoom;ClampPan();ApplyFrame();}
         public void Pan(Vector2 pixels){if(!editing)return;editorPan+=(Vector3)(pixels*cameraView.orthographicSize*2/cameraView.pixelHeight);ClampPan();ApplyFrame();}
-        public void BrushPreview(Cell? cell,Brush brush,bool valid){if(ghost==null)return;ghost.enabled=editing&&cell.HasValue;if(!ghost.enabled)return;string icon=brush==Brush.Box?"Box_active_white":brush==Brush.Player?"vampire":brush==Brush.Coffin?"coffin-open":brush==Brush.Lamp?"lamp":brush==Brush.MirrorSlash?"mirror-slash":brush==Brush.MirrorBackslash?"mirror-backslash":"solid";SetSprite(ghost,brush==Brush.Void?SurfaceSprites.Pit(0):assets.Sprite(icon));ghost.transform.localPosition=Position(cell.Value);ghost.color=valid?new Color(.85f,.91f,1,.48f):new Color(1,.35f,.28f,.5f);}
+        public void BrushPreview(Cell? cell,Brush brush,bool valid){if(ghost==null)return;ghost.enabled=editing&&cell.HasValue;if(!ghost.enabled)return;string icon=brush==Brush.Box?"Box_active_white":brush==Brush.Player?"vampire":brush==Brush.Coffin?"coffin-open":brush==Brush.Lamp?"lamp":brush==Brush.MirrorSlash?"mirror-slash":brush==Brush.MirrorBackslash?"mirror-backslash":"solid";SetSprite(ghost,brush==Brush.Wall?SurfaceSprites.StoneWall(0):brush==Brush.Floor?SurfaceSprites.Floor:brush==Brush.Void?SurfaceSprites.Pit(0):assets.Sprite(icon));ghost.transform.localPosition=Position(cell.Value);ghost.color=valid?(brush==Brush.Floor?new Color(SafeColor.r,SafeColor.g,SafeColor.b,.65f):new Color(1,1,1,.60f)):new Color(1,.35f,.28f,.5f);}
         public void HighlightInvalid(Cell? cell){if(warning==null)return;warning.enabled=editing&&cell.HasValue;if(cell.HasValue){warning.transform.localPosition=Position(cell.Value);warning.color=new Color(1,.35f,.3f,.8f);}}
         public void FitForCapture(){if(state!=null)Fit();}
         public Vector3 Position(Cell p)=>new Vector3(p.x-(state.Level.Width-1)*.5f,(state.Level.Height-1)*.5f-p.y,0);
         public bool CellAt(Vector2 screen,out Cell cell)
+        {return CanvasCellAt(screen,out cell)&&state.Level.Inside(cell);}
+        public bool CanvasCellAt(Vector2 screen,out Cell cell)
         {
             cell=new Cell(-1,-1);if(state==null||!InViewport(screen))return false;
             var world=boardRoot.InverseTransformPoint(cameraView.ScreenToWorldPoint(screen));
             cell=new Cell(Mathf.FloorToInt(world.x+(state.Level.Width-1)*.5f+.5f),Mathf.FloorToInt((state.Level.Height-1)*.5f-world.y+.5f));
-            return state.Level.Inside(cell);
+            return true;
         }
         public Vector2 Screen(Cell p)=>cameraView.WorldToScreenPoint(boardRoot.TransformPoint(Position(p)));
         private SpriteRenderer Make(string name,string sprite,int order,Vector3 pos,float size)

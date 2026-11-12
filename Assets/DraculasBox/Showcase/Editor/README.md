@@ -4,6 +4,10 @@
 
 重新录制：保存并退出普通 Play，在隔离的 `BackgroundPlaytest` 中等待主菜单，调用 `CampaignPlayChecks.RunShowcaseCapture()`。它使用临时玩家数据及正式目录副本，原始帧输出至 `Library/DraculasBoxShowcase/Frames/`。等待 `CampaignPlayChecks.Status` 为 `passed`，再运行 `python DraculasBox/Tools/Showcase/encode.py --ffmpeg <ffmpeg路径>`。编码为 WebM VP8／720p／20 fps，`CaptureManifest.json` 记录各片段长度。
 
+本轮同时重录 `td04`，演示勾选机制与难度的严格匹配、采用草稿与撤销。录制等待的静止片段经过剪除，`CaptureManifest.json` 记录成片帧数及原始帧数。
+
+`CampaignPlayChecks.RunShowcaseMediaRefreshCapture()` 仅重录主菜单（`pr01`）与编辑操作（`td01`）：左右键绘制／擦除、选择移动、越界扩边及行列增删。编码时使用 `--clips pr01 td01`，其他重点未变的视频继续沿用。`RunShowcaseReadmeRefresh()` 更新 README 中的主菜单与作品演示窗口截图；编辑器截图使用本轮 `td01.jpg` 封面。
+
 `CampaignPlayChecks.RunShowcaseMenuCapture()` 单独录制主菜单悬停、章节往返和设置中的配色主题切换（`pr01`），并更新仓库 README 的主菜单实机图。编码时使用 `--clips pr01`。
 
 `CampaignPlayChecks.RunShowcasePolishCapture()` 依次录制上述主菜单交互与章节完成片段（`pr01`、`pr02`），使用临时玩家进度，结束后恢复。编码时加 `--clips pr01 pr02` 只更新这两段，保留其他片段。动作反馈页复用 `ld01`。

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.IO;
 using System.Linq;
@@ -80,12 +80,12 @@ namespace DraculasBox.Editor
             recorder.Point(RectTransformUtility.WorldToScreenPoint(app.viewCamera,b.transform.position));yield return Hold(.3f);
             yield return Click(id);yield return Hold(hold);
         }
-        private static IEnumerator Stroke(Cell from,Cell to)
+        private static IEnumerator Stroke(Cell from,Cell to,bool erase=false)
         {
             var a=app.Board.Screen(from);var b=app.Board.Screen(to);recorder.Point(a);yield return Hold(.3f);
-            app.Creator.PointerSample(a,true,true,false);
-            for(int i=1;i<=15;i++){var p=Vector2.Lerp(a,b,i/15f);recorder.Point(p);app.Creator.PointerSample(p,false,true,false);app.Creator.FlushPreview();yield return Hold(.045f);}
-            app.Creator.PointerSample(b,false,false,true);app.Creator.FlushPreview();yield return Hold(.8f);
+            app.Creator.PointerSample(a,true,true,false,erase);
+            for(int i=1;i<=15;i++){var p=Vector2.Lerp(a,b,i/15f);recorder.Point(p);app.Creator.PointerSample(p,false,true,false,erase);app.Creator.FlushPreview();yield return Hold(.045f);}
+            app.Creator.PointerSample(b,false,false,true,erase);app.Creator.FlushPreview();yield return Hold(.8f);
         }
         private static IEnumerator FilmMoves(string route,float spacing=.55f)
         {
@@ -121,7 +121,7 @@ namespace DraculasBox.Editor
                 var blank=LevelData.Blank();blank.player=new Cell(2,5);app.Edit(blank);yield return Page(GamePage.Editing);
                 recorder.Begin("td01");yield return Hold(.7f);
                 app.Creator.Select(Brush.Wall);yield return FilmClick("shape-rectangle");yield return Stroke(new Cell(2,2),new Cell(3,3));
-                yield return FilmClick("brush-7");yield return Stroke(new Cell(2,2),new Cell(3,2));
+                yield return Stroke(new Cell(2,2),new Cell(3,2),true);
                 yield return FilmClick("edit-undo");yield return FilmClick("operation-select");
                 yield return Stroke(new Cell(2,2),new Cell(3,3));yield return Stroke(new Cell(2,2),new Cell(3,2));
                 yield return FilmClick("edit-undo");recorder.End();
