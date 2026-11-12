@@ -20,7 +20,7 @@
 
 主菜单的两个工具入口以 `EditorOnly` 节点保存在场景中，未 Play 时也能看到外观；功能在 Play 中使用。若重建主菜单，可调用 `GameBuilder.RefreshEditorEntries()` 更新入口预览。整个素材目录只用于 Editor，功能代码通过 `UNITY_EDITOR` 隔离，正式包不含这两个入口。
 
-`ReferenceStills/`、`DraculasBox/Prototypes/Showcase/` 及 Unity 菜单中的 Prototypes 预览窗口属于旧评审稿，保留作设计参考。
+`ReferenceStills/` 仅保留少量历史评审参考。旧版 `DraculasBox/Prototypes/Showcase/` 数据与 Unity 菜单中的 Prototypes 预览窗口已移除；正式作品演示以本目录中的 `Pages.json`、`Clips/` 和主菜单「作品演示！」为准。
 
 ## 正文强调
 
