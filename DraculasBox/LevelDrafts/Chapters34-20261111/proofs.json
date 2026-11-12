@@ -1,0 +1,130 @@
+[
+  {
+    "level": "3-01",
+    "condition": "no-held-release",
+    "Solved": false,
+    "Exhausted": true,
+    "Visited": 33,
+    "Route": ""
+  },
+  {
+    "level": "3-01",
+    "condition": "no-close-door:1",
+    "Solved": false,
+    "Exhausted": true,
+    "Visited": 22,
+    "Route": ""
+  },
+  {
+    "level": "3-02",
+    "condition": "no-lamp-plate",
+    "Solved": false,
+    "Exhausted": true,
+    "Visited": 156,
+    "Route": ""
+  },
+  {
+    "level": "3-03",
+    "condition": "no-press:0",
+    "Solved": false,
+    "Exhausted": true,
+    "Visited": 33,
+    "Route": ""
+  },
+  {
+    "level": "3-03",
+    "condition": "no-press:1",
+    "Solved": false,
+    "Exhausted": true,
+    "Visited": 543,
+    "Route": ""
+  },
+  {
+    "level": "3-03",
+    "condition": "no-weight-release",
+    "Solved": false,
+    "Exhausted": true,
+    "Visited": 312,
+    "Route": ""
+  },
+  {
+    "level": "3-03",
+    "condition": "single",
+    "Solved": false,
+    "Exhausted": true,
+    "Visited": 1069,
+    "Route": ""
+  },
+  {
+    "level": "3-04",
+    "condition": "no-weight-release",
+    "Solved": false,
+    "Exhausted": true,
+    "Visited": 29,
+    "Route": ""
+  },
+  {
+    "level": "4-01",
+    "condition": "freeze:M",
+    "Solved": false,
+    "Exhausted": true,
+    "Visited": 50,
+    "Route": ""
+  },
+  {
+    "level": "4-02",
+    "condition": "freeze:M",
+    "Solved": false,
+    "Exhausted": true,
+    "Visited": 342,
+    "Route": ""
+  },
+  {
+    "level": "4-02",
+    "condition": "freeze:N",
+    "Solved": false,
+    "Exhausted": true,
+    "Visited": 39,
+    "Route": ""
+  },
+  {
+    "level": "4-02",
+    "condition": "single",
+    "Solved": false,
+    "Exhausted": true,
+    "Visited": 721,
+    "Route": ""
+  },
+  {
+    "level": "4-03",
+    "condition": "freeze:M",
+    "Solved": false,
+    "Exhausted": true,
+    "Visited": 31,
+    "Route": ""
+  },
+  {
+    "level": "4-03",
+    "condition": "freeze:K",
+    "Solved": false,
+    "Exhausted": true,
+    "Visited": 18,
+    "Route": ""
+  },
+  {
+    "level": "4-04",
+    "condition": "no-weight-release",
+    "Solved": false,
+    "Exhausted": true,
+    "Visited": 5,
+    "Route": ""
+  },
+  {
+    "level": "4-04",
+    "condition": "freeze:M",
+    "Solved": false,
+    "Exhausted": true,
+    "Visited": 5,
+    "Route": ""
+  }
+]

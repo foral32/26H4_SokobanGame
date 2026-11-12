@@ -15,12 +15,16 @@ namespace DraculasBox.Core
         public string Difficulty => new[]{"Ⅰ","Ⅱ","Ⅲ"}[(int)Complexity];
         private readonly string[] map;
         private readonly string route;
+        private readonly LevelData authored;
+        internal DraftPreset(string id,string title,DraftMechanic mechanics,DraftComplexity complexity,LevelData board)
+        {Id=id;Title=title;Mechanics=mechanics;Complexity=complexity;authored=board.Copy();}
         internal DraftPreset(string id,string title,DraftMechanic mechanics,DraftComplexity complexity,string route,params string[] map)
         {Id=id;Title=title;Mechanics=mechanics;Complexity=complexity;this.route=route;this.map=map;}
 
         public LevelData Create(int orientation=0)
         {
             if(orientation<0||orientation>7)throw new ArgumentOutOfRangeException(nameof(orientation));
+            if(authored!=null)return TransformAuthored(orientation);
             int turn=orientation%4;bool flip=orientation>=4;
             Cell Vector(Cell p)
             {
@@ -51,9 +55,26 @@ namespace DraculasBox.Core
             level.solution=new string(route.Select(key=>LevelSolver.Directions[Array.IndexOf(LightField.Directions,Vector(LightField.Directions[LevelSolver.Directions.IndexOf(key)]))]).ToArray());
             return level;
         }
+        private LevelData TransformAuthored(int orientation)
+        {
+            var b=authored.Copy();int w=b.rows[0].Length,h=b.rows.Length,turn=orientation%4;bool flip=orientation>=4;
+            Cell Vector(Cell p){if(flip)p.y=-p.y;for(int i=0;i<turn;i++)p=new Cell(-p.y,p.x);return p;}
+            var corners=new[]{Vector(new Cell(0,0)),Vector(new Cell(w-1,0)),Vector(new Cell(0,h-1)),Vector(new Cell(w-1,h-1))};
+            int minX=corners.Min(p=>p.x),minY=corners.Min(p=>p.y);
+            Cell Place(Cell p)=>Vector(p)+new Cell(-minX,-minY);
+            var rows=Enumerable.Range(0,corners.Max(p=>p.y)-minY+1).Select(_=>new char[corners.Max(p=>p.x)-minX+1]).ToArray();
+            for(int y=0;y<h;y++)for(int x=0;x<w;x++){var p=Place(new Cell(x,y));rows[p.y][p.x]=b.rows[y][x];}
+            b.rows=rows.Select(r=>new string(r)).ToArray();b.player=Place(b.player);b.coffin=Place(b.coffin);
+            foreach(var p in b.pieces){p.cell=Place(p.cell);if((int)p.kind>=2&&(flip!=(turn%2==1)))p.kind=p.kind==PieceKind.MirrorSlash?PieceKind.MirrorBackslash:PieceKind.MirrorSlash;}
+            foreach(var d in b.plates.Concat(b.doors))d.cell=Place(d.cell);
+            b.sunFrom=(SunSide)Array.IndexOf(LightField.SunTravel,Vector(LightField.SunTravel[(int)b.sunFrom]));
+            b.solution=new string(b.solution.Select(k=>LevelSolver.Directions[Array.IndexOf(LightField.Directions,Vector(LightField.Directions[LevelSolver.Directions.IndexOf(k)]))]).ToArray());
+            b.id=Guid.NewGuid().ToString("N");b.title=Title;return b;
+        }
+
     }
 
-    public static class DraftPresets
+    public static partial class DraftPresets
     {
         public static IReadOnlyList<DraftPreset> All { get; }=Array.AsReadOnly(new[]{
             // 先绕到箱子侧面，再给出口让位。
@@ -183,7 +204,7 @@ namespace DraculasBox.Core
                 "#.@...#",
                 "#######"),
             // 先移箱借出推镜站位，挪开反射线后把箱子送回压力板。
-            new DraftPreset("room_15","镜室开门",(DraftMechanic)14,(DraftComplexity)2,"UUURDRDLLUURRU",
+            new DraftPreset("room_15","镜室开门",(DraftMechanic)14,(DraftComplexity)1,"UUURDRDLLUURRU",
                 "#########",
                 "####C####",
                 "#...D####",
@@ -191,6 +212,6 @@ namespace DraculasBox.Core
                 "#p......#",
                 "#.@.....#",
                 "#########")
-        });
+        }.Concat(Expansion()).ToArray());
     }
 }

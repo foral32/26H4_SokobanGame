@@ -17,13 +17,37 @@ namespace DraculasBox.Editor
             yield return Click("creator");yield return Page(GamePage.Library);
             yield return Click("library-generate");yield return WaitUntilReady(()=>CanClick("adopt-draft"),"initial preset");
             var status=app.UI.Root.GetComponentsInChildren<TMP_Text>().Single(t=>t.name=="Draft status");
+            Need(status.text.StartsWith("转荫"),"default sunlight intro preset");
+            var flags=typeof(LevelEditor).GetField("allowed",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            var candidate=typeof(LevelEditor).GetField("candidate",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            foreach(int mask in new[]{0,1,2,3,4,5,6,7,10,11,14,15})
+            {
+                foreach(int bit in new[]{3,0,2,1,3})
+                {
+                    int current=(int)(DraftMechanic)flags.GetValue(app.Creator);
+                    if((current&(1<<bit))!=(mask&(1<<bit)))yield return Click("mechanic-"+bit);
+                }
+                Need((int)(DraftMechanic)flags.GetValue(app.Creator)==mask,"toggle combination "+mask);
+                for(int grade=0;grade<3;grade++)
+                {
+                    yield return Click("complexity-"+grade);
+                    yield return WaitUntilReady(()=>CanClick("adopt-draft"),"matching preset "+mask+"/"+grade);
+                    var draft=(LevelData)candidate.GetValue(app.Creator);
+                    var match=DraftPresets.All.Single(p=>p.Title==draft.title);
+                    Need((int)match.Mechanics==mask&&(int)match.Complexity==grade,"UI exact match "+mask+"/"+grade);
+                }
+            }
+            Capture("preset-all-mechanisms");
+            yield return Click("mechanic-3");yield return Click("mechanic-2");yield return Click("mechanic-1");
+            yield return WaitUntilReady(()=>CanClick("adopt-draft"),"sun III variants");
             string previous=status.text;
-            Capture("preset-picker");
             for(int i=0;i<4;i++)
             {
                 yield return Click("reroll");yield return WaitUntilReady(()=>CanClick("adopt-draft"),"different preset");
-                Need(status.text!=previous,"reroll changes authored room, not just orientation: "+i);previous=status.text;
+                Need(status.text!=previous,"reroll changes room: "+i);previous=status.text;
             }
+            yield return Click("mechanic-0");yield return WaitUntilReady(()=>CanClick("adopt-draft"),"unselected means boxes only");
+            Need(((LevelData)candidate.GetValue(app.Creator)).sunEnabled==false,"pure box no sunlight");
             yield return Click("close-authoring");yield return Page(GamePage.Library);
             Need(app.Library.Read(out _).Count==0,"browsing and cancelling create no files");
             yield return Click("library-generate");yield return WaitUntilReady(()=>CanClick("adopt-draft"),"adoptable preset");
@@ -61,7 +85,7 @@ namespace DraculasBox.Editor
             app.ShowTitle();yield return Page(GamePage.Title);
             app.UI.Clear();app.UI.WorkshopTheme();
             app.UI.Text("Preset review title","草稿预设",new Vector2(0,320),new Vector2(600,44),30,GameUI.WorkshopInk);
-            for(int i=0;i<DraftPresets.All.Count;i++)
+            for(int i=0;i<Math.Min(15,DraftPresets.All.Count);i++)
             {
                 var preset=DraftPresets.All[i];float x=-480+i%5*240,y=205-i/5*205;
                 app.UI.Thumbnail("preset-"+i,preset.Create(),new Vector2(x,y),new Vector2(216,164));

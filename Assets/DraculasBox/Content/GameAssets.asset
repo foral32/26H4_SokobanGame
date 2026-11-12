@@ -22,13 +22,10 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 968897f64c4f1604e8104f95eefef29d, type: 3}
   - {fileID: 4900000, guid: bd2a91ea5bbc31141a899acf9854815b, type: 3}
   - {fileID: 4900000, guid: 656a90f4ae3255b4da4ea3fef91ce30e, type: 3}
-  - {fileID: 4900000, guid: d78cede6c1707df4783ef00af0174719, type: 3}
   - {fileID: 4900000, guid: afd09e0fc079c2f4f99bb8ce915701cd, type: 3}
   - {fileID: 4900000, guid: daaa6050d202b794d8119897afd77fb2, type: 3}
-  - {fileID: 4900000, guid: 0a0831c3b477e8446abdbf2d7040f014, type: 3}
   - {fileID: 4900000, guid: 05f48a154bc0ba24e92a504970931fb2, type: 3}
   - {fileID: 4900000, guid: aef3979e9bc1d1c4c9e957428f03712a, type: 3}
-  - {fileID: 4900000, guid: 147cb41f59f7d9345ba294f88b71fd0f, type: 3}
   - {fileID: 4900000, guid: 4c526ceaa268b30468d68c359e7ddb14, type: 3}
   - {fileID: 4900000, guid: dfc974d0cbeeec849bdcc67d4c29c8c2, type: 3}
   - {fileID: 4900000, guid: 45a7a609cdf4bb9409e369cf6d5f6dce, type: 3}
@@ -36,7 +33,6 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 4e5cfaf416433c24f8af623fc8553f48, type: 3}
   - {fileID: 4900000, guid: a6352463e7fc16c46a68f4d944a78c39, type: 3}
   - {fileID: 4900000, guid: 8929c5999c389b340bf3a4b01e0d90f5, type: 3}
-  - {fileID: 4900000, guid: 5b3c15b8390802546817cdda83e99f2a, type: 3}
   - {fileID: 4900000, guid: af5a9a8639835504797f7061a5a81a4b, type: 3}
   - {fileID: 4900000, guid: 924dc5693b67d3a4084d163a5f689e9a, type: 3}
   - {fileID: 4900000, guid: 8f2f89ac5c3b3e6419c9f27e150c1082, type: 3}
@@ -45,6 +41,10 @@ MonoBehaviour:
   - {fileID: 4900000, guid: dabb8105059e35d4a8e1ea0305b21880, type: 3}
   - {fileID: 4900000, guid: a723545a1df258540bd71ac27b6eea00, type: 3}
   - {fileID: 4900000, guid: bcb841fc780deb840a48ce9f1be80e64, type: 3}
+  - {fileID: 4900000, guid: 2e24dd0e63a5a81418f9fcc66b203143, type: 3}
+  - {fileID: 4900000, guid: 4558deb235c8f2845ada8f70310a8875, type: 3}
+  - {fileID: 4900000, guid: 6dda74026f58b6c4e88f8b00c2de7410, type: 3}
+  - {fileID: 4900000, guid: 9ff7a06dc0fa9fc4ea84dc9f74d29525, type: 3}
   sprites:
   - {fileID: 21300000, guid: 6ce24922eb841904d9cca918e83241e7, type: 3}
   - {fileID: 21300000, guid: 9650b5070d91e72488a7523860ef7a0d, type: 3}

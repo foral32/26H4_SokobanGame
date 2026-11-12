@@ -51,19 +51,6 @@
             ]
         },
         {
-            "id": "c2_02",
-            "route": "RDRULURRURDDR",
-            "shortest": "RURDLDRRDRUUR",
-            "alternate": "",
-            "wrong": "",
-            "pushes": 6,
-            "essential": [
-                "A",
-                "B",
-                "L"
-            ]
-        },
-        {
             "id": "c2_04",
             "route": "LDLDRURURUR",
             "shortest": "LDLDRURURUR",
@@ -137,18 +124,6 @@
             ]
         },
         {
-            "id": "c2_08",
-            "route": "UDLURURRRR",
-            "shortest": "UDLURURRRR",
-            "alternate": "",
-            "wrong": "",
-            "pushes": 3,
-            "essential": [
-                "B",
-                "A"
-            ]
-        },
-        {
             "id": "c2_09",
             "route": "RRUDLLLLUURURU",
             "shortest": "RRUDLLLLUURURU",
@@ -174,20 +149,6 @@
                 "A",
                 "B",
                 "L"
-            ]
-        },
-        {
-            "id": "c2_b02",
-            "route": "RDDUULLLLLDLDRRDRRUULDRDLULDRDLD",
-            "shortest": "RDDUULLLLLDLDRRDRRUULDRDLULDRDLD",
-            "alternate": "",
-            "wrong": "",
-            "pushes": 11,
-            "essential": [
-                "A",
-                "C",
-                "L",
-                "M"
             ]
         },
         {
@@ -226,20 +187,6 @@
             "essential": [
                 "A",
                 "B"
-            ]
-        },
-        {
-            "id": "c3_b02",
-            "route": "DRRRDULLLLDRRLDDRULURRRRLDRRDDD",
-            "shortest": "DRRRDULLLLDRRLDDRULURRRRLDRRDDD",
-            "alternate": "",
-            "wrong": "",
-            "pushes": 10,
-            "essential": [
-                "A",
-                "B",
-                "L",
-                "C"
             ]
         },
         {
@@ -307,16 +254,11 @@
         {
             "id": "c4_06",
             "route": "RRUULRDDLLULUURDUURRRLLLDDRRRRDD",
-            "shortest": "RRUULRDDLLULUURDUURRRLLLDDRRRRDD",
+            "shortest": "",
             "alternate": "",
-            "wrong": "UURRR",
+            "wrong": "",
             "pushes": 6,
-            "essential": [
-                "L",
-                "M",
-                "N",
-                "A"
-            ]
+            "essential": []
         },
         {
             "id": "c4_b01",
@@ -334,15 +276,11 @@
         {
             "id": "c4_b02",
             "route": "LLLDDLDDRRRRLLLULURRRRLLLUURRRRD",
-            "shortest": "LLLDDLDDRRRRLLLULURRRRLLLUURRRRD",
+            "shortest": "",
             "alternate": "",
-            "wrong": "LLLDDLDDRRRLLULURRRR",
+            "wrong": "",
             "pushes": 11,
-            "essential": [
-                "L",
-                "M",
-                "N"
-            ]
+            "essential": []
         },
         {
             "id": "c1_07",
@@ -360,6 +298,42 @@
             "alternate": "",
             "wrong": "",
             "pushes": 7,
+            "essential": []
+        },
+        {
+            "id": "lvl_37a4379959e8",
+            "route": "LLDRRRRUURRDDLLLLULDDLDRRRRD",
+            "shortest": "",
+            "alternate": "",
+            "wrong": "",
+            "pushes": 16,
+            "essential": []
+        },
+        {
+            "id": "lvl_66a58c3b86c6",
+            "route": "ULLRUULLLDDDLDRRD",
+            "shortest": "",
+            "alternate": "",
+            "wrong": "",
+            "pushes": 6,
+            "essential": []
+        },
+        {
+            "id": "lvl_c03c98286637",
+            "route": "UURDRDLULDRDLLDLD",
+            "shortest": "",
+            "alternate": "",
+            "wrong": "",
+            "pushes": 6,
+            "essential": []
+        },
+        {
+            "id": "lvl_03139c6f8e60",
+            "route": "RURDLDLDRRRLDLD",
+            "shortest": "",
+            "alternate": "",
+            "wrong": "",
+            "pushes": 5,
             "essential": []
         }
     ]

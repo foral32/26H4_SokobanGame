@@ -78,9 +78,22 @@ namespace DraculasBox.Runtime
             ui.EditorButton("zoom-out","−",new Vector2(390,-321),new Vector2(38,36),()=>Zoom(.8f));
             ui.EditorButton("zoom-fit","100%",new Vector2(466,-321),new Vector2(100,36),()=>{board.ResetEditorView();RefreshLabels();});
             ui.EditorButton("zoom-in","+",new Vector2(542,-321),new Vector2(38,36),()=>Zoom(1.25f));
+            noteFooter=ui.Text("Level note","",new Vector2(-80,-321),new Vector2(640,36),18,GameUI.Muted,TextAlignmentOptions.MidlineLeft);
+            noteFooter.enableWordWrapping=false;noteFooter.overflowMode=TextOverflowModes.Ellipsis;
             status=ui.Text("Editor status","",new Vector2(-80,-321),new Vector2(640,36),18,GameUI.WorkshopAccent,TextAlignmentOptions.MidlineLeft);
             validation=ui.Text("Validation","",new Vector2(-80,-321),new Vector2(640,36),18,GameUI.WorkshopAccent,TextAlignmentOptions.MidlineLeft);
             BuildScenePanel();BuildFilesPanel();RefreshOperation();SetOperation(previousOperation);SelectChannel(Channel);RefreshLabels();
+        }
+        public void OpenNote()
+        {
+            BeginTool(AuthoringTool.Notes);
+            var sheet=ToolSheet("关卡备注",600,330);
+            var input=ui.Input("Note input",Document.Data.note??"",Vector2.zero,new Vector2(536,180),_=>{},2000);
+            input.transform.SetParent(sheet,false);input.lineType=TMP_InputField.LineType.MultiLineNewline;
+            input.textComponent.alignment=TextAlignmentOptions.TopLeft;input.textComponent.enableWordWrapping=true;
+            input.textComponent.overflowMode=TextOverflowModes.Overflow;
+            ui.EditorButton("note-apply","完成",new Vector2(207,-122),new Vector2(122,38),()=>{Document.SetNote(input.text);CloseAuthoringTool();},true,sheet,true);
+            input.Select();input.ActivateInputField();
         }
         private void BuildScenePanel()
         {
@@ -99,10 +112,11 @@ namespace DraculasBox.Runtime
         }
         private void BuildFilesPanel()
         {
-            int count=app.EditingOfficial?2:3;var panelSize=new Vector2(178,count*46+10);
+            int count=app.EditingOfficial?3:4;var panelSize=new Vector2(178,count*46+10);
             filesPanel=ui.Rect("Editor files",new Vector2(221,285-panelSize.y*.5f),panelSize);ui.WorkshopPanel("File surface",Vector2.zero,panelSize,filesPanel);ui.WorkshopPanel("File border",Vector2.zero,panelSize,filesPanel,true);
             float y=(count-1)*23;
             if(!app.EditingOfficial){ui.EditorButton("save-copy","另存副本",new Vector2(0,y),new Vector2(154,36),app.SaveEditorCopy,false,filesPanel);y-=46;}
+            ui.EditorButton("editor-note","备注",new Vector2(0,y),new Vector2(154,36),OpenNote,false,filesPanel);y-=46;
             ui.EditorButton("export-editor","导出",new Vector2(0,y),new Vector2(154,36),app.ExportEditor,false,filesPanel);y-=46;
             ui.EditorButton("editor-settings","设置",new Vector2(0,y),new Vector2(154,36),app.Settings,false,filesPanel);
             filesPanel.gameObject.SetActive(false);filesPanel.gameObject.AddComponent<WorkshopPopover>();

@@ -1,5 +1,6 @@
 using System.Text.Json;
 using DraculasBox.Core;
+if(args.Length>0&&args[0]=="expand-presets"){PresetExpansion.Run(args.Skip(1).ToArray());return;}
 if(args.Length>0&&args[0]=="verify-presets"){PresetWorkshop.Verify();return;}
 if(args.Length>0&&args[0]=="assess-presets"){PresetWorkshop.Assess(args[1]);return;}
 if(args.Length>0&&args[0]=="presets"){PresetWorkshop.Run(args[1]);return;}

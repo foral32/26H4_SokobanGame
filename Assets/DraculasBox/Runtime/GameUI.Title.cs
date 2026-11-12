@@ -28,6 +28,7 @@ namespace DraculasBox.Runtime
             var rect=Rect(id,Vector2.zero,new Vector2(320,54));var button=ClickTarget(rect);
             var cursor=Icon("Focus",GameIcon.Arrow,new Vector2(-120,0),22,new Color(Gold.r,Gold.g,Gold.b,0),rect);
             var text=Label(Rect("Label",Vector2.zero,new Vector2(270,54),rect),label,30,Quiet);
+            cursor.gameObject.SetActive(false);
             Register(id,button,action,cursor,text);
         }
         private void LayoutTitleButtons(Button[] buttons)
@@ -37,7 +38,7 @@ namespace DraculasBox.Runtime
                 var rect=(RectTransform)buttons[i].transform;
                 rect.anchoredPosition=new Vector2(0,-80-i*56);rect.sizeDelta=new Vector2(320,54);
                 foreach(string name in new[]{"Tile","Icon"})RetireTitleObject(rect.Find(name));
-                var cursor=(RectTransform)rect.Find("Focus");cursor.anchoredPosition=new Vector2(-120,0);cursor.sizeDelta=Vector2.one*22;
+                var cursor=(RectTransform)rect.Find("Focus");cursor.anchoredPosition=new Vector2(-120,0);cursor.sizeDelta=Vector2.one*22;cursor.gameObject.SetActive(false);
                 var label=rect.Find("Label").GetComponent<TMP_Text>();
                 label.rectTransform.anchoredPosition=Vector2.zero;label.rectTransform.sizeDelta=new Vector2(270,54);
                 label.fontSize=30;label.font=assets.bodyFont;label.alignment=TextAlignmentOptions.Midline;

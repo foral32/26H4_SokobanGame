@@ -17,6 +17,18 @@ namespace DraculasBox.Editor
     public static class GameBuilder
     {
         public const string Root="Assets/DraculasBox",ScenePath=Root+"/Scenes/DraculasBox.unity",AssetsPath=Root+"/Content/GameAssets.asset";
+        [MenuItem("Tools/Dracula's Box/Refresh editor entry preview")]
+        public static void RefreshEditorEntries()
+        {
+            var scene=SceneManager.GetActiveScene();
+            if(EditorApplication.isPlayingOrWillChangePlaymode||scene.path!=ScenePath||scene.isDirty)
+                throw new InvalidOperationException("Open the saved Dracula's Box scene outside Play Mode first.");
+            var app=UnityEngine.Object.FindFirstObjectByType<DraculaApp>();
+            if(app==null||app.ui==null||app.ui.AuthoredTitle==null)throw new InvalidOperationException("The authored title is unavailable.");
+            app.ui.Initialize(app.assets,app,app.viewCamera);
+            app.ui.PrepareEditorTitleEntries();
+            EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene);
+        }
         [MenuItem("Tools/Dracula's Box/Prepare game scene")]
         public static void Prepare()
         {

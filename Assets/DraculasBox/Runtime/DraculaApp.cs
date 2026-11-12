@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using DraculasBox.Core;
@@ -247,6 +247,9 @@ namespace DraculasBox.Runtime
             if(Page==GamePage.Dying){if(!deathCue&&Time.unscaledTime-diedAt>=BoardView.DeathImpactSeconds){deathCue=true;Cue("burn");}if(Time.unscaledTime-diedAt>=BoardView.DeathSeconds){Page=GamePage.Dead;ui.DeathHint();}}
             if(Page==GamePage.Editing)return;
             var keyboard=Automated?testKeys:Application.isFocused?hardware:null;
+            #if UNITY_EDITOR
+            if(ui.ShowcaseKeys(keyboard)){input.Clear();return;}
+            #endif
             if(ui.ProcessHoldInput(keyboard)){input.Clear();return;}
             if(keyboard==null)return;
             if(ui.HasTextFocus){if(keyboard.Pressed(KeyCode.Escape))ui.CommitText();return;}

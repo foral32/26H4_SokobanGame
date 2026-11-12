@@ -14,23 +14,21 @@ namespace DraculasBox.Runtime
         private void CampaignTitleEntry(Transform parent)
         {
 #if UNITY_EDITOR
-            if(!Application.isPlaying||DraculaApp.CreateCampaignWorkshop==null)return;
+            if(Application.isPlaying&&DraculaApp.CreateCampaignWorkshop==null)return;
             var old=parent.Find("campaign");
-            if(old!=null){old.gameObject.SetActive(false);Destroy(old.gameObject);}
-            var size=new Vector2(238,60);
+            if(old!=null){old.gameObject.SetActive(false);if(Application.isPlaying)Destroy(old.gameObject);else DestroyImmediate(old.gameObject);}
+            var size=new Vector2(252,68);
             var r=Rect("campaign",Vector2.zero,size,parent);
-            r.anchorMin=r.anchorMax=r.pivot=new Vector2(1,0);r.anchoredPosition=new Vector2(-28,22);
+            r.gameObject.tag="EditorOnly";
+            r.anchorMin=r.anchorMax=r.pivot=new Vector2(1,0);r.anchoredPosition=new Vector2(10,26);
             var b=ClickTarget(r);
-            var theme=GameThemes.Current;
-            var shadow=Image("Shadow",null,new Vector2(0,-4),size,new Color(0,0,0,.25f),r);Rounded(shadow);
-            var face=Image("Surface",null,Vector2.zero,size,Color.Lerp(theme.Button,theme.TitleFace,.72f),r);Rounded(face);
-            var line=Image("Outline",null,Vector2.zero,size,Color.Lerp(theme.TitleFace,theme.TitleDepth,.19f),r);Rounded(line,true);
-            Image("Accent",null,new Vector2(-116,0),new Vector2(3,36),theme.TitleDepth,r).raycastTarget=false;
-            Icon("Icon",GameIcon.Create,new Vector2(-88,0),27,theme.TitleDepth,r);
-            Label(Rect("Label",new Vector2(20,0),new Vector2(178,43),r),"编辑正式关卡",24,theme.Ink);
+            var surface=Rect("Editor tab",Vector2.zero,size,r).gameObject.AddComponent<ShowcaseSurface>();
+            surface.tab=true;surface.raycastTarget=false;
+            Icon("Icon",GameIcon.Create,new Vector2(-79,0),25,GameThemes.Current.TitleFace,r);
+            Label(Rect("Label",new Vector2(32,0),new Vector2(170,44),r),"编辑正式关卡",24,GameThemes.Current.TitleFace,TextAlignmentOptions.MidlineLeft);
             var focus=Rect("Focus",Vector2.zero,size+new Vector2(8,8),r).gameObject.AddComponent<SelectionCorners>();
             focus.color=new Color(Gold.r,Gold.g,Gold.b,0);focus.raycastTarget=false;
-            Register("campaign",b,app.OpenCampaign,focus);
+            if(Application.isPlaying)Register("campaign",b,app.OpenCampaign,focus);
 #endif
         }
         public void MapPage(string heading)

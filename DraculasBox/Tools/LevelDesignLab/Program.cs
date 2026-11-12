@@ -22,6 +22,9 @@ object Analyze(LevelData data,bool testLocks=true)
     {var locked=LevelSearch.Solve(data,new HashSet<string>{p.id},limit:500000);locks[p.id]=new{locked.Solved,locked.Exhausted,locked.Moves,locked.Visited};}
     return new{data.id,data.title,result,pushes,signature=data.pieces.Select((p,i)=>p.id+":"+string.Concat(directions[i])).ToArray(),locks};
 }
+if(args[0]=="chapter-sample"){ChapterCandidates.Sample(args.Skip(1).ToArray());return;}
+if(args[0]=="chapter-assess"){ChapterCandidates.Assess(args.Skip(1).ToArray());return;}
+if(args[0]=="chapter-proof"){ChapterCandidates.Proof(args.Skip(1).ToArray());return;}
 if(args[0]=="audit")
 {
     var catalog=JsonDocument.Parse(File.ReadAllText("Assets/DraculasBox/Content/Chapters.json"));
@@ -84,7 +87,7 @@ else if(args[0]=="trace")
     var data=Read(args[1]);var s=new Session(new Definition(data));string route=args.Length>2?args[2]:LevelSearch.Solve(data).Route;
     void Print()
     {
-        var field=LightField.Compute(s.State);for(int y=0;y<data.rows.Length;y++){for(int x=0;x<data.rows[0].Length;x++){var p=new Cell(x,y);int i=s.State.At(p);char c=s.State.Player==p?'@':i>=0?(data.pieces[i].kind==PieceKind.Lamp?'L':data.pieces[i].id[0]):p==data.coffin?'X':data.rows[y][x]=='.'?(field.Lit(p)?'!':'.'):data.rows[y][x];Console.Write(c);}Console.WriteLine();}
+        var field=LightField.Compute(s.State);for(int y=0;y<data.rows.Length;y++){for(int x=0;x<data.rows[0].Length;x++){var p=new Cell(x,y);int i=s.State.At(p),gate=s.State.Level.DoorAt(p);char c=s.State.Player==p?'@':i>=0?(data.pieces[i].kind==PieceKind.Lamp?'L':data.pieces[i].kind==PieceKind.MirrorSlash?'/':data.pieces[i].kind==PieceKind.MirrorBackslash?'\\':data.pieces[i].id[0]):p==data.coffin?'X':gate>=0?(s.State.DoorOpen(gate)?'g':'G'):data.plates.Any(t=>t.cell==p)?'p':data.rows[y][x]=='.'?(field.Lit(p)?'!':'.'):data.rows[y][x];Console.Write(c);}Console.WriteLine();}
     }
     Print();int at=0;foreach(char c in route){var r=s.Apply((Command)"URDL".IndexOf(c));at++;Console.WriteLine($"{at} {c} {r.Kind} {r.Reason}");if(r.PushedCount>0||r.After.Won)Print();}
 }

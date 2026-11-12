@@ -5,6 +5,15 @@ Shader "DraculasBox/Board Light"
         _FloorTex ("Floor", 2D) = "white" {}
         _Before ("Previous field", 2D) = "black" {}
         _After ("Current field", 2D) = "black" {}
+        [HideInInspector] _RawShadow ("Solar coverage", 2D) = "black" {}
+        [HideInInspector] _SoftShadow ("Solar gradient", 2D) = "black" {}
+        [HideInInspector] _Size ("Board size", Vector) = (0,0,0,0)
+        [HideInInspector] _BaseTint ("Sunlit floor", Color) = (1,1,1,1)
+        [HideInInspector] _ShadeTint ("Shade", Color) = (0,0,0,1)
+        [HideInInspector] _ClipRect ("Editor viewport", Vector) = (0,0,0,0)
+        [HideInInspector] _Mode ("Field mode", Float) = 0
+        [HideInInspector] _LightBlend ("Field blend", Float) = 1
+        [HideInInspector] _ClipEnabled ("Clip editor viewport", Float) = 0
         _SrcBlend ("Source blend", Float) = 1
         _DstBlend ("Destination blend", Float) = 1
         _BlendOp ("Blend operation", Float) = 3
@@ -61,10 +70,12 @@ Shader "DraculasBox/Board Light"
                 float2 rawUV=(floor(fieldUV*rawSize)+.5)/rawSize;
                 half3 raw=SAMPLE_TEXTURE2D(_RawShadow,sampler_RawShadow,rawUV).rgb;
                 half3 soft=SAMPLE_TEXTURE2D(_SoftShadow,sampler_SoftShadow,fieldUV).rgb;
+                half coverage=SAMPLE_TEXTURE2D(_RawShadow,sampler_RawShadow,fieldUV).b;
                 // Feather only the exterior of the complete union. Preserve the exact
                 // two-cell footprint; filtering must never shade a dangerous sun cell.
-                // A narrow inner feather keeps exposed sides seated on their tile edges.
-                float contour=smoothstep(.50,.82,soft.b)*step(.5,raw.g);
+                // Filtered strength gives the long gradient, not the silhouette. Use
+                // only the raw field's one-texel edge for a consistent grid boundary.
+                float contour=smoothstep(0,1,coverage)*step(.5,raw.g);
                 float strength=soft.r*contour*raw.b*(1-field.g);
                 return half4(lerp(floorColor*_BaseTint.rgb,_ShadeTint.rgb,strength),1);
             }

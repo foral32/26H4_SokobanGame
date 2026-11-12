@@ -11,7 +11,7 @@ namespace DraculasBox.Editor
     // removes unchecked work from the recoverable editing document.
     internal sealed class CampaignPublication
     {
-        internal enum Kind { ChapterAdd, ChapterRemove, ChapterTitle, ChapterOrder, LevelAdd, LevelRemove, Placement, LevelOrder, Title, Board, Route }
+        internal enum Kind { ChapterAdd, ChapterRemove, ChapterTitle, ChapterOrder, LevelAdd, LevelRemove, Placement, LevelOrder, Title, Board, Route, Note }
         internal sealed class Item
         {
             public string key,id,title,detail;
@@ -62,6 +62,7 @@ namespace DraculasBox.Editor
                 var prior=Baseline.boards.FirstOrDefault(x=>x.id==b.id);
                 if(prior==null)continue; // New boards travel with the individual add-level item.
                 string name=CampaignLabels.Name(Working.catalog,b.id,b.title);
+                if((b.note??"")!=(prior.note??""))Add(Kind.Note,b.id,name,"修改备注");
                 if(b.title!=prior.title)Add(Kind.Title,b.id,name,"改名："+prior.title+" → "+b.title);
                 if(!b.LayoutEquals(prior)||b.hint!=prior.hint)Add(Kind.Board,b.id,name,"修改棋盘");
                 else if(JsonUtility.ToJson(Working.Plan(b.id))!=JsonUtility.ToJson(Baseline.Plan(b.id)))
@@ -131,13 +132,14 @@ namespace DraculasBox.Editor
             result.replays.levels=Baseline.replays.levels.Where(p=>active.Contains(p.id)).Select(Copy).Concat(Working.replays.levels.Where(p=>active.Contains(p.id)&&!Baseline.boards.Any(b=>b.id==p.id)).Select(Copy)).ToArray();
             foreach(var item in Items.Where(i=>i.selected))
             {
-                if(item.kind!=Kind.Title&&item.kind!=Kind.Board&&item.kind!=Kind.Route)continue;
+                if(item.kind!=Kind.Title&&item.kind!=Kind.Board&&item.kind!=Kind.Route&&item.kind!=Kind.Note)continue;
                 if(!active.Contains(item.id))throw new InvalidOperationException(item.title+"：请同时勾选所属章节的关卡编排。");
                 var b=result.Board(item.id);var w=Working.Board(item.id);
-                if(item.kind==Kind.Title)b.title=w.title;
+                if(item.kind==Kind.Note)b.note=w.note;
+                else if(item.kind==Kind.Title)b.title=w.title;
                 else
                 {
-                    if(item.kind==Kind.Board){var replacement=w.Copy();replacement.title=b.title;result.boards[Array.IndexOf(result.boards,b)]=replacement;}
+                    if(item.kind==Kind.Board){var replacement=w.Copy();replacement.title=b.title;replacement.note=b.note;result.boards[Array.IndexOf(result.boards,b)]=replacement;}
                     var plans=result.replays.levels.ToList();int index=plans.FindIndex(p=>p.id==item.id);var plan=Working.Plan(item.id);
                     if(plan==null){if(index>=0)plans.RemoveAt(index);}
                     else if(index>=0)plans[index]=Copy(plan);else plans.Add(Copy(plan));

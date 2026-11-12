@@ -47,15 +47,9 @@ namespace DraculasBox.Runtime
                 ReleaseLightObject(fieldBefore);ReleaseLightObject(fieldAfter);
                 fieldBefore=LightFieldTexture(d.Width,d.Height);fieldAfter=LightFieldTexture(d.Width,d.Height);
                 fieldPixels=new Color32[d.Width*d.Height];
-                shadeMaterial.SetTexture("_Before",fieldBefore);shadeMaterial.SetTexture("_After",fieldAfter);
-                beamMaterial.SetTexture("_Before",fieldBefore);beamMaterial.SetTexture("_After",fieldAfter);
             }
             dayFloor=LitColor*new Color(1.05f,.93f,.88f,1);
-            // Porcelain's pale menu is not a suitable shadow pigment. Keep its blue safe-floor ink.
-            Color shadeTint=GameThemes.Current.LightMenu?SafeColor:GameThemes.Current.Background;
-            shadeMaterial.SetTexture("_FloorTex",SurfaceSprites.Floor.texture);shadeMaterial.SetColor("_BaseTint",dayFloor);
-            shadeMaterial.SetColor("_ShadeTint",state.SunEnabled?shadeTint:SafeColor);shadeMaterial.SetFloat("_Mode",state.SunEnabled?0:2);
-            var size=new Vector4(d.Width,d.Height,0,0);shadeMaterial.SetVector("_Size",size);beamMaterial.SetVector("_Size",size);
+            BindLightMaterials();
             BeginShadeMesh();
             if(state.SunEnabled)
             {
@@ -66,6 +60,28 @@ namespace DraculasBox.Runtime
             BeginShadeMesh();AddBoardQuad();UploadShadeMesh(lampFieldMesh);
             casterPositions=new Vector3[d.PieceCount+d.DoorCount];casterWeights=new float[casterPositions.Length];castersDirty=true;
             if(state.SunEnabled)EnsureShadowField();
+        }
+        private void BindLightMaterials()
+        {
+            // These bindings also apply when a board is rebuilt at the same size.
+            // Reusing a texture does not imply its material slot survived an editor refresh.
+            shadeMaterial.SetTexture("_Before",fieldBefore);shadeMaterial.SetTexture("_After",fieldAfter);
+            beamMaterial.SetTexture("_Before",fieldBefore);beamMaterial.SetTexture("_After",fieldAfter);
+            beamMaterial.SetFloat("_Mode",1);
+            // Porcelain's pale menu is not a suitable shadow pigment. Keep its blue safe-floor ink.
+            Color shadeTint=GameThemes.Current.LightMenu?SafeColor:GameThemes.Current.Background;
+            shadeMaterial.SetTexture("_FloorTex",SurfaceSprites.Floor.texture);shadeMaterial.SetColor("_BaseTint",dayFloor);
+            shadeMaterial.SetColor("_ShadeTint",state.SunEnabled?shadeTint:SafeColor);shadeMaterial.SetFloat("_Mode",state.SunEnabled?0:2);
+            var size=new Vector4(state.Level.Width,state.Level.Height,0,0);shadeMaterial.SetVector("_Size",size);beamMaterial.SetVector("_Size",size);
+        }
+        private bool LightBindingsReady()
+        {
+            var size=new Vector4(state.Level.Width,state.Level.Height,0,0);
+            return shadeMaterial.GetVector("_Size")==size&&beamMaterial.GetVector("_Size")==size&&
+                shadeMaterial.GetFloat("_Mode")== (state.SunEnabled?0:2)&&beamMaterial.GetFloat("_Mode")==1&&
+                shadeMaterial.GetTexture("_Before")==fieldBefore&&shadeMaterial.GetTexture("_After")==fieldAfter&&
+                beamMaterial.GetTexture("_Before")==fieldBefore&&beamMaterial.GetTexture("_After")==fieldAfter&&
+                (!state.SunEnabled||shadeMaterial.GetTexture("_RawShadow")==shadowRaw&&shadeMaterial.GetTexture("_SoftShadow")==shadowSoft);
         }
         private Mesh LightMesh(string name,Material material,int order,out MeshRenderer renderer)
         {
@@ -114,6 +130,11 @@ namespace DraculasBox.Runtime
         private void RefreshLightPresentation(float travel)
         {
             if(lightRoot==null)return;
+            if(!LightBindingsReady())
+            {
+                BindLightMaterials();
+                if(state.SunEnabled){EnsureShadowField();castersDirty=true;}
+            }
             shadeMaterial.SetFloat(LightBlend,travel);beamMaterial.SetFloat(LightBlend,travel);
             var rect=new Vector4(normalFrame.x-EditorViewWidth*.5f*unitsPerUI,normalFrame.y-EditorHeight*.5f*unitsPerUI,normalFrame.x+EditorViewWidth*.5f*unitsPerUI,normalFrame.y+EditorHeight*.5f*unitsPerUI);
             shadeMaterial.SetFloat("_ClipEnabled",editing?1:0);beamMaterial.SetFloat("_ClipEnabled",editing?1:0);shadeMaterial.SetVector("_ClipRect",rect);beamMaterial.SetVector("_ClipRect",rect);

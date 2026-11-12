@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using DraculasBox.Core;
@@ -22,7 +22,7 @@ namespace DraculasBox.Runtime
                     var button=authoredTitleButtons[i];var focus=button.transform.Find("Focus").GetComponent<Graphic>();
                     Register(button.name,button,actions[i],focus,button.transform.Find("Label").GetComponent<TMP_Text>());
                 }
-                CampaignTitleEntry(authoredTitle.transform);
+                CampaignTitleEntry(authoredTitle.transform);ShowcaseEntry(authoredTitle.transform);
                 Focus(0);return;
             }
             Backdrop();
@@ -33,7 +33,7 @@ namespace DraculasBox.Runtime
             TitleAction("settings","设置",app.Settings);
             TitleAction("exit","退出",app.Exit);
             LayoutTitleButtons(rows.Select(r=>r.button).ToArray());
-            CampaignTitleEntry(content);
+            CampaignTitleEntry(content);ShowcaseEntry(content);
             Focus(0);
         }
         public void Chapters()=>ChapterPage(Mathf.Max(0,Array.FindIndex(assets.Catalog.chapters,c=>c.id==app.ChapterId))/4);

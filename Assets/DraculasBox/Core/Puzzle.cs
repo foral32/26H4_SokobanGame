@@ -31,14 +31,14 @@ namespace DraculasBox.Core
     }
     [Serializable] public sealed class LevelData
     {
-        public int schemaVersion=1; public string id,title,hint,solution;
+        public int schemaVersion=1; public string id,title,hint,solution,note;
         public string[] rows;
         public Cell player,coffin;
         public EntityData[] pieces=Array.Empty<EntityData>();
         public DeviceData[] plates=Array.Empty<DeviceData>(),doors=Array.Empty<DeviceData>();
         public bool sunEnabled; public SunSide sunFrom;
-        public LevelData Copy()=>new LevelData{schemaVersion=schemaVersion,id=id,title=title,hint=hint,solution=solution,rows=(string[])rows.Clone(),player=player,coffin=coffin,pieces=pieces.Select(p=>p.Copy()).ToArray(),plates=(plates??Array.Empty<DeviceData>()).Select(p=>p.Copy()).ToArray(),doors=(doors??Array.Empty<DeviceData>()).Select(p=>p.Copy()).ToArray(),sunEnabled=sunEnabled,sunFrom=sunFrom};
-        public bool ContentEquals(LevelData other)=>other!=null&&id==other.id&&title==other.title&&hint==other.hint&&(solution??"")==(other.solution??"")&&LayoutEquals(other);
+        public LevelData Copy()=>new LevelData{schemaVersion=schemaVersion,id=id,title=title,hint=hint,solution=solution,note=note,rows=(string[])rows.Clone(),player=player,coffin=coffin,pieces=pieces.Select(p=>p.Copy()).ToArray(),plates=(plates??Array.Empty<DeviceData>()).Select(p=>p.Copy()).ToArray(),doors=(doors??Array.Empty<DeviceData>()).Select(p=>p.Copy()).ToArray(),sunEnabled=sunEnabled,sunFrom=sunFrom};
+        public bool ContentEquals(LevelData other)=>other!=null&&id==other.id&&title==other.title&&hint==other.hint&&(note??"")== (other.note??"")&&(solution??"")==(other.solution??"")&&LayoutEquals(other);
         public bool LayoutEquals(LevelData other)
         {
             if(other==null||schemaVersion!=other.schemaVersion||player!=other.player||coffin!=other.coffin||sunEnabled!=other.sunEnabled||sunFrom!=other.sunFrom||!rows.SequenceEqual(other.rows)||pieces.Length!=other.pieces.Length)return false;

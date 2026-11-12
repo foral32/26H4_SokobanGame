@@ -1,0 +1,61 @@
+{
+  "status": "review_only",
+  "logicalSize": 32,
+  "variants": [
+    {
+      "key": "A",
+      "name": "披风",
+      "desc": "标准箭头，尾部折成小披风。",
+      "response": "折起披风",
+      "hotspot": [
+        3,
+        2
+      ]
+    },
+    {
+      "key": "B",
+      "name": "蝠翼",
+      "desc": "翅膀放在后方，保留明确的浅色尖端。",
+      "response": "收拢翅膀",
+      "hotspot": [
+        3,
+        2
+      ]
+    },
+    {
+      "key": "C",
+      "name": "小德",
+      "desc": "主角藏在箭头后面，按下时眨眼。",
+      "response": "眨一下眼",
+      "hotspot": [
+        3,
+        2
+      ]
+    },
+    {
+      "key": "D",
+      "name": "獠牙",
+      "desc": "更紧凑的牙形，细节最少。",
+      "response": "牙根微暗",
+      "hotspot": [
+        3,
+        2
+      ]
+    },
+    {
+      "key": "E",
+      "name": "手套",
+      "desc": "清楚的指尖，酒红袖口点题。",
+      "response": "手掌轻收",
+      "hotspot": [
+        12,
+        2
+      ]
+    }
+  ],
+  "notes": [
+    "Hotspots are top-left coordinates.",
+    "All states keep the same hotspot.",
+    "No Unity assets, scripts, settings, or system cursors are changed."
+  ]
+}

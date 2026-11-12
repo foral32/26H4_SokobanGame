@@ -63,6 +63,7 @@ namespace DraculasBox.Core
             Data.pieces=Data.pieces.Concat(new[]{new EntityData{id=Guid.NewGuid().ToString("N"),kind=kind,cell=p}}).ToArray();return true;
         }
         public void ConfigureSun(bool enabled,SunSide from){Begin();Data.sunEnabled=enabled;Data.sunFrom=from;End();}
+        public void SetNote(string value){Begin();Data.note=(value??"").Trim();End();}
         public void Rename(string name){Begin();Data.title=string.IsNullOrWhiteSpace(name)?"我的关卡":name.Trim();End();}
         public void DiscardSolution()
         {
@@ -86,7 +87,7 @@ namespace DraculasBox.Core
         public void ApplyGenerated(LevelData draft)
         {
             if(draft==null||!LevelSolver.Proves(draft,draft.solution,out _))throw new ArgumentException("草稿缺少有效解。");
-            End();var replacement=draft.Copy();replacement.id=Data.id;replacement.title=Data.title;replacement.hint=Data.hint;
+            End();var replacement=draft.Copy();replacement.id=Data.id;replacement.title=Data.title;replacement.hint=Data.hint;replacement.note=Data.note;
             undo.Push(Data);redo.Clear();Data=replacement;RefreshDirty();
         }
         public bool Resize(int w,int h)

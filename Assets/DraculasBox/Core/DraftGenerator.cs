@@ -12,18 +12,15 @@ namespace DraculasBox.Core
         public static DraftPreset[] Choices(DraftMechanic allowed,DraftComplexity complexity)
         {
             if((allowed&~(DraftMechanic)15)!=0||!Enum.IsDefined(typeof(DraftComplexity),complexity))throw new ArgumentOutOfRangeException();
-            if(allowed.HasFlag(DraftMechanic.Mirror))allowed|=DraftMechanic.Lamp;
-            // Toggles allow mechanics; they do not demand one serial room per toggle.
-            // Nonempty selection prefers presets that actually use a selected mechanic.
-            var eligible=DraftPresets.All.Where(p=>(p.Mechanics&~allowed)==0&&(allowed==0?p.Mechanics==0:p.Mechanics!=0)).ToArray();
-            int distance=eligible.Min(p=>Math.Abs((int)p.Complexity-(int)complexity));
-            return eligible.Where(p=>Math.Abs((int)p.Complexity-(int)complexity)==distance).ToArray();
+            // Both filters are requirements, not an allowed superset or a difficulty hint.
+            return DraftPresets.All.Where(p=>p.Mechanics==allowed&&p.Complexity==complexity).ToArray();
         }
 
         public static LevelData Generate(DraftMechanic allowed,DraftComplexity complexity,int seed,CancellationToken token=default,string previousTitle=null)
         {
             token.ThrowIfCancellationRequested();
             var choices=Choices(allowed,complexity);
+            if(choices.Length==0)throw new InvalidOperationException("暂无匹配草稿");
             if(choices.Length>1)choices=choices.Where(p=>p.Title!=previousTitle).ToArray();
             var random=new Random(seed);
             var level=choices[random.Next(choices.Length)].Create(random.Next(8));

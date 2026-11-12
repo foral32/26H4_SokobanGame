@@ -11,7 +11,7 @@ namespace DraculasBox.Runtime
 {
     public sealed partial class LevelEditor
     {
-        private enum AuthoringTool { None, Solutions, Generator, Playback }
+        private enum AuthoringTool { None, Solutions, Generator, Playback, Notes }
         private AuthoringTool tool;
         private CancellationTokenSource toolWork;
         private TMP_Text toolMessage;
@@ -19,8 +19,8 @@ namespace DraculasBox.Runtime
         private LevelData proofBoard, candidate;
         private int proofPushes;
         private bool shortest, extendSearch, generatorFromLibrary;
-        private DraftMechanic allowed=(DraftMechanic)15;
-        private DraftComplexity complexity=DraftComplexity.Standard;
+        private DraftMechanic allowed=DraftMechanic.Sun;
+        private DraftComplexity complexity=DraftComplexity.Intro;
         private LevelThumbnail draftPreview;
         private Button playSolution;
         private Session playback;
@@ -136,7 +136,7 @@ namespace DraculasBox.Runtime
         {
             BeginTool(AuthoringTool.Generator);generatorFromLibrary=fromLibrary;
             var sheet=ToolSheet("草稿预设",752,438);
-            ToolText(sheet,"Mechanics","可用机制",-198,103,296,32,20);
+            ToolText(sheet,"Mechanics","关卡机制",-198,103,296,32,20);
             string[] names={"阳光","四向灯","压力板与门","斜镜"};
             for(int i=0;i<Mechanisms.Length;i++)
             {
@@ -169,10 +169,12 @@ namespace DraculasBox.Runtime
         private void GenerateDraft()
         {
             var options=allowed;
-            complexity=DraftGenerator.Choices(options,complexity)[0].Complexity;
+            CancelWork();
             var grade=complexity;int seed=Guid.NewGuid().GetHashCode();
             string previous=candidate?.title??(generatorFromLibrary?null:Document?.Data.title);
-            candidate=null;
+            candidate=null;draftPreview.Set(null);
+            if(DraftGenerator.Choices(options,grade).Length==0)
+            {toolNote="暂无匹配草稿";RefreshTool();return;}
             RunToolJob(token=>DraftGenerator.Generate(options,grade,seed,token,previous),data=>
             {
                 candidate=data;draftPreview.Set(data);
@@ -208,11 +210,11 @@ namespace DraculasBox.Runtime
                 for(int i=0;i<Mechanisms.Length;i++)ui.WorkshopChoice("mechanic-"+i,allowed.HasFlag(Mechanisms[i]));
                 for(int i=0;i<3;i++)
                 {
-                    ui.SetEnabled("complexity-"+i,DraftGenerator.Choices(allowed,(DraftComplexity)i)[0].Complexity==(DraftComplexity)i);
+                    ui.SetEnabled("complexity-"+i,true);
                     ui.WorkshopChoice("complexity-"+i,(int)complexity==i);
                 }
                 bool variety=DraftGenerator.Choices(allowed,complexity).Length>1;
-                ui.SetLabel("reroll",variety?"换一稿":"仅此一稿");
+                ui.SetLabel("reroll",candidate==null||variety?"换一稿":"仅此一稿");
                 ui.SetEnabled("reroll",!busy&&variety);ui.SetEnabled("adopt-draft",!busy&&candidate!=null);
             }
         }
@@ -265,6 +267,7 @@ namespace DraculasBox.Runtime
             if(tool==AuthoringTool.Playback&&autoPlay&&Time.unscaledTime>=nextStep)AdvancePlayback();
             if(app.Automated||!Application.isFocused)return;
             if(Input.GetKeyDown(KeyCode.Escape)){CloseAuthoringTool();return;}
+            if(ui.HasTextFocus)return;
             if(tool==AuthoringTool.Playback)
             {
                 if(Input.GetKeyDown(KeyCode.Space))TogglePlayback();

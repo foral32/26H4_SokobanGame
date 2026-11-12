@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -40,7 +40,7 @@ namespace DraculasBox.Runtime
         {assets=a;app=host;canvas.worldCamera=camera;canvas.sortingOrder=100;}
         public void Clear()
         {
-            StopChapterCelebration();HideLevelPeek();ClearProgressPresentation();
+            CloseShowcaseImmediate();StopChapterCelebration();HideLevelPeek();ClearProgressPresentation();
             if(authoredTitle!=null)authoredTitle.SetActive(false);
             for(int i=content.childCount-1;i>=0;i--)
             {var child=content.GetChild(i).gameObject;child.SetActive(false);if(Application.isPlaying)Destroy(child);else DestroyImmediate(child);}

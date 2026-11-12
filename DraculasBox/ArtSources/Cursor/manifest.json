@@ -1,0 +1,33 @@
+{
+  "selection": "White solid / Wine outline",
+  "canvas": [
+    64,
+    64
+  ],
+  "hotspot": [
+    3,
+    2
+  ],
+  "visibleBounds": [
+    1,
+    0,
+    25,
+    36
+  ],
+  "visibleBoundsSize": [
+    24,
+    36
+  ],
+  "nominalCanvas": [
+    32,
+    32
+  ],
+  "nominalVisibleBoundsSize": [
+    12,
+    18
+  ],
+  "filterMode": "Point",
+  "sourceGeometry": "Continuous vector rendered directly at 2x resolution; offset keeps texture-space tip at (3,2)",
+  "reference": "Unity UUM-120735 / #6613: Windows 32px hardware cursor blur; 64px sharper without screen-size increase",
+  "runtimeAssets": "Assets/DraculasBox/Art/Resources/Cursor"
+}

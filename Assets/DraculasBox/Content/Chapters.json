@@ -75,7 +75,7 @@
                     "branchAbove": false
                 },
                 {
-                    "id": "c2_08",
+                    "id": "lvl_66a58c3b86c6",
                     "main": true,
                     "requires": [
                         "c2_04"
@@ -83,18 +83,10 @@
                     "branchAbove": false
                 },
                 {
-                    "id": "c2_02",
-                    "main": true,
-                    "requires": [
-                        "c2_08"
-                    ],
-                    "branchAbove": false
-                },
-                {
                     "id": "c2_09",
                     "main": true,
                     "requires": [
-                        "c2_02"
+                        "lvl_66a58c3b86c6"
                     ],
                     "branchAbove": false
                 },
@@ -107,18 +99,26 @@
                     "branchAbove": false
                 },
                 {
-                    "id": "c2_b01",
-                    "main": false,
+                    "id": "lvl_c03c98286637",
+                    "main": true,
                     "requires": [
-                        "c2_02"
+                        "c2_07"
                     ],
                     "branchAbove": false
                 },
                 {
-                    "id": "c2_b02",
+                    "id": "lvl_37a4379959e8",
                     "main": false,
                     "requires": [
                         "c2_07"
+                    ],
+                    "branchAbove": false
+                },
+                {
+                    "id": "c2_b01",
+                    "main": false,
+                    "requires": [
+                        "lvl_66a58c3b86c6"
                     ],
                     "branchAbove": false
                 }
@@ -185,12 +185,12 @@
                     "branchAbove": false
                 },
                 {
-                    "id": "c3_b02",
+                    "id": "lvl_03139c6f8e60",
                     "main": false,
                     "requires": [
-                        "c3_06"
+                        "c3_03"
                     ],
-                    "branchAbove": false
+                    "branchAbove": true
                 }
             ]
         },

@@ -1,0 +1,96 @@
+{
+  "source": "Unity Play Mode camera and native UI; isolated save and campaign fixture",
+  "clips": [
+    {
+      "id": "ld01",
+      "frames": 97,
+      "fps": 20,
+      "seconds": 4.85,
+      "bytes": 269363
+    },
+    {
+      "id": "ld02",
+      "frames": 185,
+      "fps": 20,
+      "seconds": 9.25,
+      "bytes": 244069
+    },
+    {
+      "id": "ld03",
+      "frames": 132,
+      "fps": 20,
+      "seconds": 6.6,
+      "bytes": 184726
+    },
+    {
+      "id": "ld04",
+      "frames": 175,
+      "fps": 20,
+      "seconds": 8.75,
+      "bytes": 271506
+    },
+    {
+      "id": "ld05",
+      "frames": 123,
+      "fps": 20,
+      "seconds": 6.15,
+      "bytes": 189821
+    },
+    {
+      "id": "pr01",
+      "frames": 339,
+      "fps": 20,
+      "seconds": 16.95,
+      "bytes": 1880449
+    },
+    {
+      "id": "pr02",
+      "frames": 144,
+      "fps": 20,
+      "seconds": 7.2,
+      "bytes": 339117
+    },
+    {
+      "id": "td01",
+      "frames": 240,
+      "fps": 20,
+      "seconds": 12.0,
+      "bytes": 343158
+    },
+    {
+      "id": "td02",
+      "frames": 111,
+      "fps": 20,
+      "seconds": 5.55,
+      "bytes": 305694
+    },
+    {
+      "id": "td03",
+      "frames": 186,
+      "fps": 20,
+      "seconds": 9.3,
+      "bytes": 506019
+    },
+    {
+      "id": "td04",
+      "frames": 113,
+      "fps": 20,
+      "seconds": 5.65,
+      "bytes": 443527
+    },
+    {
+      "id": "td05",
+      "frames": 188,
+      "fps": 20,
+      "seconds": 9.4,
+      "bytes": 515930
+    },
+    {
+      "id": "td06",
+      "frames": 119,
+      "fps": 20,
+      "seconds": 5.95,
+      "bytes": 415066
+    }
+  ]
+}

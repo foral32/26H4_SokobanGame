@@ -1,5 +1,7 @@
 Tools/CoreChecks/bin/
 Tools/CoreChecks/obj/
+Tools/LevelDesignLab/bin/
+Tools/LevelDesignLab/obj/
 !Tools/CoreChecks/CoreChecks.csproj
 Tools/__pycache__/
 Evidence/Build/Backups/

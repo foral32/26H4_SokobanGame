@@ -67,7 +67,7 @@ internal static class PresetWorkshop
             var actual=(b.sunEnabled?DraftMechanic.Sun:0)|(b.doors.Length>0?DraftMechanic.Circuit:0)
                 |(b.pieces.Any(p=>p.kind==PieceKind.Lamp)?DraftMechanic.Lamp:0)|(b.pieces.Any(p=>(int)p.kind>=2)?DraftMechanic.Mirror:0);
             Need(actual==preset.Mechanics,"mechanic metadata "+preset.Title);
-            int reflected=0,doorCrossings=0,boxShade=0;
+            int reflected=0,doorCrossings=0,boxShade=0,sunThreat=0;
             var session=new Session(new Definition(b));
             foreach(char key in b.solution)
             {
@@ -77,13 +77,14 @@ internal static class PresetWorkshop
                     &&LightField.Compute(a.After).ReflectionEdges[a.After.Position(i).y*a.After.Level.Width+a.After.Position(i).x]!=0)reflected++;
                 if(b.sunEnabled)
                 {
-                    var one=a.After.Player+new Cell(-1,0);var two=one+new Cell(-1,0);
+                    var dir=LightField.SunTravel[(int)b.sunFrom];var back=new Cell(-dir.x,-dir.y);var one=a.After.Player+back;var two=one+back;
+                    foreach(var cmd in new[]{Command.Up,Command.Right,Command.Down,Command.Left}){var move=Rules.Move(a.Before,cmd);if(move.Kind==ActionKind.Died){var f=LightField.Compute(move.After);int at=move.After.Player.y*move.After.Level.Width+move.After.Player.x;if(f.Sun[at]&&!f.Lamp[at])sunThreat++;}}
                     if(a.After.Level.Terrain(one)!='#'&&a.After.Level.Terrain(two)!='#'&&(a.After.At(one)>=0||a.After.At(two)>=0))boxShade++;
                 }
             }
             Need(!preset.Mechanics.HasFlag(DraftMechanic.Circuit)||doorCrossings>0,"route uses door "+preset.Title);
             Need(!preset.Mechanics.HasFlag(DraftMechanic.Mirror)||reflected>0,"moved mirror redirects light "+preset.Title);
-            Need(!b.sunEnabled||boxShade>0,"route uses box shade "+preset.Title);
+            Need(!b.sunEnabled||boxShade>0||sunThreat>0,"sunlight affects route choices "+preset.Title);
             string opaqueRoute=null;
             if(preset.Mechanics.HasFlag(DraftMechanic.Mirror))
             {
@@ -99,7 +100,7 @@ internal static class PresetWorkshop
             for(int pose=0;pose<8;pose++)
             {
                 var variant=preset.Create(pose);int w=variant.rows[0].Length,h=variant.rows.Length;
-                Need(Math.Max(w,h)<=9&&Math.Max(w,h)/(float)Math.Min(w,h)<=1.5f,"compact board "+preset.Title);
+                Need(Math.Max(w,h)<=10&&Math.Max(w,h)/(float)Math.Min(w,h)<=1.6f,"compact board "+preset.Title);
                 Need(LevelSolver.Proves(variant,variant.solution,out int pushes)&&pushes==result.PushActions,"pose proof "+preset.Title+"/"+pose);
                 var proof=LevelSearch.Solve(variant,limit:90000);
                 Need(proof.Solved&&proof.Moves==result.Moves,"pose shortest "+preset.Title+"/"+pose);
@@ -115,11 +116,20 @@ internal static class PresetWorkshop
         int draws=0;
         for(int mask=0;mask<16;mask++)for(int grade=0;grade<3;grade++)for(int seed=0;seed<12;seed++)
         {
-            var allowed=(DraftMechanic)mask;if(allowed.HasFlag(DraftMechanic.Mirror))allowed|=DraftMechanic.Lamp;
+            var allowed=(DraftMechanic)mask;
+            var choices=DraftGenerator.Choices(allowed,(DraftComplexity)grade);
+            Need(choices.Length==DraftPresets.All.Count(p=>p.Mechanics==allowed&&(int)p.Complexity==grade),"exact filter count");
+            if((mask&8)==0||(mask&2)!=0)Need(choices.Length>0,"UI-selectable combination covered "+mask+"/"+grade);
+            if(choices.Length==0)
+            {
+                try{DraftGenerator.Generate(allowed,(DraftComplexity)grade,seed);throw new Exception("unexpected fallback");}
+                catch(InvalidOperationException e){Need(e.Message=="暂无匹配草稿","explicit empty result");}
+                continue;
+            }
             var b=DraftGenerator.Generate(allowed,(DraftComplexity)grade,seed);var repeat=DraftGenerator.Generate(allowed,(DraftComplexity)grade,seed);
             Need(b.LayoutEquals(repeat)&&b.solution==repeat.solution&&b.id!=repeat.id,"deterministic layout, fresh identity");
             var preset=DraftPresets.All.Single(p=>p.Title==b.title);
-            Need((preset.Mechanics&~allowed)==0,"no disallowed mechanics");
+            Need(preset.Mechanics==allowed&&(int)preset.Complexity==grade,"no disallowed mechanics");
             Need(LevelSolver.Proves(b,b.solution,out _),"generated witness");
             var another=DraftGenerator.Generate(allowed,(DraftComplexity)grade,seed,previousTitle:b.title);
             Need(DraftGenerator.Choices(allowed,(DraftComplexity)grade).Length==1||another.title!=b.title,"reroll distinct authored room");

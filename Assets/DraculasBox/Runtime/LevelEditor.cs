@@ -12,7 +12,7 @@ namespace DraculasBox.Runtime
     public sealed partial class LevelEditor:MonoBehaviour
     {
         private DraculaApp app;private GameUI ui;private BoardView board;
-        private TMP_Text status,validation,dirtyMark;private TMP_InputField titleInput,widthInput,heightInput;
+        private TMP_Text status,validation,dirtyMark,noteFooter;private TMP_InputField titleInput,widthInput,heightInput;
         private float nextRecovery,savedUntil,noticeUntil;private bool stroke,connected,previewQueued,panning;private Cell last;private Vector2 previousMouse;
         private readonly List<Button> brushes=new List<Button>();private readonly List<RaycastResult> hits=new List<RaycastResult>();private PointerEventData pointer;
         private readonly List<BoardView.StampCell> pendingStamps=new List<BoardView.StampCell>();
@@ -27,7 +27,7 @@ namespace DraculasBox.Runtime
         public void SelectChannel(int channel){CancelRectangle(false);FinishStroke();Channel=Mathf.Clamp(channel,0,3);board.EditorChannel=Channel;RefreshChannelControls();}
         private void RefreshLabels()
         {
-            if(Document==null)return;if(dirtyMark!=null)dirtyMark.text=Document.Dirty?"*":"";
+            if(Document==null)return;if(noteFooter!=null)noteFooter.text=(Document.Data.note??"").Replace("\r"," ").Replace("\n"," ");if(dirtyMark!=null)dirtyMark.text=Document.Dirty?"*":"";
             string error=Document.Validation();if(validation!=null){validation.text=error??"";validation.gameObject.SetActive(error!=null&&(status==null||string.IsNullOrEmpty(status.text)));}ui.SetEnabled("test",error==null);ui.SetEnabled("edit-undo",Document.UndoCount>0);ui.SetEnabled("edit-redo",Document.RedoCount>0);
             ui.SetLabel("sun",Document.Data.sunEnabled?"阳光  开":"阳光  关");
             for(int i=0;i<4;i++){ui.SetEnabled("sun-dir-"+i,Document.Data.sunEnabled);ui.WorkshopChoice("sun-dir-"+i,Document.Data.sunEnabled&&i==(int)Document.Data.sunFrom);}
@@ -94,7 +94,7 @@ namespace DraculasBox.Runtime
         {
             var d=Document.Data;bool device=d.plates.Any(e=>e.cell==p)||d.doors.Any(e=>e.cell==p);bool occupied=d.player==p||d.coffin==p||d.pieces.Any(e=>e.cell==p);if(EffectiveBrush==Brush.Erase||Selected==Brush.Floor)return true;if(Selected==Brush.Wall||Selected==Brush.Void)return !occupied&&!device;if(Selected==Brush.Plate||Selected==Brush.Door)return d.rows[p.y][p.x]=='.'&&d.coffin!=p;return d.rows[p.y][p.x]=='.'&&!occupied;
         }
-        private void LateUpdate(){if(app!=null&&app.Page==GamePage.Editing){FlushPreview();if(RegionActive)board.RegionPreview(regionStart,regionEnd,regionBrush==Brush.Erase);else RefreshSelectionPreview();}}
+        private void LateUpdate(){if(noteFooter!=null)noteFooter.gameObject.SetActive((status==null||string.IsNullOrEmpty(status.text))&&(validation==null||!validation.gameObject.activeSelf));if(app!=null&&app.Page==GamePage.Editing){FlushPreview();if(RegionActive)board.RegionPreview(regionStart,regionEnd,regionBrush==Brush.Erase);else RefreshSelectionPreview();}}
         private void Update()
         {
             if(app==null||app.Page!=GamePage.Editing||app.Transitioning)return;

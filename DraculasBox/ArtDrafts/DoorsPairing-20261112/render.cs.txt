@@ -1,0 +1,80 @@
+if(Application.dataPath!="G:/Unity/projects/My/Pros/TD/SokobanGame/Assets"||EditorApplication.isPlaying||EditorApplication.isCompiling)throw new System.Exception("Editor busy or wrong project");
+var originalScene=UnityEngine.SceneManagement.SceneManager.GetActiveScene();bool dirty=originalScene.isDirty;
+var assets=AssetDatabase.LoadAssetAtPath<DraculasBox.Runtime.GameAssets>("Assets/DraculasBox/Content/GameAssets.asset");
+var priorPipeline=QualitySettings.renderPipeline;var priorTheme=DraculasBox.Runtime.GameThemes.Current.Id;var priorActive=RenderTexture.active;
+var scene=UnityEditor.SceneManagement.EditorSceneManager.NewPreviewScene();var root=new GameObject("Paired gate art preview");UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(root,scene);
+var cameraObject=new GameObject("Paired gate camera");UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(cameraObject,scene);
+var camera=cameraObject.AddComponent<Camera>();camera.scene=scene;camera.enabled=false;camera.orthographic=true;camera.clearFlags=CameraClearFlags.SolidColor;
+var target=new RenderTexture(640,560,24);target.Create();camera.targetTexture=target;camera.aspect=640f/560;
+var image=new Texture2D(640,560,TextureFormat.RGB24,false);var board=root.AddComponent<DraculasBox.Runtime.BoardView>();var flags=System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance;
+var folder=System.IO.Path.GetFullPath("DraculasBox/ArtDrafts/DoorsPairing-20261112");System.IO.Directory.CreateDirectory(folder);
+var extras=new System.Collections.Generic.List<GameObject>();var owned=new System.Collections.Generic.List<UnityEngine.Object>();
+try
+{
+ QualitySettings.renderPipeline=assets.pipeline;DraculasBox.Runtime.GameThemes.Apply("wine");camera.backgroundColor=DraculasBox.Runtime.GameThemes.Current.Background;board.Initialize(assets,camera);
+ var data=new DraculasBox.Core.LevelData{id="paired-door-review",title="机关配对",rows=new[]{"#########","#...#...#","#.......#","#...#...#","#.......#","#...#...#","#########"},player=new DraculasBox.Core.Cell(1,4),coffin=new DraculasBox.Core.Cell(7,4),pieces=new[]{new DraculasBox.Core.EntityData{id="weight",cell=new DraculasBox.Core.Cell(2,3)},new DraculasBox.Core.EntityData{id="lamp",kind=DraculasBox.Core.PieceKind.Lamp,cell=new DraculasBox.Core.Cell(2,2)}},plates=new[]{new DraculasBox.Core.DeviceData{cell=new DraculasBox.Core.Cell(2,4),channel=0},new DraculasBox.Core.DeviceData{cell=new DraculasBox.Core.Cell(6,4),channel=1}},doors=new[]{new DraculasBox.Core.DeviceData{cell=new DraculasBox.Core.Cell(4,2),channel=0},new DraculasBox.Core.DeviceData{cell=new DraculasBox.Core.Cell(4,4),channel=1}}};
+ System.Func<string,Sprite,Vector3,Vector3,int,Color,SpriteRenderer> add=(name,sprite,position,scale,order,color)=>{var go=new GameObject(name);extras.Add(go);go.transform.SetParent(board.transform.Find("Board"),false);go.transform.localPosition=position;go.transform.localScale=scale;var renderer=go.AddComponent<SpriteRenderer>();renderer.sprite=sprite;renderer.sharedMaterial=assets.material;renderer.sortingOrder=order;renderer.color=color;var properties=new MaterialPropertyBlock();properties.SetTexture("_MainTex",sprite.texture);renderer.SetPropertyBlock(properties);return renderer;};
+ System.Func<string,Color[],Sprite> make=(name,pixels)=>{var texture=new Texture2D(64,64,TextureFormat.RGBA32,false){name=name,filterMode=FilterMode.Bilinear,wrapMode=TextureWrapMode.Clamp,hideFlags=HideFlags.DontSave};texture.SetPixels(pixels);texture.Apply(false,false);var sprite=Sprite.Create(texture,new Rect(0,0,64,64),Vector2.one*.5f,64,0,SpriteMeshType.FullRect);sprite.name=name;sprite.hideFlags=HideFlags.DontSave;owned.Add(sprite);owned.Add(texture);return sprite;};
+ var colors=new[]{DraculasBox.Runtime.BoardView.CircuitColors[0],DraculasBox.Runtime.BoardView.CircuitColors[1]};
+ var glyphs=new Sprite[2];var devices=new Sprite[3,2,2];
+ for(int channel=0;channel<2;channel++)
+ {
+  var dots=new Color[4096];for(int y=0;y<64;y++)for(int x=0;x<64;x++){float nearest=100;for(int dot=0;dot<=channel;dot++){float cx=32+(dot-channel*.5f)*16;nearest=Mathf.Min(nearest,new Vector2(x+.5f-cx,y+.5f-32).magnitude);}dots[y*64+x]=new Color(1,.98f,.92f,1-Mathf.SmoothStep(0,1,Mathf.Clamp01(nearest-5)));}glyphs[channel]=make("Paired dots "+channel,dots);
+  for(int variant=0;variant<3;variant++)for(int flat=0;flat<2;flat++)
+  {
+   var pixels=new Color[4096];var ink=new Color(.19f,.23f,.28f,1);var hue=colors[channel];var baseColor=variant==1?new Color(.29f,.35f,.41f,1):Color.Lerp(hue,Color.white,.08f);int front=flat==1?4:12;
+   for(int y=0;y<64;y++)for(int x=0;x<64;x++)
+   {
+    if(x<1||x>62||y<1||y>62){pixels[y*64+x]=Color.clear;continue;}
+    Color color=baseColor;int edge=Mathf.Min(Mathf.Min(x-1,62-x),Mathf.Min(y-front,62-y));
+    if(y<front){color=Color.Lerp(baseColor*.52f,baseColor*.69f,(float)y/front);if(y<3)color=ink;}
+    else if(edge<1)color=ink;
+    else if(edge<5)color=x<6||y>57?Color.Lerp(baseColor,Color.white,.32f):baseColor*.68f;
+    if(y>=front+4&&y<=58&&x>=6&&x<=57)
+    {
+     if(variant==1&&x>=21&&x<=42)color=hue;
+     if(variant==2){if(x>=30&&x<=33)color=ink;else if(x==29||x==34)color=Color.Lerp(hue,Color.white,.30f);}
+    }
+    color.a=1;pixels[y*64+x]=color;
+   }
+   devices[variant,channel,flat]=make("Paired device "+variant+"-"+channel+"-"+flat,pixels);
+  }
+ }
+ var solid=assets.Sprite("solid");
+ for(int variant=0;variant<3;variant++)for(int active=0;active<2;active++)
+ {
+  foreach(var go in extras)if(go!=null)UnityEngine.Object.DestroyImmediate(go);extras.Clear();var current=data.Copy();if(active==1)current.pieces[0].cell=current.plates[0].cell;
+  var state=new DraculasBox.Core.Definition(current).Initial();board.Load(state);if(state.DoorOpen(0)!=(active==1)||state.DoorOpen(1))throw new System.Exception("Pairing fixture state mismatch");
+  var boardRoot=board.transform.Find("Board");boardRoot.localPosition=Vector3.zero;boardRoot.localScale=Vector3.one;
+  foreach(var sprite in board.GetComponentsInChildren<SpriteRenderer>())if(sprite.name.StartsWith("Door ",System.StringComparison.Ordinal)||sprite.name.StartsWith("Plate ",System.StringComparison.Ordinal))sprite.gameObject.SetActive(false);
+  for(int channel=0;channel<2;channel++)
+  {
+   var plate=board.Position(current.plates[channel].cell);var gate=board.Position(current.doors[channel].cell);var hue=colors[channel];bool down=state.PlatePressed(channel);
+   add("Plate outer lip",solid,plate+new Vector3(.015f,-.025f),new Vector3(.98f,.98f,1),-16,hue*.65f);
+   add("Colored pressure plate",devices[variant,channel,1],plate+Vector3.down*(down?.024f:0),Vector3.one*(down?.89f:.94f),-15,Color.white);
+   add("Plate pair symbol",glyphs[channel],plate+Vector3.up*.035f,Vector3.one*.90f,-14,Color.white);
+   add("Persistent plate badge",solid,plate+Vector3.down*.435f,new Vector3(.40f,.13f,1),16,hue*(down?1.1f:.85f));
+   add("Visible plate pair dots",glyphs[channel],plate+Vector3.down*.435f,Vector3.one*.52f,17,Color.white);
+   if(!state.DoorOpen(channel))
+   {
+    add("Gate ground contact",solid,gate+new Vector3(.025f,-.045f),Vector3.one*.97f,2,new Color(0,0,0,.24f));
+    add("Raised colored gate",devices[variant,channel,0],gate,Vector3.one*.97f,3,Color.white);
+    add("Gate pair symbol",glyphs[channel],gate+Vector3.up*.05f,Vector3.one*.90f,4,Color.white);
+   }
+   else
+   {
+    // Shallow edge remnants retain identity; the open floor has no well or full-cell outline.
+    for(int side=-1;side<=1;side+=2)add("Retracted edge",solid,gate+new Vector3(side*.435f,0),new Vector3(.07f,.80f,1),1,hue*.60f);
+   }
+   add("Gate pair badge",solid,gate+Vector3.down*.435f,new Vector3(.40f,.13f,1),5,hue*(state.DoorOpen(channel)?1.1f:.85f));
+   add("Persistent gate pair dots",glyphs[channel],gate+Vector3.down*.435f,Vector3.one*.52f,6,Color.white);
+  }
+  camera.orthographicSize=4.15f;camera.transform.position=new Vector3(0,0,-10);camera.Render();RenderTexture.active=target;image.ReadPixels(new Rect(0,0,640,560),0,0);image.Apply();System.IO.File.WriteAllBytes(folder+"/"+(char)('A'+variant)+(active==0?"-closed":"-active")+".png",image.EncodeToPNG());
+ }
+ return "Rendered three distinct device treatments with two matching plate-door channels and actual pressed/open states.";
+}
+finally
+{
+ RenderTexture.active=priorActive;camera.targetTexture=null;if(board!=null)typeof(DraculasBox.Runtime.BoardView).GetMethod("OnDestroy",flags).Invoke(board,null);UnityEditor.SceneManagement.EditorSceneManager.ClosePreviewScene(scene);foreach(var value in owned)if(value!=null)UnityEngine.Object.DestroyImmediate(value);target.Release();UnityEngine.Object.DestroyImmediate(target);UnityEngine.Object.DestroyImmediate(image);QualitySettings.renderPipeline=priorPipeline;DraculasBox.Runtime.GameThemes.Apply(priorTheme);
+ if(UnityEngine.SceneManagement.SceneManager.GetActiveScene()!=originalScene||originalScene.isDirty!=dirty)throw new System.Exception("User scene changed");
+}

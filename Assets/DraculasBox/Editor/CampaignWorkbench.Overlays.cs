@@ -92,14 +92,30 @@ namespace DraculasBox.Editor
         public string LevelPrefix(string id)=>CampaignLabels.Prefix(Data.catalog,id);
         private void DrawLevelPopup()
         {
-            var root=UI.WorkshopOverlay("Level tools",levelPopupCenter,new Vector2(320,212),CloseOverlay);
-            OverlayText(root,"Selected level",DisplayName(selectedId),new Vector2(-12,75),new Vector2(250,32),22);
-            OverlayButton(root,"level-tools-close","×",new Vector2(133,75),new Vector2(30,28),CloseOverlay);
-            OverlayButton(root,"campaign-copy","复制关卡",new Vector2(0,25),new Vector2(272,36),()=>Edit(()=>selectedId=doc.AddLevel(Current,Selected,true)));
-            OverlayButton(root,"campaign-transfer","移至章节",new Vector2(0,-20),new Vector2(272,36),()=>{overlay=Overlay.Transfer;choicePage=0;overlayError="";Draw();});
-            var remove=OverlayButton(root,"campaign-remove","删除关卡",new Vector2(0,-65),new Vector2(272,36),()=>{overlay=Overlay.Remove;overlayError="";Draw();});
+            var root=UI.WorkshopOverlay("Level tools",levelPopupCenter,new Vector2(320,258),CloseOverlay);
+            OverlayText(root,"Selected level",DisplayName(selectedId),new Vector2(-12,98),new Vector2(250,32),22);
+            OverlayButton(root,"level-tools-close","×",new Vector2(133,98),new Vector2(30,28),CloseOverlay);
+            OverlayButton(root,"campaign-copy","复制关卡",new Vector2(0,48),new Vector2(272,36),()=>Edit(()=>selectedId=doc.AddLevel(Current,Selected,true)));
+            OverlayButton(root,"campaign-transfer","移至章节",new Vector2(0,3),new Vector2(272,36),()=>{overlay=Overlay.Transfer;choicePage=0;overlayError="";Draw();});
+            OverlayButton(root,"campaign-to-custom","移至创作关卡",new Vector2(0,-42),new Vector2(272,36),MoveToCustom);
+            var remove=OverlayButton(root,"campaign-remove","删除关卡",new Vector2(0,-87),new Vector2(272,36),()=>{overlay=Overlay.Remove;overlayError="";Draw();});
             remove.transform.Find("Label").GetComponent<TMP_Text>().color=GameUI.WorkshopAccent;
             UI.FocusButton("campaign-copy");
+        }
+        private void MoveToCustom()
+        {
+            var copy=Data.Board(selectedId).Copy();
+            var route=Data.Plan(selectedId)?.route;
+            copy.solution=CampaignDocument.Proves(copy,route,out _)?route:null;
+            copy.id=Guid.NewGuid().ToString("N");
+            if(Change(()=>{doc.Remove(Current,Selected);app.Library.Save(copy);}))
+            {overlay=Overlay.None;notice="已移至创作关卡";}
+            else if(app.Library.Exists(copy.id))
+            {
+                // Draft persistence failed: restore the catalogue and archive the new copy.
+                try{app.Library.Archive(copy.id);}catch(Exception e){notice+="；创作副本已保留："+e.Message;}
+            }
+            Draw();
         }
         private void DrawRemoveLevel()
         {
