@@ -1,6 +1,6 @@
 {
   "name": "BoxOrVoid.Runtime",
   "rootNamespace": "BoxOrVoid.Study",
-  "references": ["BoxOrVoid.Core", "Unity.TextMeshPro", "Unity.ugui"],
+  "references": ["BoxOrVoid.Core", "Unity.TextMeshPro", "UnityEngine.UI", "Unity.ugui"],
   "autoReferenced": true
 }

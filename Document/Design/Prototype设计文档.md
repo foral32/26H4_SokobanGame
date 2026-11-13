@@ -80,8 +80,8 @@ Dracula’s Box 是一款二维格子推箱解谜游戏。玩家操控会被太�
 
 | 项目 | 当前工程依据 |
 |---|---|
-| 引擎与语言 | `ProjectSettings/ProjectVersion.txt` 声明 Unity `6000.3.6f1`，使用 C# |
-| 渲染与文本 | 当前 `Packages/packages-lock.json` 解析 URP `17.3.0`、TextMeshPro `5.0.0` |
+| 引擎与语言 | `ProjectSettings/ProjectVersion.txt` 声明 Unity `2022.3.51f1`，使用 C# |
+| 渲染与文本 | 当前 `Packages/packages-lock.json` 解析 URP `14.0.11`（内置包按编辑器版本生效）、TextMeshPro `3.0.6` |
 | 可评估复用 | 现有输入、动效编排、UI、转场、关卡数据与编辑工具结构 |
 | 正式模块 | `Assets/DraculasBox/`，基础职责见[技术框架](../技术框架.md) |
 

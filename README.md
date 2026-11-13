@@ -8,7 +8,7 @@
 
 ## 打开与体验
 
-1. 用 **Unity 6000.3.6f1** 打开仓库根目录，等待首次资源导入与脚本编译完成。
+1. 用 **Unity 2022.3.51f1** 打开仓库根目录，等待首次资源导入与脚本编译完成。
 2. 打开场景 [`Assets/DraculasBox/Scenes/DraculasBox.unity`](Assets/DraculasBox/Scenes/DraculasBox.unity)。
 3. 进入 **Play 模式**，在 Game 窗口中操作。
 

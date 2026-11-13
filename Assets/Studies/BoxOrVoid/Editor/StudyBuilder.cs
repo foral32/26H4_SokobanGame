@@ -90,7 +90,7 @@ namespace BoxOrVoid.Study.Editor
         public static string Capture(string filename)
         {
             if(!EditorApplication.isPlaying) throw new InvalidOperationException("Capture requires the running study.");
-            var app=UnityEngine.Object.FindFirstObjectByType<PuzzleApp>();
+            var app=UnityEngine.Object.FindObjectOfType<PuzzleApp>();
             if(app==null || app.Board==null) throw new InvalidOperationException("Study is not running.");
             string folder=Path.GetFullPath("Studies/BoxOrVoid/Evidence/Runtime");Directory.CreateDirectory(folder);
             string target=Path.Combine(folder,Path.GetFileName(filename));

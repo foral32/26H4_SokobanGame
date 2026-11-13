@@ -78,12 +78,30 @@ public static class AltDragDuplicateValidation
             Check(copies[0].position == new Vector3(7, 3, 4), "copy receives drag offset");
             Call("MoveCopies", Vector3.right * 8f);
             Check(copies[0].position == new Vector3(10, 3, 4), "continued drag does not accumulate offset");
+#if UNITY_6000_0_OR_NEWER
             var id = copies[0].gameObject.GetEntityId();
+#else
+            // Unity 2022.3 没有 EntityId：用存活引用判销毁，重做后按场景、名称与位置找回副本。
+            Transform tracked = copies[0];
+            string trackedName = tracked.name;
+#endif
             Call("Finish");
             Undo.PerformUndo();
+#if UNITY_6000_0_OR_NEWER
             Check(EditorUtility.EntityIdToObject(id) == null && original != null, "one undo removes copy and keeps original");
+#else
+            Check(tracked == null && original != null, "one undo removes copy and keeps original");
+#endif
             Undo.PerformRedo();
+#if UNITY_6000_0_OR_NEWER
             var redone = EditorUtility.EntityIdToObject(id) as GameObject;
+#else
+            GameObject redone = null;
+            foreach (var candidate in UnityEngine.Object.FindObjectsOfType<Transform>())
+                if (candidate != original.transform && candidate.gameObject.scene == testScene
+                    && candidate.name == trackedName && candidate.position == new Vector3(10, 3, 4))
+                { redone = candidate.gameObject; break; }
+#endif
             Check(redone != null && redone.transform.position == new Vector3(10, 3, 4), "redo restores copy and final position");
 
             Selection.objects = new UnityEngine.Object[] { original };
@@ -92,10 +110,18 @@ public static class AltDragDuplicateValidation
             type.GetField("drag", BindingFlags.NonPublic | BindingFlags.Static).SetValue(null, drag);
             Call("Duplicate");
             copies = (Transform[])dragType.GetField("copies").GetValue(drag);
+#if UNITY_6000_0_OR_NEWER
             var cancelledId = copies[0].gameObject.GetEntityId();
+#else
+            Transform cancelledCopy = copies[0];
+#endif
             Call("MoveCopies", Vector3.up);
             Call("Cancel");
+#if UNITY_6000_0_OR_NEWER
             Check(EditorUtility.EntityIdToObject(cancelledId) == null && Selection.activeGameObject == original, "cancel removes copy and restores selection");
+#else
+            Check(cancelledCopy == null && Selection.activeGameObject == original, "cancel removes copy and restores selection");
+#endif
 
             temporaryPrefabPath = AssetDatabase.GenerateUniqueAssetPath("Assets/AltDragDuplicateValidation.prefab");
             var sample = GameObject.CreatePrimitive(PrimitiveType.Cube);

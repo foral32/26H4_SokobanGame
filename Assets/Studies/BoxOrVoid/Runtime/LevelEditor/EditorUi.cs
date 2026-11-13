@@ -15,7 +15,7 @@ namespace BoxOrVoid.Study.LevelEditing
         {var r=Rect(name,parent,position,size);var image=r.gameObject.AddComponent<Image>();image.sprite=sprite;image.color=color??Color.white;image.preserveAspect=sprite!=null;image.raycastTarget=false;return image;}
         public static TMP_Text Text(string name,Transform parent,StudyAssets assets,string value,Vector2 position,Vector2 size,float fontSize=20,TextAlignmentOptions align=TextAlignmentOptions.Center,Color? color=null)
         {
-            var r=Rect(name,parent,position,size);var text=r.gameObject.AddComponent<TextMeshProUGUI>();text.font=fontSize>=28?assets.Font:assets.EditorBodyFont;text.text=value;text.fontSize=fontSize;text.alignment=align;text.color=color??Ink;text.raycastTarget=false;text.richText=false;text.overflowMode=TextOverflowModes.Ellipsis;text.textWrappingMode=TextWrappingModes.Normal;return text;
+            var r=Rect(name,parent,position,size);var text=r.gameObject.AddComponent<TextMeshProUGUI>();text.font=fontSize>=28?assets.Font:assets.EditorBodyFont;text.text=value;text.fontSize=fontSize;text.alignment=align;text.color=color??Ink;text.raycastTarget=false;text.richText=false;text.overflowMode=TextOverflowModes.Ellipsis;text.enableWordWrapping=true;return text;
         }
         public static EditorWidget Button(Transform parent,StudyAssets assets,string id,string label,Vector2 position,Vector2 size,string icon=null,bool round=false,bool primary=false,string shortcut=null)
         {

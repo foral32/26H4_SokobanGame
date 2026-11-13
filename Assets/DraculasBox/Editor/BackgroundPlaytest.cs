@@ -53,7 +53,7 @@ namespace DraculasBox.Editor
         }
         private static void Attach()
         {
-            var app=UnityEngine.Object.FindFirstObjectByType<DraculaApp>();if(app==null||app.Progress==null)return;
+            var app=UnityEngine.Object.FindObjectOfType<DraculaApp>();if(app==null||app.Progress==null)return;
             EditorApplication.update-=Attach;if(SessionState.GetBool("DraculasBox.Playtest.Themes",false)){SessionState.SetBool("DraculasBox.Playtest.Themes",false);app.gameObject.AddComponent<RuntimeChecks>().BeginThemes(app);}else if(SessionState.GetBool("DraculasBox.Playtest.Workshop",false)){SessionState.SetBool("DraculasBox.Playtest.Workshop",false);app.gameObject.AddComponent<RuntimeChecks>().BeginWorkshop(app);}else app.gameObject.AddComponent<PlaytestDriver>().Initialize(app);
         }
     }

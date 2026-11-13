@@ -17,9 +17,9 @@ namespace BoxOrVoid.Study.Editor
         {
             var scene=UnityEngine.SceneManagement.SceneManager.GetActiveScene();
             if(EditorApplication.isPlayingOrWillChangePlaymode||scene.path!=StudyBuilder.ScenePath||scene.isDirty)throw new InvalidOperationException("Open the saved study scene in Edit Mode.");
-            var app=UnityEngine.Object.FindFirstObjectByType<PuzzleApp>();var existing=app.GetComponent<PlayerLevelEditor>();if(existing!=null)throw new InvalidOperationException("Editor UI already exists. Edit the saved objects or use RebuildUi for an intentional layout update.");
+            var app=UnityEngine.Object.FindObjectOfType<PuzzleApp>();var existing=app.GetComponent<PlayerLevelEditor>();if(existing!=null)throw new InvalidOperationException("Editor UI already exists. Edit the saved objects or use RebuildUi for an intentional layout update.");
             var source=AssetDatabase.LoadAssetAtPath<StudyAssets>(StudyBuilder.CatalogPath);source.Initialize();PrepareFont(source);
-            var editor=app.gameObject.AddComponent<PlayerLevelEditor>();PlayerEditorLayout.Create(editor,source,UnityEngine.Object.FindFirstObjectByType<Camera>());
+            var editor=app.gameObject.AddComponent<PlayerLevelEditor>();PlayerEditorLayout.Create(editor,source,UnityEngine.Object.FindObjectOfType<Camera>());
             AuthorEntry(app.GetComponent<StudyMenu>(),source);
             EditorUtility.SetDirty(source);EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene);AssetDatabase.SaveAssets();
         }
@@ -62,10 +62,10 @@ namespace BoxOrVoid.Study.Editor
         public static void RebuildUi()
         {
             var scene=UnityEngine.SceneManagement.SceneManager.GetActiveScene();if(EditorApplication.isPlayingOrWillChangePlaymode||scene.path!=StudyBuilder.ScenePath||scene.isDirty)throw new InvalidOperationException("Expected saved study scene.");
-            var app=UnityEngine.Object.FindFirstObjectByType<PuzzleApp>();var editor=app.GetComponent<PlayerLevelEditor>();if(editor==null)throw new InvalidOperationException("No editor exists.");
+            var app=UnityEngine.Object.FindObjectOfType<PuzzleApp>();var editor=app.GetComponent<PlayerLevelEditor>();if(editor==null)throw new InvalidOperationException("No editor exists.");
             var source=AssetDatabase.LoadAssetAtPath<StudyAssets>(StudyBuilder.CatalogPath);PrepareFont(source);
             var root=app.transform.Find("Level Editor Canvas");if(root!=null)UnityEngine.Object.DestroyImmediate(root.gameObject);
-            PlayerEditorLayout.Create(editor,source,UnityEngine.Object.FindFirstObjectByType<Camera>());app.TestInputOnly=false;EditorUtility.SetDirty(app);EditorUtility.SetDirty(source);EditorUtility.SetDirty(editor);EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene);AssetDatabase.SaveAssets();
+            PlayerEditorLayout.Create(editor,source,UnityEngine.Object.FindObjectOfType<Camera>());app.TestInputOnly=false;EditorUtility.SetDirty(app);EditorUtility.SetDirty(source);EditorUtility.SetDirty(editor);EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene);AssetDatabase.SaveAssets();
         }
     }
 }

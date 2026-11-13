@@ -23,7 +23,7 @@ namespace DraculasBox.Editor
             var scene=SceneManager.GetActiveScene();
             if(EditorApplication.isPlayingOrWillChangePlaymode||scene.path!=ScenePath||scene.isDirty)
                 throw new InvalidOperationException("Open the saved Dracula's Box scene outside Play Mode first.");
-            var app=UnityEngine.Object.FindFirstObjectByType<DraculaApp>();
+            var app=UnityEngine.Object.FindObjectOfType<DraculaApp>();
             if(app==null||app.ui==null||app.ui.AuthoredTitle==null)throw new InvalidOperationException("The authored title is unavailable.");
             app.ui.Initialize(app.assets,app,app.viewCamera);
             app.ui.PrepareEditorTitleEntries();
@@ -106,7 +106,7 @@ namespace DraculasBox.Editor
         public static void UpdatePresentation()
         {
             if(EditorApplication.isPlayingOrWillChangePlaymode||SceneManager.GetActiveScene().path!=ScenePath)throw new InvalidOperationException("Open the Dracula's Box scene outside Play Mode.");
-            var ui=UnityEngine.Object.FindFirstObjectByType<GameUI>();var app=UnityEngine.Object.FindFirstObjectByType<DraculaApp>();
+            var ui=UnityEngine.Object.FindObjectOfType<GameUI>();var app=UnityEngine.Object.FindObjectOfType<DraculaApp>();
             if(ui==null||app==null)throw new InvalidOperationException("Game UI is missing.");GameThemes.Apply(GameThemes.DefaultThemeId);
             var a=AssetDatabase.LoadAssetAtPath<GameAssets>(AssetsPath);
             a.font=Font("TitleFont","Assets/Studies/BoxOrVoid/Art/Fonts/NotoSansSC-Black.ttf");a.bodyFont=Font("BodyFont","Assets/Art/Fonts/Cn/思源黑体SourceHanSansCN-Medium.ttf");

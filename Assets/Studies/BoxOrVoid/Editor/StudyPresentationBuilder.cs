@@ -16,10 +16,10 @@ namespace BoxOrVoid.Study.Editor
             var scene=UnityEngine.SceneManagement.SceneManager.GetActiveScene();
             if(EditorApplication.isPlayingOrWillChangePlaymode || scene.path!=StudyBuilder.ScenePath || scene.isDirty)
                 throw new InvalidOperationException("Open the saved BoxOrVoid scene in Edit Mode before authoring presentation.");
-            var app=UnityEngine.Object.FindFirstObjectByType<PuzzleApp>();
+            var app=UnityEngine.Object.FindObjectOfType<PuzzleApp>();
             if(app.GetComponent<StudyMenu>()!=null) throw new InvalidOperationException("This scene already has authored presentation; edit its objects directly.");
             var source=AssetDatabase.LoadAssetAtPath<StudyAssets>(StudyBuilder.CatalogPath);
-            Create(app,source,UnityEngine.Object.FindFirstObjectByType<Camera>());
+            Create(app,source,UnityEngine.Object.FindObjectOfType<Camera>());
             EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene);
         }
         public static void Create(PuzzleApp app,StudyAssets source,Camera camera)

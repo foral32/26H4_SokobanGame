@@ -5,7 +5,7 @@
     "DraculasBox.Core",
     "DraculasBox.Runtime",
     "Unity.TextMeshPro",
-    "Unity.ugui",
+    "UnityEngine.UI", "Unity.ugui",
     "Unity.RenderPipelines.Universal.Runtime",
     "Unity.RenderPipelines.Universal.2D.Runtime",
     "Unity.RenderPipelines.Core.Runtime"

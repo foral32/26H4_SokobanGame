@@ -33,7 +33,7 @@ namespace BoxOrVoid.Study.Editor
         public static string Begin(string level,string commands)
         {
             if(!EditorApplication.isPlaying || active!=null) throw new InvalidOperationException("Study must be playing with no active probe.");
-            var app=UnityEngine.Object.FindFirstObjectByType<PuzzleApp>();
+            var app=UnityEngine.Object.FindObjectOfType<PuzzleApp>();
             if(app==null || !app.TestInputOnly) throw new InvalidOperationException("Input isolation must be enabled before Play Mode.");
             var probe=active=new StudyPlayProbe();
             probe.app=app;probe.report=new ProbeReport{level=level,commands=commands,status="running",initialFrame=Time.frameCount};
@@ -44,7 +44,7 @@ namespace BoxOrVoid.Study.Editor
         public static string BeginFlow()
         {
             if(!EditorApplication.isPlaying || active!=null) throw new InvalidOperationException("Study must be playing with no active probe.");
-            var app=UnityEngine.Object.FindFirstObjectByType<PuzzleApp>();
+            var app=UnityEngine.Object.FindObjectOfType<PuzzleApp>();
             if(app==null || !app.TestInputOnly) throw new InvalidOperationException("Expected isolated study.");
             var probe=active=new StudyPlayProbe();probe.app=app;probe.report=new ProbeReport{level="flow",status="running",initialFrame=Time.frameCount};
             probe.output=Path.GetFullPath("Studies/BoxOrVoid/Evidence/Runtime/flow_report.json");

@@ -96,7 +96,7 @@ namespace BoxOrVoid.Study.Editor
         public void Preview()
         {
             if(!Validate()) return;
-            var app=UnityEngine.Object.FindFirstObjectByType<PuzzleApp>();
+            var app=UnityEngine.Object.FindObjectOfType<PuzzleApp>();
             if(!EditorApplication.isPlaying || app==null) {message="请在共享 BoxOrVoid 场景进入 Play Mode，再点击试跑。";return;}
             app.LoadCustom(JsonUtility.FromJson<LevelData>(JsonUtility.ToJson(data)),chapter);message="已将工作台数据交给同一玩法场景试跑；没有保存或生成场景。";
         }

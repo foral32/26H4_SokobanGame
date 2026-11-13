@@ -67,7 +67,7 @@ namespace DraculasBox.Runtime
         private TMP_Text Label(RectTransform rect,string value,float size,Color color,TextAlignmentOptions align=TextAlignmentOptions.Center)
         {
             var text=rect.gameObject.AddComponent<TextMeshProUGUI>();text.font=size>=34?assets.font:assets.bodyFont;text.text=value;text.fontSize=size;text.color=color;text.alignment=align;
-            text.richText=false;text.raycastTarget=false;text.overflowMode=size>=34?TextOverflowModes.Overflow:TextOverflowModes.Ellipsis;return text;
+            text.enableWordWrapping=true;text.richText=false;text.raycastTarget=false;text.overflowMode=size>=34?TextOverflowModes.Overflow:TextOverflowModes.Ellipsis;return text;
         }
         private GameIconGraphic Icon(string name,GameIcon icon,Vector2 position,float size,Color color,Transform parent=null)
         {var g=Rect(name,position,Vector2.one*size,parent).gameObject.AddComponent<GameIconGraphic>();g.icon=icon;g.color=color;g.raycastTarget=false;return g;}
@@ -103,9 +103,8 @@ namespace DraculasBox.Runtime
         private Row MenuAction(string id,string label,Vector2 position,float width,Action action,GameIcon icon=GameIcon.Arrow)
         {
             var rect=Rect(id,position,new Vector2(width,50));var b=ClickTarget(rect);
-            var cursor=Icon("Focus",icon,new Vector2(-width*.5f+18,0),25,new Color(Gold.r,Gold.g,Gold.b,0),rect);
             var text=Label(Rect("Label",new Vector2(15,0),new Vector2(width-50,48),rect),label,25,Quiet,TextAlignmentOptions.MidlineLeft);
-            return Register(id,b,action,cursor,text);
+            return Register(id,b,action,null,text);
         }
         private Row RoundAction(string id,string label,Vector2 position,float size,GameIcon icon,Action action)
         {

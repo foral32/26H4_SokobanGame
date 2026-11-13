@@ -257,14 +257,14 @@ namespace ToonyColorsPro
         {
             readonly string nameLegacy;
             readonly string nameHybrid2;
-            readonly ShaderPropertyType type;
+            readonly MaterialProperty.PropType type;
             readonly Func<Material, object> specialMapping;
 
             object value;
             object value2;
             object value3;
 
-            public Property_LegacyToHybrid2(string nameLegacy, string nameHybrid2, ShaderPropertyType type, Func<Material, object> specialMapping = null)
+            public Property_LegacyToHybrid2(string nameLegacy, string nameHybrid2, MaterialProperty.PropType type, Func<Material, object> specialMapping = null)
             {
                 this.nameLegacy = nameLegacy;
                 this.nameHybrid2 = nameHybrid2;
@@ -291,17 +291,17 @@ namespace ToonyColorsPro
 
                 switch (type)
                 {
-                    case ShaderPropertyType.Color:
+                    case MaterialProperty.PropType.Color:
                         value = mat.GetColor(nameLegacy);
                         break;
-                    case ShaderPropertyType.Vector:
+                    case MaterialProperty.PropType.Vector:
                         value = mat.GetVector(nameLegacy);
                         break;
-                    case ShaderPropertyType.Float:
-                    case ShaderPropertyType.Range:
+                    case MaterialProperty.PropType.Float:
+                    case MaterialProperty.PropType.Range:
                         value = mat.GetFloat(nameLegacy);
                         break;
-                    case ShaderPropertyType.Texture:
+                    case MaterialProperty.PropType.Texture:
                         value = mat.GetTexture(nameLegacy);
                         value2 = mat.GetTextureOffset(nameLegacy);
                         value3 = mat.GetTextureScale(nameLegacy);
@@ -320,17 +320,17 @@ namespace ToonyColorsPro
 
                 switch (type)
                 {
-                    case ShaderPropertyType.Color:
+                    case MaterialProperty.PropType.Color:
                         mat.SetColor(nameHybrid2, (Color)this.value);
                         break;
-                    case ShaderPropertyType.Vector:
+                    case MaterialProperty.PropType.Vector:
                         mat.SetVector(nameHybrid2, (Vector4)this.value);
                         break;
-                    case ShaderPropertyType.Float:
-                    case ShaderPropertyType.Range:
+                    case MaterialProperty.PropType.Float:
+                    case MaterialProperty.PropType.Range:
                         mat.SetFloat(nameHybrid2, (float)this.value);
                         break;
-                    case ShaderPropertyType.Texture:
+                    case MaterialProperty.PropType.Texture:
                         mat.SetTexture(nameHybrid2, (Texture)this.value);
                         mat.SetTextureOffset(nameHybrid2, (Vector2)this.value2);
                         mat.SetTextureScale(nameHybrid2, (Vector2)this.value3);
@@ -383,34 +383,34 @@ namespace ToonyColorsPro
         static List<Property_LegacyToHybrid2> LegacyToHybrid2_PropertyMapping =>
             new List<Property_LegacyToHybrid2>()
             {
-                new Property_LegacyToHybrid2("_Color", "_BaseColor", ShaderPropertyType.Color),
-                new Property_LegacyToHybrid2("_MainTex", "_BaseMap", ShaderPropertyType.Texture),
-                new Property_LegacyToHybrid2("_MatCap", "_MatCapTex", ShaderPropertyType.Texture),
-                new Property_LegacyToHybrid2("_ReflectColor", "_ReflectionColor", ShaderPropertyType.Color, material =>
+                new Property_LegacyToHybrid2("_Color", "_BaseColor", MaterialProperty.PropType.Color),
+                new Property_LegacyToHybrid2("_MainTex", "_BaseMap", MaterialProperty.PropType.Texture),
+                new Property_LegacyToHybrid2("_MatCap", "_MatCapTex", MaterialProperty.PropType.Texture),
+                new Property_LegacyToHybrid2("_ReflectColor", "_ReflectionColor", MaterialProperty.PropType.Color, material =>
                 {
                     Color reflectionColor = material.GetColor("_ReflectColor");
                     reflectionColor *= reflectionColor.a;
                     reflectionColor.a = 1;
                     return reflectionColor;
                 }),
-                new Property_LegacyToHybrid2("_RimColor", "_RimColor", ShaderPropertyType.Color, material =>
+                new Property_LegacyToHybrid2("_RimColor", "_RimColor", MaterialProperty.PropType.Color, material =>
                 {
                     Color rimColor = material.GetColor("_RimColor");
                     rimColor *= rimColor.a;
                     rimColor.a = 1;
                     return rimColor;
                 }),
-                new Property_LegacyToHybrid2("_ReflSmoothness", "_ReflectionSmoothness", ShaderPropertyType.Range),
-                new Property_LegacyToHybrid2("_Shininess", "_SpecularToonSize", ShaderPropertyType.Range, material =>
+                new Property_LegacyToHybrid2("_ReflSmoothness", "_ReflectionSmoothness", MaterialProperty.PropType.Range),
+                new Property_LegacyToHybrid2("_Shininess", "_SpecularToonSize", MaterialProperty.PropType.Range, material =>
                 {
                     float shininess = material.GetFloat("_Shininess");
                     shininess = 1.1f / Mathf.Pow(shininess * 10, 0.9f) / 14f; // weird empirical formula... I'm not good at maths
                     return shininess;
                 }),
-                new Property_LegacyToHybrid2("_SpecSmooth", "_SpecularToonSmoothness", ShaderPropertyType.Range),
-                new Property_LegacyToHybrid2("_SpecColor", "_SpecularColor", ShaderPropertyType.Color),
-                new Property_LegacyToHybrid2("_TexLod", "_OutlineTextureLOD", ShaderPropertyType.Range),
-                new Property_LegacyToHybrid2("_RampSmooth", "_RampSmoothing", ShaderPropertyType.Range, material =>
+                new Property_LegacyToHybrid2("_SpecSmooth", "_SpecularToonSmoothness", MaterialProperty.PropType.Range),
+                new Property_LegacyToHybrid2("_SpecColor", "_SpecularColor", MaterialProperty.PropType.Color),
+                new Property_LegacyToHybrid2("_TexLod", "_OutlineTextureLOD", MaterialProperty.PropType.Range),
+                new Property_LegacyToHybrid2("_RampSmooth", "_RampSmoothing", MaterialProperty.PropType.Range, material =>
                 {
                     float smoothing = material.GetFloat("_RampSmooth");
                     if (material.IsKeywordEnabled("TCP2_DISABLE_WRAPPED_LIGHT"))
@@ -420,12 +420,12 @@ namespace ToonyColorsPro
 
                     return smoothing;
                 }),
-                new Property_LegacyToHybrid2("_Outline", "_OutlineWidth", ShaderPropertyType.Range, material =>
+                new Property_LegacyToHybrid2("_Outline", "_OutlineWidth", MaterialProperty.PropType.Range, material =>
                 {
                     float outlineWidth = material.GetFloat("_Outline");
                     return outlineWidth * 2.0f;
                 }),
-                new Property_LegacyToHybrid2("_RampThreshold", "_RampThreshold", ShaderPropertyType.Range, material =>
+                new Property_LegacyToHybrid2("_RampThreshold", "_RampThreshold", MaterialProperty.PropType.Range, material =>
                 {
                     float threshold = material.GetFloat("_RampThreshold");
                     if (material.IsKeywordEnabled("TCP2_DISABLE_WRAPPED_LIGHT"))

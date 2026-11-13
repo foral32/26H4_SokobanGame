@@ -170,7 +170,11 @@ public static class AltDragDuplicate
         for (int i = 0; i < sources.Length; i++) objects[i] = sources[i].gameObject;
         // The pasteboard command can be ignored while a handle owns hotControl.
         // Use the Unity 6 object API and its returned roots, never Selection as a result.
+#if UNITY_6000_0_OR_NEWER
         GameObject[] duplicated = GameObjectUtility.DuplicateGameObjects(objects);
+#else
+        GameObject[] duplicated = DuplicateWithPasteboard(objects);
+#endif
         if (duplicated == null || duplicated.Length != sources.Length)
             throw new System.InvalidOperationException("Alt 拖轴复制失败：Unity 未返回完整副本。");
         var originals = new HashSet<Transform>(sources);
@@ -186,6 +190,32 @@ public static class AltDragDuplicate
         for (int i = 0; i < drag.copies.Length; i++)
             drag.positions[i] = drag.copies[i].position;
     }
+
+#if !UNITY_6000_0_OR_NEWER
+    // Unity 2022.3 没有 GameObjectUtility.DuplicateGameObjects，手动 Instantiate 会断开预制体
+    // 连接且不做组内引用重映射。粘贴板复制是 Unity 自带的整组复制语义（等同 Ctrl+D）；
+    // 手柄持有 hotControl 时命令可能被忽略，因此调用期间临时接管并还原 hotControl 与选择集。
+    // 若命令仍被忽略，副本校验（未返回完整副本/禁止移动原物体）会抛出可见错误。
+    private static GameObject[] DuplicateWithPasteboard(GameObject[] sources)
+    {
+        Object[] previousSelection = Selection.objects;
+        int savedHotControl = GUIUtility.hotControl;
+        Selection.objects = sources;
+        GUIUtility.hotControl = 0;
+        GameObject[] duplicated;
+        try
+        {
+            Unsupported.DuplicateGameObjectsUsingPasteboard();
+            duplicated = Selection.gameObjects;
+        }
+        finally
+        {
+            GUIUtility.hotControl = savedHotControl;
+            Selection.objects = previousSelection;
+        }
+        return duplicated;
+    }
+#endif
 
     private static void MoveCopies(Vector3 offset)
     {

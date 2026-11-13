@@ -32,8 +32,8 @@ namespace DraculasBox.Editor
         public static void RunInputs()=>Begin(Inputs(),"inputs",true);
         private static void Begin(IEnumerator checks,string name,bool cleanup)
         {
-            app=UnityEngine.Object.FindFirstObjectByType<DraculaApp>();
-            driver=UnityEngine.Object.FindFirstObjectByType<PlaytestDriver>();
+            app=UnityEngine.Object.FindObjectOfType<DraculaApp>();
+            driver=UnityEngine.Object.FindObjectOfType<PlaytestDriver>();
             if(app==null||!app.Automated||driver==null||Status=="running"||app.Page!=GamePage.Title)
                 throw new InvalidOperationException("Start an isolated BackgroundPlaytest and wait for its title screen.");
             Directory.CreateDirectory(Evidence);

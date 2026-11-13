@@ -40,10 +40,12 @@ namespace DraculasBox.Editor
             int width=PlayerSettings.defaultScreenWidth,height=PlayerSettings.defaultScreenHeight;
             bool native=PlayerSettings.defaultIsNativeResolution,resizable=PlayerSettings.resizableWindow;
             var fullscreen=PlayerSettings.fullScreenMode;
+#if UNITY_6000_0_OR_NEWER
             var graph=GraphicsSettings.GetRenderPipelineSettings<RenderGraphSettings>();
             var compatibility=typeof(RenderGraphSettings).GetField("m_EnableRenderCompatibilityMode",BindingFlags.Instance|BindingFlags.NonPublic);
             if(graph==null||compatibility==null)throw new InvalidOperationException("The URP build adapter requires review for this editor version.");
             bool priorCompatibility=(bool)compatibility.GetValue(graph);
+#endif
             // BuildPlayer can serialize imported assets and shared settings. Preserve the current
             // working copies, including unrelated edits, rather than restoring files from Git.
             var paths=new[]{"t:UniversalRenderPipelineAsset","t:UniversalRenderPipelineGlobalSettings","t:ScriptableRendererData","t:SpriteAtlas","t:TMP_FontAsset"}
@@ -65,7 +67,11 @@ namespace DraculasBox.Editor
             {
                 // Unity 6.3's serialized compatibility flag can be true while its effective
                 // getter is false. Match this project's existing Render Graph runtime.
-                compatibility.SetValue(graph,false);GraphicsSettings.defaultRenderPipeline=assets.pipeline;
+                // Unity 2022.3 only has the legacy render path, so there is nothing to toggle.
+#if UNITY_6000_0_OR_NEWER
+                compatibility.SetValue(graph,false);
+#endif
+                GraphicsSettings.defaultRenderPipeline=assets.pipeline;
                 for(int i=0;i<qualityPipelines.Length;i++){QualitySettings.SetQualityLevel(i,false);QualitySettings.renderPipeline=assets.pipeline;}
                 QualitySettings.SetQualityLevel(priorQuality,false);
                 PlayerSettings.productName="Dracula's Box";PlayerSettings.defaultScreenWidth=1280;PlayerSettings.defaultScreenHeight=720;
@@ -75,7 +81,10 @@ namespace DraculasBox.Editor
             catch{Status="failed";throw;}
             finally
             {
-                compatibility.SetValue(graph,priorCompatibility);GraphicsSettings.defaultRenderPipeline=priorDefault;
+#if UNITY_6000_0_OR_NEWER
+                compatibility.SetValue(graph,priorCompatibility);
+#endif
+                GraphicsSettings.defaultRenderPipeline=priorDefault;
                 for(int i=0;i<qualityPipelines.Length;i++){QualitySettings.SetQualityLevel(i,false);QualitySettings.renderPipeline=qualityPipelines[i];}
                 QualitySettings.SetQualityLevel(priorQuality,false);
                 PlayerSettings.productName=product;PlayerSettings.defaultScreenWidth=width;PlayerSettings.defaultScreenHeight=height;

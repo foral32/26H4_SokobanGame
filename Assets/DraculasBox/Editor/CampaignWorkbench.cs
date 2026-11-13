@@ -17,7 +17,7 @@ namespace DraculasBox.Editor
             EditorApplication.playModeStateChanged += change =>
             {
                 if (change != PlayModeStateChange.ExitingPlayMode) return;
-                var app = UnityEngine.Object.FindFirstObjectByType<DraculaApp>();
+                var app = UnityEngine.Object.FindObjectOfType<DraculaApp>();
                 if (app == null || !app.EditingOfficial || app.Creator?.Document == null) return;
                 if (app.Page == GamePage.Editing) app.Creator.CommitPending();
                 if (app.Creator.Document.Dirty) app.RecoverBoard(app.Creator.Document.Data);

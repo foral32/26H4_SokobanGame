@@ -36,10 +36,13 @@ namespace BoxOrVoid.Study.Editor
             // In Unity 6.3, the effective getter is false without the compatibility
             // define, but a legacy serialized true flag still rejects the build.
             // Match the existing Render Graph runtime just for this study build.
+            // Unity 2022.3 only has the legacy render path, so there is nothing to toggle.
+#if UNITY_6000_0_OR_NEWER
             var graph=GraphicsSettings.GetRenderPipelineSettings<RenderGraphSettings>();
             var compatibility=typeof(RenderGraphSettings).GetField("m_EnableRenderCompatibilityMode",BindingFlags.Instance|BindingFlags.NonPublic);
             if(graph==null || compatibility==null) throw new InvalidOperationException("Recheck the URP build adapter for this editor version.");
             bool original=(bool)compatibility.GetValue(graph);
+#endif
             var paths=AssetDatabase.FindAssets("t:UniversalRenderPipelineAsset").Concat(AssetDatabase.FindAssets("t:UniversalRenderPipelineGlobalSettings")).Select(AssetDatabase.GUIDToAssetPath).Where(p=>p.StartsWith("Assets/")).Distinct().ToList();
             paths.AddRange(AssetDatabase.FindAssets("t:SpriteAtlas",new[]{"Assets"}).Select(AssetDatabase.GUIDToAssetPath));
             paths.AddRange(new[]{"ProjectSettings/ProjectSettings.asset","ProjectSettings/GraphicsSettings.asset","ProjectSettings/QualitySettings.asset","ProjectSettings/UnityConnectSettings.asset"});
@@ -47,7 +50,9 @@ namespace BoxOrVoid.Study.Editor
             var before=paths.ToDictionary(p=>p,p=>File.Exists(p)?File.ReadAllBytes(p):null);
             try
             {
+#if UNITY_6000_0_OR_NEWER
                 compatibility.SetValue(graph,false);
+#endif
                 GraphicsSettings.defaultRenderPipeline=studyPipeline;
                 for(int i=0;i<priorQualityPipelines.Length;i++) {QualitySettings.SetQualityLevel(i,false);QualitySettings.renderPipeline=studyPipeline;}
                 QualitySettings.SetQualityLevel(priorQuality,false);
@@ -58,7 +63,9 @@ namespace BoxOrVoid.Study.Editor
             }
             finally
             {
+#if UNITY_6000_0_OR_NEWER
                 compatibility.SetValue(graph,original);
+#endif
                 GraphicsSettings.defaultRenderPipeline=priorDefault;
                 for(int i=0;i<priorQualityPipelines.Length;i++) {QualitySettings.SetQualityLevel(i,false);QualitySettings.renderPipeline=priorQualityPipelines[i];}
                 QualitySettings.SetQualityLevel(priorQuality,false);

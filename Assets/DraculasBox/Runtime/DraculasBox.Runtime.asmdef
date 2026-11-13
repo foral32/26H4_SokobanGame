@@ -4,7 +4,7 @@
   "references": [
     "DraculasBox.Core",
     "Unity.TextMeshPro",
-    "Unity.ugui"
+    "UnityEngine.UI", "Unity.ugui"
   ],
   "autoReferenced": true
 }
