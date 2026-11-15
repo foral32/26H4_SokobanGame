@@ -37,7 +37,7 @@ namespace DraculasBox.Editor
             bool banner=!string.IsNullOrEmpty(publicationError);
             float height=Mathf.Clamp(contentHeight+162+(banner?64:0),282,560),viewHeight=height-162-(banner?64:0);
             var root=UI.WorkshopOverlay("Publication review",Vector2.zero,new Vector2(768,height),CloseOverlay);
-            OverlayText(root,"Review heading","写回工程",new Vector2(-152,height*.5f-35),new Vector2(400,38),26);
+            OverlayText(root,"Review heading",project.PublishLabel,new Vector2(-152,height*.5f-35),new Vector2(400,38),26);
             OverlayButton(root,"campaign-popup-close","×",new Vector2(352,height*.5f-35),new Vector2(32,32),CloseOverlay);
             int count=review.Items.Count(i=>i.selected);
             var subjects=new Dictionary<string,TMP_Text>();
@@ -54,7 +54,7 @@ namespace DraculasBox.Editor
                     subjects[item.key].color=item.selected?GameUI.WorkshopInk:Muted;
                 }
                 UI.SetLabel("publish-select-all",count==review.Items.Count?"全不选":"全选");
-                UI.SetLabel("campaign-publish","写回所选（"+count+"）");
+                UI.SetLabel("campaign-publish",(Application.isEditor?"写回所选（":"保存所选（")+count+"）");
             }
             OverlayButton(root,"publish-select-all",count==review.Items.Count?"全不选":"全选",new Vector2(220,height*.5f-35),new Vector2(92,32),()=>
             {bool select=count!=review.Items.Count;foreach(var item in review.Items)item.selected=select;RefreshSelection();});
@@ -97,7 +97,7 @@ namespace DraculasBox.Editor
             UI.WorkshopTextAction("campaign-reload","重载工程",new Vector2(-298,-height*.5f+30),new Vector2(108,38),()=>{overlay=Overlay.Reload;Draw();},root);
             OverlayButton(root,"campaign-review-cancel","取消",new Vector2(130,-height*.5f+30),new Vector2(104,38),CloseOverlay);
             // Keep the action clickable: invalid selections must explain why.
-            OverlayButton(root,"campaign-publish","写回所选（"+count+"）",new Vector2(277,-height*.5f+30),new Vector2(150,38),Publish,true);
+            OverlayButton(root,"campaign-publish",(Application.isEditor?"写回所选（":"保存所选（")+count+"）",new Vector2(277,-height*.5f+30),new Vector2(150,38),Publish,true);
             UI.FocusButton("campaign-review-cancel");
         }
     }

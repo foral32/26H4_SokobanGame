@@ -6,7 +6,9 @@ using System.Security.Cryptography;
 using System.Text;
 using DraculasBox.Core;
 using DraculasBox.Runtime;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace DraculasBox.Editor
@@ -26,6 +28,10 @@ namespace DraculasBox.Editor
         [Serializable] private sealed class FileEdit { public string path, before, after; }
         [Serializable] private sealed class Journal { public FileEdit[] files; }
         private readonly GameAssets assets;
+        private readonly bool runtimeStorage;
+        private readonly List<TextAsset> runtimeAssets=new();
+        internal string PublishLabel=>runtimeStorage?"保存目录":"写回工程";
+        internal static string PlayerFolder => Path.Combine(Application.persistentDataPath,"DraculasBox","OfficialCampaign");
         private readonly string folder, cache, chaptersPath, replaysPath;
         private Dictionary<string,string> sourceBytes = new();
         private string DraftPath => Path.Combine(cache, "draft.json");
@@ -35,9 +41,26 @@ namespace DraculasBox.Editor
         public bool HasDraft => File.Exists(DraftPath);
         public string RecoveryNotice { get; private set; }
 
-        public CampaignProject(GameAssets assets)
+        public CampaignProject(GameAssets assets, string runtimeFolder=null)
         {
             this.assets = assets;
+            runtimeStorage = !Application.isEditor || runtimeFolder!=null;
+            if(runtimeStorage)
+            {
+                folder=Path.GetFullPath(runtimeFolder??PlayerFolder).Replace('\\','/');
+                cache=Path.Combine(folder,"Work");
+                Directory.CreateDirectory(cache);Directory.CreateDirectory(Path.Combine(folder,"Levels"));
+                chaptersPath=folder+"/Chapters.json";replaysPath=folder+"/Replays.json";
+                if(!File.Exists(chaptersPath))
+                {
+                    foreach(var level in assets.levels.Where(l=>l!=null))
+                    {if(!CampaignDocument.ValidId(level.name))throw new InvalidDataException("Invalid embedded level ID.");ProgressStore.Atomic(BoardPath(level.name),level.text);}
+                    ProgressStore.Atomic(replaysPath,assets.replays.text);ProgressStore.Atomic(chaptersPath,assets.catalog.text);
+                }
+            }
+            else
+            {
+#if UNITY_EDITOR
             chaptersPath = AssetDatabase.GetAssetPath(assets.catalog);
             replaysPath = AssetDatabase.GetAssetPath(assets.replays);
             folder = Path.GetDirectoryName(chaptersPath)?.Replace('\\', '/');
@@ -46,6 +69,10 @@ namespace DraculasBox.Editor
                 throw new InvalidDataException("未找到正式关卡目录。");
             cache = Path.GetFullPath(Path.Combine("Library", "DraculasBoxCampaign", AssetDatabase.AssetPathToGUID(chaptersPath)));
             Directory.CreateDirectory(cache);
+#else
+                throw new InvalidOperationException("Project asset storage requires Unity Editor.");
+#endif
+            }
             using (Lock())
             {
                 if (File.Exists(JournalPath)) RollBack(JsonUtility.FromJson<Journal>(File.ReadAllText(JournalPath)));
@@ -88,6 +115,14 @@ namespace DraculasBox.Editor
                 throw new InvalidDataException("试玩路线目录无效。");
             Revision = Digest(Encoding.UTF8.GetBytes(string.Join("\n", parts)));
             Source = data;
+            if(runtimeStorage)
+            {
+                var catalogAsset=new TextAsset(File.ReadAllText(chaptersPath));var replayAsset=new TextAsset(File.ReadAllText(replaysPath));
+                var levelAssets=LevelReferences(data.catalog,folder);
+                foreach(var prior in runtimeAssets)UnityEngine.Object.Destroy(prior);runtimeAssets.Clear();
+                assets.catalog=catalogAsset;assets.replays=replayAsset;assets.levels=levelAssets;
+                runtimeAssets.Add(catalogAsset);runtimeAssets.Add(replayAsset);runtimeAssets.AddRange(levelAssets);
+            }
             sourceBytes = snapshot;
         }
 
@@ -210,8 +245,10 @@ namespace DraculasBox.Editor
             Stage(chaptersPath, Source.catalog, publication.catalog);
             if (files.Count == 0) { afterImport?.Invoke(); return; }
             bool membershipChanged=!new HashSet<string>(Source.boards.Select(b=>b.id)).SetEquals(publication.boards.Select(b=>b.id));
-            if (membershipChanged && EditorUtility.IsDirty(assets))
+#if UNITY_EDITOR
+            if (!runtimeStorage && membershipChanged && EditorUtility.IsDirty(assets))
                 throw new IOException("GameAssets 有其他未保存修改。请先在 Unity 中保存资源，再重试。");
+#endif
             var journal = new Journal { files = files.ToArray() };
             AtomicBytes(JournalPath, Encoding.UTF8.GetBytes(JsonUtility.ToJson(journal)));
             try
@@ -230,24 +267,33 @@ namespace DraculasBox.Editor
             }
             catch { RollBack(journal); ReadSource(); throw; }
         }
-        private static void Import(string path) =>
-            AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceSynchronousImport | ImportAssetOptions.ForceUpdate);
+        private static void Import(string path)
+        {
+#if UNITY_EDITOR
+            if(path.StartsWith("Assets/",StringComparison.Ordinal))AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceSynchronousImport | ImportAssetOptions.ForceUpdate);
+#endif
+        }
         internal static TextAsset[] LevelReferences(ChapterCatalog catalog,string contentFolder)
         {
             return catalog.chapters.SelectMany(c=>c.levels).OrderBy(link=>link.id,StringComparer.Ordinal).Select(link=>
             {
                 if(!CampaignDocument.ValidId(link.id))throw new InvalidDataException("无效关卡 ID："+link.id);
-                return AssetDatabase.LoadAssetAtPath<TextAsset>(contentFolder+"/Levels/"+link.id+".json")
-                    ??throw new IOException("Unity 未能导入关卡："+link.id);
+                string path=contentFolder+"/Levels/"+link.id+".json";
+#if UNITY_EDITOR
+                if(contentFolder.StartsWith("Assets/",StringComparison.Ordinal))return AssetDatabase.LoadAssetAtPath<TextAsset>(path)??throw new IOException("Unity 未能导入关卡："+link.id);
+#endif
+                return new TextAsset(File.ReadAllText(path)){name=link.id};
             }).ToArray();
         }
         private void BindLevels(ChapterCatalog catalog)
         {
+            if(runtimeStorage)return;
             var levels=LevelReferences(catalog,folder);
             if (levels.SequenceEqual(assets.levels)) return;
             assets.levels = levels;
-            EditorUtility.SetDirty(assets);
-            AssetDatabase.SaveAssetIfDirty(assets);
+#if UNITY_EDITOR
+            if(!runtimeStorage){EditorUtility.SetDirty(assets);AssetDatabase.SaveAssetIfDirty(assets);}
+#endif
         }
         private void RollBack(Journal journal)
         {
@@ -263,7 +309,11 @@ namespace DraculasBox.Editor
                 if (current != f.after) { conflicts.Add(f.path);continue; }
                 if (created)
                 {
-                    if (!AssetDatabase.DeleteAsset(f.path))
+                    bool deleted=false;
+#if UNITY_EDITOR
+                    if(!runtimeStorage)deleted=AssetDatabase.DeleteAsset(f.path);
+#endif
+                    if (!deleted)
                     {
                         File.Delete(f.path);
                         if (File.Exists(f.path + ".meta")) File.Delete(f.path + ".meta");

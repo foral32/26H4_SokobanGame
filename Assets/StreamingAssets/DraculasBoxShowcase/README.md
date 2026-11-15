@@ -18,7 +18,7 @@
 
 `RunShowcaseLayoutChecks()` 单独检查导航、文字布局、视频准备与资源回收，报告为 `showcase-layout.json`；它不检查视频时间推进，不能替代完整播放检查。
 
-主菜单的两个工具入口以 `EditorOnly` 节点保存在场景中，未 Play 时也能看到外观；功能在 Play 中使用。若重建主菜单，可调用 `GameBuilder.RefreshEditorEntries()` 更新入口预览。整个素材目录只用于 Editor，功能代码通过 `UNITY_EDITOR` 隔离，正式包不含这两个入口。
+主菜单两个工具入口由场景 `DraculaApp → 工具入口仅编辑器可见` 统一控制，默认不限制为编辑器。入口使用普通节点，Unity 与桌面 Player 共用功能和素材；开启限制后 Player 隐藏入口并禁用 F1。未 Play 的预览通过 `GameBuilder.RefreshEditorEntries()` 更新。正式关卡在 Unity 写回工程，在 Player 保存到本地 OfficialCampaign 目录。
 
 `ReferenceStills/` 仅保留少量历史评审参考。旧版 `DraculasBox/Prototypes/Showcase/` 数据与 Unity 菜单中的 Prototypes 预览窗口已移除；正式作品演示以本目录中的 `Pages.json`、`Clips/` 和主菜单「作品演示！」为准。
 

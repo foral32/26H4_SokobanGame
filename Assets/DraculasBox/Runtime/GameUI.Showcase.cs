@@ -1,26 +1,21 @@
-﻿using System;
+using System;
 using UnityEngine;
-#if UNITY_EDITOR
 using System.IO;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.Video;
-#endif
 
 namespace DraculasBox.Runtime
 {
     public sealed partial class GameUI
     {
-#if UNITY_EDITOR
         [SerializeField, Min(0f)] private float showcaseShakeIntervalSeconds=4f;
-#endif
-        [System.Diagnostics.Conditional("UNITY_EDITOR")]
         private void ShowcaseEntry(Transform parent)
         {
-#if UNITY_EDITOR
             var old=parent.Find("showcase");if(old!=null){old.gameObject.SetActive(false);if(Application.isPlaying)Destroy(old.gameObject);else DestroyImmediate(old.gameObject);}
+            if(app!=null&&!app.ToolEntriesVisible)return;
             var r=Rect("showcase",Vector2.zero,new Vector2(228,80),parent);
-            r.gameObject.tag="EditorOnly";
+
             r.anchorMin=r.anchorMax=r.pivot=new Vector2(1,.5f);r.anchoredPosition=new Vector2(10,28);
             var button=ClickTarget(r);
             var artwork=Rect("Notebook tab",Vector2.zero,r.sizeDelta,r);
@@ -34,20 +29,15 @@ namespace DraculasBox.Runtime
             {
                 Register("showcase",button,OpenShowcase,focus);
                 var motion=r.gameObject.AddComponent<ShowcaseTabMotion>();motion.artwork=artwork;motion.shakeInterval=showcaseShakeIntervalSeconds;
-                motion.viewed=()=>showcaseVisited||(!app.Automated&&UnityEditor.EditorPrefs.GetBool(ShowcaseSeenKey,false));
+                motion.viewed=()=>showcaseVisited||(!app.Automated&&PlayerPrefs.GetInt(ShowcaseSeenKey,0)!=0);
             }
-#endif
         }
-        [System.Diagnostics.Conditional("UNITY_EDITOR")]
         private void CloseShowcaseImmediate()
         {
-#if UNITY_EDITOR
             if(showcaseRoot!=null){showcaseRoot.gameObject.SetActive(false);Destroy(showcaseRoot.gameObject);}
             RestoreShowcaseNavigation();
             StopShowcaseVideo();showcaseRoot=null;showcasePanel=null;showcaseClosing=false;
-#endif
         }
-#if UNITY_EDITOR
         private void OnDestroy(){RestoreShowcaseNavigation();StopShowcaseVideo();}
         [Serializable] public sealed class ShowcasePage {public string id,title,guide,clip;public string[] highlights;}
         [Serializable] private sealed class ShowcaseSection {public string id,label;public ShowcasePage[] pages;}
@@ -77,7 +67,8 @@ namespace DraculasBox.Runtime
         public bool ShowcaseOpen=>showcaseRoot!=null;
         public string ShowcasePageId=>showcaseContent==null?null:ShowcaseCurrent.id;
         public bool ShowcaseVideoReady=>showcasePlayer!=null&&showcasePlayer.isPrepared;
-        private const string ShowcaseFolder="Assets/DraculasBox/Showcase/Editor/";
+        private static string ShowcaseFolder=>Path.Combine(Application.streamingAssetsPath,"DraculasBoxShowcase")+"/";
+        private Texture2D showcasePoster;
         private ShowcasePage[] ShowcasePages=>showcaseContent.sections[showcaseTab].pages;
         private ShowcasePage ShowcaseCurrent=>ShowcasePages[showcaseIndices[showcaseTab]];
         private string ShowcaseClip=>string.IsNullOrEmpty(ShowcaseCurrent.clip)?ShowcaseCurrent.id:ShowcaseCurrent.clip;
@@ -95,7 +86,7 @@ namespace DraculasBox.Runtime
         }
         public void OpenShowcase()
         {
-            if(app.Page!=GamePage.Title||app.Transitioning||ShowcaseOpen)return;
+            if(!app.ToolEntriesVisible||app.Page!=GamePage.Title||app.Transitioning||ShowcaseOpen)return;
             try{showcaseContent=JsonUtility.FromJson<ShowcaseContent>(File.ReadAllText(ShowcaseFolder+"Pages.json"));}
             catch(Exception e){Debug.LogError("Cannot open showcase: "+e.Message);return;}
             if(showcaseContent?.sections==null||showcaseContent.sections.Length!=4){Debug.LogError("Showcase requires four sections.");return;}
@@ -105,7 +96,7 @@ namespace DraculasBox.Runtime
                 showcaseIndices[i]=Mathf.Clamp(showcaseIndices[i],0,showcaseContent.sections[i].pages.Length-1);
             }
             showcaseVisited=true;
-            if(!app.Automated)UnityEditor.EditorPrefs.SetBool(ShowcaseSeenKey,true);
+            if(!app.Automated)PlayerPrefs.SetInt(ShowcaseSeenKey,1);
             showcaseClosing=false;
             showcaseEvents=UnityEngine.EventSystems.EventSystem.current;
             if(showcaseEvents!=null){showcaseNavigation=showcaseEvents.sendNavigationEvents;showcaseEvents.sendNavigationEvents=false;showcaseEvents.SetSelectedGameObject(null);}
@@ -208,7 +199,9 @@ namespace DraculasBox.Runtime
                 int index=i;var dot=ShowcaseButton("showcase-dot-"+i,showcaseDots,new Vector2((i-(ShowcasePages.Length-1)*.5f)*24,0),new Vector2(24,24),()=>{showcaseIndices[showcaseTab]=index;RefreshShowcasePage();});
                 var g=Rect("Dot",Vector2.zero,Vector2.one*(i==showcaseIndices[showcaseTab]?9:6),dot.transform).gameObject.AddComponent<ShowcaseSurface>();g.dot=true;g.raycastTarget=false;g.color=i==showcaseIndices[showcaseTab]?Gold:new Color(Quiet.r,Quiet.g,Quiet.b,.4f);
             }
-            var poster=UnityEditor.AssetDatabase.LoadAssetAtPath<Texture2D>(ShowcaseFolder+"Clips/"+ShowcaseClip+".jpg");
+            var poster=new Texture2D(2,2,TextureFormat.RGBA32,false);showcasePoster=poster;
+            string posterPath=ShowcaseFolder+"Clips/"+ShowcaseClip+".jpg";
+            if(File.Exists(posterPath))poster.LoadImage(File.ReadAllBytes(posterPath));
             showcaseImage.texture=poster;showcaseImage.color=Color.white;
             string path=Path.GetFullPath(ShowcaseFolder+"Clips/"+ShowcaseClip+".webm");
             if(!File.Exists(path)){showcaseStatus.text="演示片段暂不可用";return;}
@@ -229,6 +222,7 @@ namespace DraculasBox.Runtime
         private void StopShowcaseVideo()
         {
             showcaseRequest++;
+            if(showcasePoster!=null){Destroy(showcasePoster);showcasePoster=null;}
             if(showcasePlayer!=null){showcasePlayer.Stop();showcasePlayer.targetTexture=null;Destroy(showcasePlayer);showcasePlayer=null;}
             if(showcaseImage!=null)showcaseImage.texture=null;
             if(showcaseTarget!=null){showcaseTarget.Release();Destroy(showcaseTarget);showcaseTarget=null;}
@@ -249,6 +243,5 @@ namespace DraculasBox.Runtime
             else if(keyboard.Pressed(KeyCode.Space))ShowcaseTogglePlayback();
             return true;
         }
-#endif
     }
 }

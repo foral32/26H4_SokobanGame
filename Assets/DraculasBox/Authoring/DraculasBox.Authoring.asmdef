@@ -1,0 +1,11 @@
+{
+  "name": "DraculasBox.Authoring",
+  "references": [
+    "DraculasBox.Core",
+    "DraculasBox.Runtime",
+    "Unity.TextMeshPro",
+    "UnityEngine.UI",
+    "Unity.ugui"
+  ],
+  "autoReferenced": true
+}

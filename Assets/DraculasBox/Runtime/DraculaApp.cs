@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using DraculasBox.Core;
@@ -9,6 +9,14 @@ namespace DraculasBox.Runtime
     public enum GamePage {Title,Chapters,Levels,Playing,Paused,Settings,Completing,Library,Editing,Confirming,Dying,Dead,Importing,Campaign}
     public sealed partial class DraculaApp:MonoBehaviour
     {
+        [Header("作品工具入口")]
+        [Tooltip("开启：仅 Unity 编辑器可见。关闭：编辑器和独立运行版均可见。修改后在主菜单即时生效。")]
+        [InspectorName("工具入口仅编辑器可见")]
+        public bool toolsOnlyInEditor=false;
+        public bool ToolEntriesVisible => !toolsOnlyInEditor || Application.isEditor;
+        private bool lastToolEntriesVisible;
+        public static Action<GameAssets> LoadPublishedCampaign {get;set;}
+        [Header("场景引用")]
         public GameAssets assets;public Camera viewCamera;public GameUI ui;public StudyTransition transition;
         private GameAudio audioPlayer;private LevelEditor creator;private readonly StudyInput input=new StudyInput();private readonly HistoryActionQueue history=new HistoryActionQueue();
         private readonly UnityStudyKeyboard hardware=new UnityStudyKeyboard();private IStudyKeyboard testKeys;
@@ -42,11 +50,16 @@ namespace DraculasBox.Runtime
         public void SetTestKeyboard(IStudyKeyboard keys){if(!Automated)throw new InvalidOperationException("Test keyboard requires isolated validation mode.");testKeys=keys;input.Clear();}
         private void Awake()
         {
-            globalsRestored=false;assets.ResetSpriteCache();
             Automated=Array.IndexOf(Environment.GetCommandLineArgs(),"--dracula-validate")>=0||Array.IndexOf(Environment.GetCommandLineArgs(),"--dracula-theme-checks")>=0;
             #if UNITY_EDITOR
             Automated|=UnityEditor.SessionState.GetBool("DraculasBox.Validate",false)||UnityEditor.SessionState.GetBool("DraculasBox.Playtest",false);
             #endif
+            globalsRestored=false;
+#if !UNITY_EDITOR
+            assets=Instantiate(assets);
+            try{if(!Automated)LoadPublishedCampaign?.Invoke(assets);}catch(Exception e){Debug.LogWarning("本地正式目录未载入："+e.Message);}
+#endif
+            assets.ResetSpriteCache();lastToolEntriesVisible=ToolEntriesVisible;
             priorPipeline=QualitySettings.renderPipeline;priorBackground=Application.runInBackground;priorRate=Application.targetFrameRate;
             QualitySettings.renderPipeline=assets.pipeline;Application.targetFrameRate=60;if(Automated)Application.runInBackground=true;
         }
@@ -247,15 +260,12 @@ namespace DraculasBox.Runtime
             if(Page==GamePage.Dying){if(!deathCue&&Time.unscaledTime-diedAt>=BoardView.DeathImpactSeconds){deathCue=true;Cue("burn");}if(Time.unscaledTime-diedAt>=BoardView.DeathSeconds){Page=GamePage.Dead;ui.DeathHint();}}
             if(Page==GamePage.Editing)return;
             var keyboard=Automated?testKeys:Application.isFocused?hardware:null;
-            #if UNITY_EDITOR
+            if(lastToolEntriesVisible!=ToolEntriesVisible){lastToolEntriesVisible=ToolEntriesVisible;if(Page==GamePage.Title)ui.Title();}
             if(ui.ShowcaseKeys(keyboard)){input.Clear();return;}
-            #endif
             if(ui.ProcessHoldInput(keyboard)){input.Clear();return;}
             if(keyboard==null)return;
             if(ui.HasTextFocus){if(keyboard.Pressed(KeyCode.Escape))ui.CommitText();return;}
-#if UNITY_EDITOR
             if(Page==GamePage.Campaign&&Campaign.HandleKeys(keyboard)){input.Clear();return;}
-#endif
             if(creatorPlay&&(Page==GamePage.Playing||Page==GamePage.Dead)&&keyboard.Pressed(KeyCode.F5)){ReturnToEditor();return;}
             bool puzzle=Page==GamePage.Playing||Page==GamePage.Dying||Page==GamePage.Dead;
             if(puzzle){var ready=history.Tick(Board.IsAnimating);if(ready.HasValue){Act(ready.Value);return;}}

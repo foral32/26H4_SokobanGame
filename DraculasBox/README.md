@@ -4,6 +4,12 @@
 
 四章共二十四个主线、六个可选支线与玩家关卡编辑器，当前关数为 6 / 6+2 / 6+2 / 6+2，支持同关多盏灯与可推动的斜镜。沿用 Box or Void 复刻中已有的灰蓝几何风格与圆形转场，走推、光照和机关规则独立实现。
 
+## 工具入口配置
+
+场景 `Dracula’s Box` 对象的 `DraculaApp` 组件提供「工具入口仅编辑器可见」（`toolsOnlyInEditor`）。默认关闭限制：作品演示与正式关卡编辑在 Unity 和桌面 Player 均可使用；勾选后仅 Unity 可见。该策略只控制入口与打开命令，不从构建中删除工具代码和演示素材。
+
+Unity 中正式编辑仍写回工程；桌面 Player 在 `Application.persistentDataPath/DraculasBox/OfficialCampaign/` 保存正式目录及草稿，启动时载入已发布版本。演示读取 `StreamingAssets/DraculasBoxShowcase/`。旧的固定构建不会因工程更新而获得此功能。
+
 ## 运行
 
 - 最近固定试玩构建（2026-11-10，仍含旧目录的 31 关）：[开始游戏.cmd](Builds/Music-20261110/开始游戏.cmd)。已接入主配乐与编辑配乐、短交叉淡化和音乐署名，包含五套主题。本轮编辑器与关卡目录改动尚未生成新的固定构建。

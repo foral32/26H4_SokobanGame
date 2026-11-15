@@ -2,7 +2,7 @@
 
 一款围绕光与影的推箱子解谜游戏，也是一个**技术策划求职 Demo**。操控小吸血鬼，搬动箱子、改变光路，安全回到棺材。
 
-项目包含四个章节、玩家关卡编辑器，以及在 Unity 内使用的正式关卡编排与作品演示工具。
+项目包含四个章节、玩家关卡编辑器，以及正式关卡编排与作品演示工具。
 
 ![Unity Play 模式中的主菜单：右侧为作品演示，右下角为正式关卡编辑入口](Document/Images/Readme/main-menu.png)
 
@@ -12,19 +12,19 @@
 2. 打开场景 [`Assets/DraculasBox/Scenes/DraculasBox.unity`](Assets/DraculasBox/Scenes/DraculasBox.unity)。
 3. 进入 **Play 模式**，在 Game 窗口中操作。
 
-> [!IMPORTANT]
-> **Unity 编辑器专用入口**
+> [!TIP]
+> **工具入口开关**
 >
-> 「编辑正式关卡」与「作品演示」只面向 Unity 编辑器：未 Play 时可在主菜单预览中看到入口，进入 Play 后使用。独立运行的游戏包不提供这两个入口。
+> 选择场景中的 `Dracula’s Box` 对象，在 `DraculaApp → 作品工具入口 → 工具入口仅编辑器可见` 调整。默认不勾选，作品演示与正式编辑器在 Unity 和桌面独立运行版均可用；勾选后仅在 Unity 中显示。
 >
-> **游戏包可用：** 玩家使用的「关卡创作」是另一个入口，在独立运行的游戏包中同样可用。
+> Unity 中编辑正式关卡仍写回工程；桌面独立运行版保存到本机目录，重启后继续载入。普通「关卡创作」入口不受此开关影响。
 
 | 想体验的内容 | 主菜单入口 |
 | --- | --- |
 | 游戏与关卡 | **开始游戏** |
 | 自定义关卡制作 | **关卡创作** |
-| 正式章节与关卡编排 | 右下角 **编辑正式关卡** · 在 Unity Play 中使用 |
-| 项目功能介绍与实机演示 | 右侧 **作品演示！**，或按 **F1** · 在 Unity Play 中使用 |
+| 正式章节与关卡编排 | 右下角 **编辑正式关卡** |
+| 项目功能介绍与实机演示 | 右侧 **作品演示！**，或按 **F1** |
 
 初次查看可先打开「作品演示！」，再试玩第一章。需要直接查看后续章节时，可在主菜单「设置」中长按「解锁所有关卡」。
 
@@ -79,7 +79,7 @@
 
 「草稿预设」提供 38 个紧凑棋盘，覆盖 12 种可选机制组合的Ⅰ、Ⅱ、Ⅲ档，按勾选机制与难度严格匹配；四项机制均不勾选时，筛选不含光照和机关的基础推箱子关卡，无对应预设时显示「暂无匹配草稿」。预览后采用，仍可自由修改或一次撤销。难度使用罗马数字，作为创作参考。
 
-## 正式关卡编辑 · 仅 Unity Play
+## 正式关卡编辑
 
 主菜单右下角「编辑正式关卡」用于维护项目实际使用的章节目录。它与玩家关卡编辑器共用棋盘编辑能力，并增加章节、顺序、主支线和写回工程功能。
 
@@ -95,13 +95,15 @@
 | 复制、跨章移动或删除关卡 | 关卡格的「…」菜单。 |
 | 移至玩家关卡库 | 关卡格「… → 移至创作关卡」：保存到「我的关卡」，并从正式目录草稿移出；目录变更仍需写回工程。 |
 
+独立运行版的正式关卡编辑使用本机 `Application.persistentDataPath/DraculasBox/OfficialCampaign/`，按钮显示「保存目录」，保存后在当前游戏和下次启动时生效；不修改安装包或原 Unity 工程。Unity 内仍使用原有写回工程流程。
+
 **保存草稿与写回工程是两步操作。** 草稿用于保留编辑中的工作；完成后，在关卡图点击「写回工程」，勾选需要提交的条目，再点「写回所选」。
 
 新建或修改布局的关卡需要有有效通关路线，可通过求解或 F5 试玩通关获得。校验问题会显示具体原因；可以取消勾选有问题的条目，先写回其他修改，未选内容仍留在草稿中。
 
 写回会更新 [`Content/Chapters.json`](Assets/DraculasBox/Content/Chapters.json)、[`Content/Levels/`](Assets/DraculasBox/Content/Levels/) 与 [`Content/Replays.json`](Assets/DraculasBox/Content/Replays.json)。这些才是需要随工程提交的正式内容；尚未写回的工作草稿保存在本机 `Library/DraculasBoxCampaign/`。
 
-## 作品演示 · 仅 Unity Play
+## 作品演示
 
 主菜单右侧「作品演示！」打开游戏内演示窗口，使用实际 Unity 录制片段介绍项目。可以先了解功能，再关闭窗口亲自操作。
 
@@ -114,7 +116,7 @@
 
 四个页签共 15 页。首次打开显示 [README 首页](Document/Images/Readme/showcase-intro.png)。点击页签或按 **Tab** 切换分类，左右箭头翻页，**空格** 暂停 / 播放，**Esc** 关闭。
 
-演示配置、视频和封面位于 [`Assets/DraculasBox/Showcase/Editor/`](Assets/DraculasBox/Showcase/Editor/)，不随游戏包分发。正文与分段由 `Pages.json` 配置，`highlights` 指定随主题配色变化的强调词句；详见[演示素材说明](Assets/DraculasBox/Showcase/Editor/README.md)。
+演示配置、视频和封面位于 [`Assets/StreamingAssets/DraculasBoxShowcase/`](Assets/StreamingAssets/DraculasBoxShowcase/)，随游戏包携带。正文与分段由 `Pages.json` 配置，`highlights` 指定随主题配色变化的强调词句；详见[演示素材说明](Assets/StreamingAssets/DraculasBoxShowcase/README.md)。
 
 ## 工程简要说明
 
@@ -124,9 +126,10 @@
 | --- | --- |
 | [`Assets/DraculasBox/Core/`](Assets/DraculasBox/Core/) | 纯 C# 棋盘状态、移动与光照规则、撤销、编辑数据、求解与草稿预设。 |
 | [`Assets/DraculasBox/Runtime/`](Assets/DraculasBox/Runtime/) | 游戏流程、输入、棋盘表现、UI、音频与玩家关卡编辑器。 |
-| [`Assets/DraculasBox/Editor/`](Assets/DraculasBox/Editor/) | Unity 编辑器专用的正式内容编排、校验与写回工具。 |
+| [`Assets/DraculasBox/Authoring/`](Assets/DraculasBox/Authoring/) | 跨平台正式关卡编排、校验与存储；Unity 与本地文件适配。 |
+| [`Assets/DraculasBox/Editor/`](Assets/DraculasBox/Editor/) | Unity 构建、场景维护与回归验证工具。 |
 | [`Assets/DraculasBox/Content/`](Assets/DraculasBox/Content/) | 章节关系、关卡棋盘与通关路线。 |
-| [`Assets/DraculasBox/Showcase/Editor/`](Assets/DraculasBox/Showcase/Editor/) | 仅在 Unity Play 使用的作品演示素材与配置。 |
+| [`Assets/StreamingAssets/DraculasBoxShowcase/`](Assets/StreamingAssets/DraculasBoxShowcase/) | 编辑器与独立运行版共用的作品演示素材与配置。 |
 | [`Document/`](Document/README.md) | 设计基准、技术框架、决策与开发记录。 |
 
 进一步阅读：[设计基准](Document/Design/Prototype设计文档.md) · [技术框架](Document/技术框架.md) · [开发状态](Document/版本开发文档.md)

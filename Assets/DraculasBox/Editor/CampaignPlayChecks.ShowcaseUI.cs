@@ -99,7 +99,7 @@ namespace DraculasBox.Editor
             string progress=JsonUtility.ToJson(app.Progress.Data),catalogue=app.assets.catalog.text;
             int files=app.Library.Read(out _).Count;
             var entry=app.UI.FindButton("campaign");
-            Need(entry!=null&&entry.gameObject.CompareTag("EditorOnly"),"formal editor entry remains editor-only and clickable");
+            Need(entry!=null&&!entry.gameObject.CompareTag("EditorOnly"),"formal editor entry supports the player and remains clickable");
             var rect=(RectTransform)entry.transform;
             Need(rect.anchorMin==new Vector2(1,0)&&rect.pivot==new Vector2(1,0),"formal editor entry remains anchored to the lower right");
             Capture("menu-refined-entry");

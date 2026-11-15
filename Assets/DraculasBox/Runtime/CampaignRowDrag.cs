@@ -1,4 +1,3 @@
-#if UNITY_EDITOR
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -35,4 +34,3 @@ namespace DraculasBox.Runtime
         private void Release(){if(!held)return;held=false;Cancel?.Invoke();}
     }
 }
-#endif

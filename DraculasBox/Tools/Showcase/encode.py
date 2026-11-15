@@ -5,7 +5,7 @@ import argparse,json,subprocess,shutil
 from pathlib import Path
 parser=argparse.ArgumentParser();parser.add_argument('--ffmpeg',required=True);parser.add_argument('--clips',nargs='+');args=parser.parse_args()
 root=Path(__file__).resolve().parents[3]
-source=root/'Library/DraculasBoxShowcase/Frames';target=root/'Assets/DraculasBox/Showcase/Editor/Clips';target.mkdir(parents=True,exist_ok=True)
+source=root/'Library/DraculasBoxShowcase/Frames';target=root/'Assets/StreamingAssets/DraculasBoxShowcase/Clips';target.mkdir(parents=True,exist_ok=True)
 manifest_path=target/'CaptureManifest.json'
 manifest=json.loads(manifest_path.read_text(encoding='utf-8'))['clips'] if args.clips and manifest_path.exists() else []
 for folder in sorted(source.iterdir()):

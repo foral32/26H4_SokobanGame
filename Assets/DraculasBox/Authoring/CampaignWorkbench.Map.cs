@@ -105,7 +105,7 @@ namespace DraculasBox.Editor
         }
         private void ReviewAction()
         {
-            UI.EditorButton("campaign-review","写回工程",new Vector2(497,-313),new Vector2(154,42),()=>
+            UI.EditorButton("campaign-review",project.PublishLabel,new Vector2(497,-313),new Vector2(154,42),()=>
             {excludedChanges.Clear();overlay=Overlay.Review;notice="";publicationError=null;Draw();},Dirty,null,true);
             UI.SetEnabled("campaign-review",Dirty);
         }

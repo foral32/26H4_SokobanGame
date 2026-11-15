@@ -3,7 +3,7 @@ using DraculasBox.Core;
 
 namespace DraculasBox.Runtime
 {
-    // The Unity Editor assembly supplies the production-content writer. Players have no provider.
+    // The authoring assembly supplies project storage in Editor and local storage in players.
     public interface ICampaignWorkshop
     {
         void Show(bool returnToMap);
@@ -27,7 +27,7 @@ namespace DraculasBox.Runtime
         public void OpenCampaign()=>OpenCampaign(false);
         private void OpenCampaign(bool returnToMap)
         {
-            if (CreateCampaignWorkshop == null) return;
+            if (!ToolEntriesVisible || CreateCampaignWorkshop == null) return;
             Navigate(() =>
             {
                 try

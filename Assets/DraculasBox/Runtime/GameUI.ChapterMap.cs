@@ -10,16 +10,16 @@ namespace DraculasBox.Runtime
 {
     public sealed partial class GameUI
     {
-        [System.Diagnostics.Conditional("UNITY_EDITOR")]
         private void CampaignTitleEntry(Transform parent)
         {
-#if UNITY_EDITOR
-            if(Application.isPlaying&&DraculaApp.CreateCampaignWorkshop==null)return;
+
             var old=parent.Find("campaign");
             if(old!=null){old.gameObject.SetActive(false);if(Application.isPlaying)Destroy(old.gameObject);else DestroyImmediate(old.gameObject);}
+            if(app!=null&&!app.ToolEntriesVisible)return;
+            if(Application.isPlaying&&DraculaApp.CreateCampaignWorkshop==null)return;
             var size=new Vector2(252,68);
             var r=Rect("campaign",Vector2.zero,size,parent);
-            r.gameObject.tag="EditorOnly";
+
             r.anchorMin=r.anchorMax=r.pivot=new Vector2(1,0);r.anchoredPosition=new Vector2(10,26);
             var b=ClickTarget(r);
             var surface=Rect("Editor tab",Vector2.zero,size,r).gameObject.AddComponent<ShowcaseSurface>();
@@ -29,7 +29,6 @@ namespace DraculasBox.Runtime
             var focus=Rect("Focus",Vector2.zero,size+new Vector2(8,8),r).gameObject.AddComponent<SelectionCorners>();
             focus.color=new Color(Gold.r,Gold.g,Gold.b,0);focus.raycastTarget=false;
             if(Application.isPlaying)Register("campaign",b,app.OpenCampaign,focus);
-#endif
         }
         public void MapPage(string heading)
         {

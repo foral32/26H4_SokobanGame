@@ -1,4 +1,3 @@
-﻿#if UNITY_EDITOR
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -101,4 +100,3 @@ namespace DraculasBox.Runtime
         }
     }
 }
-#endif

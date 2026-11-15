@@ -3,17 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using DraculasBox.Core;
 using DraculasBox.Runtime;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace DraculasBox.Editor
 {
+    #if UNITY_EDITOR
     [InitializeOnLoad]
+    #endif
     internal static class CampaignRegistration
     {
         static CampaignRegistration()
         {
-            DraculaApp.CreateCampaignWorkshop = app => new CampaignWorkbench(app, new CampaignProject(app.assets));
+            Register();
+#if UNITY_EDITOR
             EditorApplication.playModeStateChanged += change =>
             {
                 if (change != PlayModeStateChange.ExitingPlayMode) return;
@@ -21,6 +26,18 @@ namespace DraculasBox.Editor
                 if (app == null || !app.EditingOfficial || app.Creator?.Document == null) return;
                 if (app.Page == GamePage.Editing) app.Creator.CommitPending();
                 if (app.Creator.Document.Dirty) app.RecoverBoard(app.Creator.Document.Data);
+            };
+#endif
+        }
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void Register()
+        {
+            DraculaApp.CreateCampaignWorkshop = app => new CampaignWorkbench(app, new CampaignProject(app.assets, !Application.isEditor&&app.Automated?System.IO.Path.Combine(Application.temporaryCachePath,"DraculasBoxOfficialChecks",Guid.NewGuid().ToString("N")):null));
+            DraculaApp.LoadPublishedCampaign = assets =>
+            {
+#if !UNITY_EDITOR
+                if (System.IO.Directory.Exists(CampaignProject.PlayerFolder)) new CampaignProject(assets);
+#endif
             };
         }
     }
